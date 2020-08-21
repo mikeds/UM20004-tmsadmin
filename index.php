@@ -116,7 +116,7 @@ define('DB_USERNAME', $database_username);
 $database_password = ENVIRONMENT == "production" ? getenv("DBPRODPWD") : 
 (ENVIRONMENT == "staging" ? getenv("DBSTAGPWD") : 
 (ENVIRONMENT == "development" ? getenv("DBDEVPWD") :
-(ENVIRONMENT == "development" ? getenv("DBTESTPWD") :  getenv("DBLOCALPWD")
+(ENVIRONMENT == "test" ? getenv("DBTESTPWD") :  getenv("DBLOCALPWD")
 )));
 define('DB_PWD', $database_password);
 

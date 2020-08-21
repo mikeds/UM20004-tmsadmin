@@ -35,7 +35,7 @@ class Login extends Public_Controller {
 				}
 
 				$session[$this->_base_session] = array(
-					'id'			=> $row->account_id,
+					'id'			=> $row->account_number,
 					'username'		=> $row->account_username,
 					'fname'			=> $row->account_fname,
 					'mname'			=> $row->account_mname,

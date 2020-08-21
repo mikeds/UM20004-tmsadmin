@@ -3,6 +3,9 @@ function force_ssl() {
 
     $host_arr = array(
         array(
+            TEST_URL, true 
+        ),
+        array(
             DEV_URL, true 
         ),
         array(

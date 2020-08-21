@@ -1,12 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Merchants_model extends CI_Model {
+class Wallet_addresses_model extends CI_Model {
 	private 
-		$_table	= 'bambupay_merchants  merchants',
-		$_table_x	= 'bambupay_merchants';
+		$_table	= 'wallet_addresses  wallet_addresses',
+		$_table_x	= 'wallet_addresses';
 
 	private
-		$_id = "merchant_id";
+		$_id = "wallet_address";
 
 	function get_datum($id = '', $data = array(), $where_or = array()) {
 		$this->db->from( $this->_table_x );

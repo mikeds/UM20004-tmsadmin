@@ -50,10 +50,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
-$route["default_controller"]    = "admin/Dashboard";
+$route["default_controller"]        = "admin/Dashboard";
 
-$route["login"]                 = "public/Login";
-$route["logout"]                = "public/Logout";
+$route["transactions/qr-code/(:any)"] = "admin/Qr_code/index/$1";
+
+$route["admin-accounts"]                = "admin/Admin_accounts";
+$route["admin-accounts/(:num)"]         = "admin/Admin_accounts/index/$1";
+$route["admin-accounts/new"]            = "admin/Admin_accounts/new";
+$route["admin-accounts/update/(:any)"]  = "admin/Admin_accounts/update/$1";
+
+$route['top-up-otc']   = "admin/Top_up_otc";
+$route['encash-otc']   = "admin/Encash_otc";
+
+$route["login"]                     = "public/Login";
+$route["logout"]                    = "public/Logout";
 
 $route['404_override'] = 'public/Error_404';
 $route['translate_uri_dashes'] = FALSE;

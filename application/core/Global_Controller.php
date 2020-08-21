@@ -12,7 +12,9 @@ class Global_Controller extends MX_Controller {
 		$_scripts = array();
 
 	protected
-		$_upload_path = FCPATH . UPLOAD_PATH;
+		$_upload_path = FCPATH . UPLOAD_PATH,
+		$_tms_admin = 1,
+		$_ssl_method = "AES-128-ECB";
 
 	public function __construct() {
 		// Initialize all configs, helpers, libraries from parent

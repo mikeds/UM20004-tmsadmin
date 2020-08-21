@@ -1,12 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Product_images_model extends CI_Model {
+class Tms_admin_accounts_model extends CI_Model {
 	private 
-		$_table	= 'bambupay_product_images  images',
-		$_table_x	= 'bambupay_product_images';
+		$_table	= 'tms_admin_accounts  admin_accounts',
+		$_table_x	= 'tms_admin_accounts';
 
 	private
-		$_id = "product_image_id";
+		$_id = "account_number";
 
 	function get_datum($id = '', $data = array(), $where_or = array()) {
 		$this->db->from( $this->_table_x );
@@ -106,9 +106,11 @@ class Product_images_model extends CI_Model {
 		}
 	} 
 
+	/*
 	public function delete($id){
 		$this->db->where($this->_id, $id); 
 		$this->db->delete($this->_table_x);
 	}
+	*/
 }
 

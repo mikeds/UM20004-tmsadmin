@@ -79,12 +79,16 @@ define('TB', 1099511627776);
 define('APPNAME', getenv("APPNAME"));
 
 define('LOCAL_URL', 'tmsadmin.bambupay.local');
+define('TEST_URL', 'test-tmsadmin.resolveitthrough.us');
 define('DEV_URL', 'dev-tmsadmin.resolveitthrough.us');
 define('STAG_URL', 'staging-tmsadmin.resolveitthrough.us');
 define('PROD_URL', 'tmsadmin.resolveitthrough.us');
 
 $localhost_url = LOCAL_URL;
 $environment_state = (preg_match("/\b{$localhost_url}\b/", $_SERVER['HTTP_HOST']) ? 'local' : 'production');
+
+$test_url = TEST_URL;
+$environment_state = (preg_match("/\b{$test_url}\b/", $_SERVER['HTTP_HOST']) ? 'test' : $environment_state);
 
 $development_url = DEV_URL;
 $environment_state = (preg_match("/\b{$development_url}\b/", $_SERVER['HTTP_HOST']) ? 'development' : $environment_state);
@@ -97,20 +101,23 @@ define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : $environm
 # DATABASE GLOBAL VARIABLE
 $database = ENVIRONMENT == "production" ? getenv("DBPROD") : 
 (ENVIRONMENT == "staging" ? getenv("DBSTAG") : 
-(ENVIRONMENT == "development" ? getenv("DBDEV") :  getenv("DBLOCAL")
-));
+(ENVIRONMENT == "development" ? getenv("DBDEV") :  
+(ENVIRONMENT == "test" ? getenv("DBTEST") : getenv("DBLOCAL")
+)));
 define('DB_NAME', $database);
 
 $database_username = ENVIRONMENT == "production" ? getenv("DBPRODUSR") : 
 (ENVIRONMENT == "staging" ? getenv("DBSTAGUSR") : 
-(ENVIRONMENT == "development" ? getenv("DBDEVUSR") :  getenv("DBLOCALUSR")
-));
+(ENVIRONMENT == "development" ? getenv("DBDEVUSR") :  
+(ENVIRONMENT == "test" ? getenv("DBTESTUSR") : getenv("DBLOCALUSR")
+)));
 define('DB_USERNAME', $database_username);
 
 $database_password = ENVIRONMENT == "production" ? getenv("DBPRODPWD") : 
 (ENVIRONMENT == "staging" ? getenv("DBSTAGPWD") : 
-(ENVIRONMENT == "development" ? getenv("DBDEVPWD") :  getenv("DBLOCALPWD")
-));
+(ENVIRONMENT == "development" ? getenv("DBDEVPWD") :
+(ENVIRONMENT == "development" ? getenv("DBTESTPWD") :  getenv("DBLOCALPWD")
+)));
 define('DB_PWD', $database_password);
 
 $upload_path = ENVIRONMENT == "local" ? getenv("UPLOADPATHLOCAL") : getenv("UPLOADPATHPROD");
@@ -126,6 +133,11 @@ define('UPLOAD_PATH', $upload_path);
 switch (ENVIRONMENT)
 {
 	case 'local':
+		error_reporting(-1);
+		ini_set('display_errors', 1);
+	break;
+
+	case 'test':
 		error_reporting(-1);
 		ini_set('display_errors', 1);
 	break;

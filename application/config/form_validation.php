@@ -36,24 +36,44 @@ switch( strtolower(get_controller()) ) {
 		);
 	break;
 
-	case 'marketplace' : 
+	case 'admin_accounts' : 
 		$config = array(
-			'product_new' => array(
+			'validate' => array(
 				array( 	
-					'field' => 'category',
-					'label' => 'Category',
-					'rules'	=> 'trim|required|xss_clean|numeric'
+					'field' => 'username',
+					'label' => 'Username',
+					'rules'	=> $required_alphanumeric_rules
 				),
 				array( 	
-					'field' => 'product-name',
-					'label' => 'Product Name',
-					'rules'	=> 'trim|required|xss_clean'
+					'field' => 'first-name',
+					'label' => 'First Name',
+					'rules'	=> $required_rules
 				),
 				array( 	
-					'field' => 'product-description',
-					'label' => 'Product Description',
-					'rules'	=> 'trim|required|xss_clean'
-				)
+					'field' => 'middle-name',
+					'label' => 'Middle Name',
+					'rules'	=> $default_rules
+				),
+				array( 	
+					'field' => 'last-name',
+					'label' => 'Last Name',
+					'rules'	=> $required_rules
+				),
+				array( 	
+					'field' => 'passsword',
+					'label' => 'Password',
+					'rules'	=> "trim|xss_clean"
+				),
+				array( 	
+					'field' => 'repeat-passsword',
+					'label' => 'Repeat Password',
+					'rules'	=> "trim|xss_clean"
+				),
+				array( 	
+					'field' => 'status',
+					'label' => 'Status',
+					'rules'	=> $default_numeric_rules
+				),
 			),
 		);
 	break;

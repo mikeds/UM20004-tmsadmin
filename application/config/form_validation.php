@@ -78,6 +78,48 @@ switch( strtolower(get_controller()) ) {
 		);
 	break;
 
+	case 'merchants' : 
+		$config = array(
+			'validate' => array(
+				array( 	
+					'field' => 'merchant-code',
+					'label' => 'Merchant Code',
+					'rules'	=> "trim|xss_clean|alpha_numeric"
+				),
+				array( 	
+					'field' => 'business-name',
+					'label' => 'Business Name',
+					'rules'	=> "trim|required|xss_clean"
+				),
+				array( 	
+					'field' => 'address',
+					'label' => 'business Address',
+					'rules'	=> "trim|xss_clean"
+				),
+				array( 	
+					'field' => 'contact-person',
+					'label' => 'Contact Person',
+					'rules'	=> "trim|xss_clean|alpha_numeric_spaces"
+				),
+				array( 	
+					'field' => 'contact-no',
+					'label' => 'Contact Number',
+					'rules'	=> "trim|xss_clean|alpha_numeric"
+				),
+				array( 	
+					'field' => 'email-address',
+					'label' => 'Email Address',
+					'rules'	=> "trim|xss_clean"
+				),
+				array( 	
+					'field' => 'status',
+					'label' => 'Status',
+					'rules'	=> $default_numeric_rules
+				),
+			),
+		);
+	break;
+
 	default : $config = array();
 }
 

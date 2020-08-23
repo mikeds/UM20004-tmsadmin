@@ -18,6 +18,17 @@ class Login extends Public_Controller {
 				$password = $this->input->post("password");
 				$password = hash("sha256", $password);
 
+				$inner_joints = array(
+					array(
+						'table_name' 	=> 'oauth_bridges',
+						'condition'		=> 'oauth_bridges.oauth_bridge_id = admin_accounts.oauth_bridge_id'
+					),
+					array(
+						'table_name' 	=> 'tms_admins',
+						'condition'		=> 'tms_admins.oauth_bridge_id = oauth_bridges.oauth_bridge_parent_id'
+					),
+				);
+
 				$row = $this->admin_accounts->get_datum(
 					'',
 					array(
@@ -25,7 +36,9 @@ class Login extends Public_Controller {
 						'account_password'	=> $password,
 						'account_status' 	=> 1,
 						'tms_admin_id'		=> $this->_tms_admin
-					)
+					),
+					array(),
+					$inner_joints
 				)->row();
 
 				if ($row == "") {

@@ -417,6 +417,14 @@ HTML;
 		);
 
 		$menu_items[] = array(
+			'menu_id'			=> 'merchants',
+			'menu_title'		=> 'Merchants',
+			'menu_url'			=> 	base_url() . "merchants",
+			'menu_controller'	=> 'merchants',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
 			'menu_id'			=> 'admin-accounts',
 			'menu_title'		=> 'Admin Accounts',
 			'menu_url'			=> 	base_url() . "admin-accounts",

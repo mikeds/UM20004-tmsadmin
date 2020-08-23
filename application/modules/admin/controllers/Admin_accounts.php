@@ -2,14 +2,21 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Admin_accounts extends Admin_Controller {
+	private
+		$_admin_account_data = NULL;
 
 	public function after_init() {
 		$this->set_scripts_and_styles();
 		$this->load->model('admin/tms_admin_accounts_model', 'admin_accounts');
 		$this->load->model('admin/oauth_bridges_model', 'bridges');
+
+		$this->_admin_account_data = $this->get_account_data();
 	}
 
 	public function index($page = 1) {
+		$admin_account_data_results = $this->_admin_account_data['results'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+
 		$this->_data['add_label']= "New Account";
 		$this->_data['add_url']	 = base_url() . "admin-accounts/new";
 
@@ -31,14 +38,23 @@ class Admin_accounts extends Admin_Controller {
 		);
 
 		$where = array(
-			'tms_admin_id' => $this->_tms_admin
+			'oauth_bridge_parent_id' => $admin_oauth_bridge_id
+		);
+
+		$inner_joints = array(
+			array(
+				'table_name' 	=> 'oauth_bridges',
+				'condition'		=> 'oauth_bridges.oauth_bridge_id = admin_accounts.oauth_bridge_id'
+			),
 		);
 
 		$total_rows = $this->admin_accounts->get_count(
-			$where
+			$where,
+			array(),
+			$inner_joints
 		);
 		$offset = $this->get_pagination_offset($page, $this->_limit, $total_rows);
-	    $results = $this->admin_accounts->get_data($select, $where, array(), array('filter'=>'account_number', 'sort'=>'DESC'), $offset, $this->_limit);
+	    $results = $this->admin_accounts->get_data($select, $where, array(), $inner_joints, array('filter'=>'account_date_added', 'sort'=>'DESC'), $offset, $this->_limit);
 
 		$this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 4);
 		$this->_data['title']  = "Admin Accounts";
@@ -46,6 +62,9 @@ class Admin_accounts extends Admin_Controller {
 	}
 
 	public function new() {
+		$admin_account_data_results = $this->_admin_account_data['results'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+
 		$this->_data['form_url']		= base_url() . "admin-accounts/new";
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 
@@ -88,24 +107,25 @@ class Admin_accounts extends Admin_Controller {
 				$this->bridges->insert(
 					array(
 						'oauth_bridge_id' 			=> $bridge_id,
+						'oauth_bridge_parent_id'	=> $admin_oauth_bridge_id,
 						'oauth_bridge_date_added'	=> $this->_today
 					)
 				);
 
-				$inset_data = array(
+				$insert_data = array(
 					'account_number'		=> $account_number,
 					'account_fname'			=> $fname,
 					'account_mname'			=> $mname,
 					'account_lname'			=> $lname,
 					'account_username'		=> $username,
 					'account_password'		=> $password,
-					'tms_admin_id'			=> $this->_tms_admin,
+					// 'tms_admin_id'			=> $this->_tms_admin,
 					'account_date_added'	=> $this->_today,
 					'oauth_bridge_id'		=> $bridge_id,
 				);
 
 				$this->admin_accounts->insert(
-					$inset_data
+					$insert_data
 				);
 
 				$this->session->set_flashdata('notification', $this->generate_notification('success', 'Successfully Added!'));

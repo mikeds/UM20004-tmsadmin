@@ -59,11 +59,15 @@ $route["admin-accounts/(:num)"]         = "admin/Admin_accounts/index/$1";
 $route["admin-accounts/new"]            = "admin/Admin_accounts/new";
 $route["admin-accounts/update/(:any)"]  = "admin/Admin_accounts/update/$1";
 
-$route['top-up-otc']   = "admin/Top_up_otc";
-$route['encash-otc']   = "admin/Encash_otc";
+$route['top-up-otc']    = "admin/Top_up_otc";
+$route['encash-otc']    = "admin/Encash_otc";
 
-$route["login"]                     = "public/Login";
-$route["logout"]                    = "public/Logout";
+$route['merchants']                 = "admin/Merchants";
+$route['merchants/new']             = "admin/Merchants/new";
+$route['merchants/update/(:any)']   = "admin/Merchants/update/$1";
+
+$route["login"]         = "public/Login";
+$route["logout"]        = "public/Logout";
 
 $route['404_override'] = 'public/Error_404';
 $route['translate_uri_dashes'] = FALSE;

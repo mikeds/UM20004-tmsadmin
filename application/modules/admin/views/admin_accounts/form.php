@@ -48,7 +48,7 @@
 								</div>
 								<div class="col-xl-4">
 									<div class="form-group">
-										<label>Middle Name <span class="text-danger">*</span></label>
+										<label>Middle Name</label>
 										<input name="middle-name" class="form-control" placeholder="Middle Name" value="<?=isset($post['middle-name']) ? $post['middle-name'] : ""?>">
 										<span class="text-danger"><?=form_error('middle-name')?></span>
 									</div>

@@ -440,6 +440,14 @@ HTML;
 		);
 
 		$menu_items[] = array(
+			'menu_id'			=> 'income-scheme-types',
+			'menu_title'		=> 'Income Scheme Types',
+			'menu_url'			=> 	base_url() . "income-scheme-types",
+			'menu_controller'	=> 'income_scheme_types',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
 			'menu_id'			=> 'merchants',
 			'menu_title'		=> 'Merchants',
 			'menu_url'			=> 	base_url() . "merchants",

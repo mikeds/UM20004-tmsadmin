@@ -142,11 +142,23 @@ class Admin_accounts extends Admin_Controller {
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 		$this->_data['is_update'] 		= true;
 
+		$where = array(
+			'oauth_bridge_parent_id' 	=> $admin_oauth_bridge_id,
+			'account_number' 			=> $account_number
+		);
+
+		$inner_joints = array(
+			array(
+				'table_name' 	=> 'oauth_bridges',
+				'condition'		=> 'oauth_bridges.oauth_bridge_id = admin_accounts.oauth_bridge_id'
+			),
+		);
+
 		$account_row = $this->admin_accounts->get_datum(
 			'',
-			array(
-				'account_number' => $account_number
-			)
+			$where,
+			array(),
+			$inner_joints
 		)->row();
 
 		if ($account_row == "") {

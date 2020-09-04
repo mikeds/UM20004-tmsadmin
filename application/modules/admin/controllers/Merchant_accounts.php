@@ -139,7 +139,7 @@ class Merchant_accounts extends Admin_Controller {
 				}
 
 				$password = hash("sha256", $password);
-				$account_number = $this->generate_account_number("BP");
+				$account_number = $this->generate_account_number("M");
 
 				$bridge_id = $this->generate_code(
 					array(
@@ -184,15 +184,30 @@ class Merchant_accounts extends Admin_Controller {
 	}
 
 	public function update($account_number) {
+		$admin_account_data_results = $this->_admin_account_data['results'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+
 		$this->_data['form_url']		= base_url() . "merchant-accounts/update/{$account_number}";
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 		$this->_data['is_update'] 		= true;
 
+		$where = array(
+			'oauth_bridge_parent_id' 	=> $admin_oauth_bridge_id,
+			'account_number' 			=> $account_number
+		);
+
+		$inner_joints = array(
+			array(
+				'table_name' 	=> 'oauth_bridges',
+				'condition'		=> 'oauth_bridges.oauth_bridge_id = merchant_accounts.oauth_bridge_id'
+			)
+		);
+
 		$account_row = $this->merchant_accounts->get_datum(
 			'',
-			array(
-				'account_number' => $account_number
-			)
+			$where,
+			array(),
+			$inner_joints
 		)->row();
 
 		if ($account_row == "") {

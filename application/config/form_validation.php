@@ -36,6 +36,23 @@ switch( strtolower(get_controller()) ) {
 		);
 	break;
 
+	case 'income_scheme_types' : 
+		$config = array(
+			'validate' => array(
+				array( 	
+					'field' => 'code',
+					'label' => 'Code',
+					'rules'	=> 'trim|xss_clean|alpha_numeric|min_length[4]'
+				),
+				array( 	
+					'field' => 'name',
+					'label' => 'Name',
+					'rules'	=> 'trim|required|min_length[4]|xss_clean|alpha_numeric_spaces'
+				)
+			),
+		);
+	break;
+
 	case 'admin_accounts' : 
 		$config = array(
 			'validate' => array(
@@ -87,21 +104,66 @@ switch( strtolower(get_controller()) ) {
 					'rules'	=> "trim|xss_clean|alpha_numeric"
 				),
 				array( 	
-					'field' => 'business-name',
-					'label' => 'Business Name',
-					'rules'	=> "trim|required|xss_clean"
+					'field' => 'first-name',
+					'label' => 'First Name',
+					'rules'	=> $required_rules
+				),
+				array( 	
+					'field' => 'middle-name',
+					'label' => 'Middle Name',
+					'rules'	=> $default_rules
+				),
+				array( 	
+					'field' => 'last-name',
+					'label' => 'Last Name',
+					'rules'	=> $required_rules
+				),
+				array( 	
+					'field' => 'dob',
+					'label' => 'Date of Birth',
+					'rules'	=> "trim|xss_clean|required"
 				),
 				array( 	
 					'field' => 'address',
-					'label' => 'business Address',
+					'label' => 'House No./ Unit No. / Building',
+					'rules'	=> "trim|xss_clean|required"
+				),
+				array( 	
+					'field' => 'street',
+					'label' => 'Street',
+					'rules'	=> "trim|xss_clean|required"
+				),
+				array( 	
+					'field' => 'barangay',
+					'label' => 'Barangay',
 					'rules'	=> "trim|xss_clean"
 				),
 				array( 	
-					'field' => 'contact-person',
-					'label' => 'Contact Person',
-					'rules'	=> "trim|xss_clean|alpha_numeric_spaces"
+					'field' => 'city',
+					'label' => 'City',
+					'rules'	=> "trim|xss_clean|required"
 				),
 				array( 	
+					'field' => 'country',
+					'label' => 'Country',
+					'rules'	=> "trim|xss_clean|required"
+				),
+				array( 	
+					'field' => 'province',
+					'label' => 'Province',
+					'rules'	=> "trim|xss_clean|required|numeric"
+				),
+				array( 	
+					'field' => 'gender',
+					'label' => 'Gender',
+					'rules'	=> "trim|xss_clean|required|numeric"
+				),
+				array( 	
+					'field' => 'mobile-no',
+					'label' => 'Mobile Number',
+					'rules'	=> "trim|xss_clean|alpha_numeric"
+				),
+				array(
 					'field' => 'contact-no',
 					'label' => 'Contact Number',
 					'rules'	=> "trim|xss_clean|alpha_numeric"
@@ -109,6 +171,53 @@ switch( strtolower(get_controller()) ) {
 				array( 	
 					'field' => 'email-address',
 					'label' => 'Email Address',
+					'rules'	=> "trim|xss_clean|required"
+				),
+				array( 	
+					'field' => 'status',
+					'label' => 'Status',
+					'rules'	=> $default_numeric_rules
+				),
+			),
+		);
+	break;
+
+	case 'merchant_accounts' : 
+		$config = array(
+			'validate' => array(
+				array( 	
+					'field' => 'merchant',
+					'label' => 'Merchant Name',
+					'rules'	=> "trim|xss_clean|required|alpha_numeric"
+				),
+				array( 	
+					'field' => 'username',
+					'label' => 'Username',
+					'rules'	=> $required_alphanumeric_rules
+				),
+				array( 	
+					'field' => 'first-name',
+					'label' => 'First Name',
+					'rules'	=> $required_rules
+				),
+				array( 	
+					'field' => 'middle-name',
+					'label' => 'Middle Name',
+					'rules'	=> $default_rules
+				),
+				array( 	
+					'field' => 'last-name',
+					'label' => 'Last Name',
+					'rules'	=> $required_rules
+				),
+				array( 	
+					'field' => 'passsword',
+					'label' => 'Password',
+					'rules'	=> "trim|xss_clean"
+				),
+				array( 	
+					'field' => 'repeat-passsword',
+					'label' => 'Repeat Password',
 					'rules'	=> "trim|xss_clean"
 				),
 				array( 	

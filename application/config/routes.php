@@ -59,6 +59,16 @@ $route["admin-accounts/(:num)"]         = "admin/Admin_accounts/index/$1";
 $route["admin-accounts/new"]            = "admin/Admin_accounts/new";
 $route["admin-accounts/update/(:any)"]  = "admin/Admin_accounts/update/$1";
 
+$route["merchant-accounts"]                = "admin/Merchant_accounts";
+$route["merchant-accounts/(:num)"]         = "admin/Merchant_accounts/index/$1";
+$route["merchant-accounts/new"]            = "admin/Merchant_accounts/new";
+$route["merchant-accounts/update/(:any)"]  = "admin/Merchant_accounts/update/$1";
+
+$route["income-scheme-types"]               = "admin/Income_scheme_types";
+$route["income-scheme-types/(:num)"]        = "admin/Income_scheme_types/index/$1";
+$route["income-scheme-types/new"]           = "admin/Income_scheme_types/new";
+$route["income-scheme-types/update/(:num)"] = "admin/Income_scheme_types/update/$1";
+
 $route['top-up-otc']    = "admin/Top_up_otc";
 $route['encash-otc']    = "admin/Encash_otc";
 

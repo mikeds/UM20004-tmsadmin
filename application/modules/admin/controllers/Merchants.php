@@ -4,11 +4,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Merchants extends Admin_Controller {
 	private
 		$_admin_account_data = NULL;
+
+	private
+		$_gender = array(
+			array(
+				'id'	=> 1,
+				'name' 	=> "Male"
+			),
+			array(
+				'id'	=> 2,
+				'name' 	=> "Female"
+			)
+		);
 		
 	public function after_init() {
 		$this->set_scripts_and_styles();
 		$this->load->model('admin/merchants_model', 'merchants');
 		$this->load->model('admin/oauth_bridges_model', 'bridges');
+		$this->load->model('admin/countries_model', 'countries');
+		$this->load->model('admin/provinces_model', 'provinces');
+		$this->load->model('admin/wallet_addresses_model', 'wallet_addresses');
 
 		$this->_admin_account_data = $this->get_account_data();
 	}
@@ -24,15 +39,23 @@ class Merchants extends Admin_Controller {
 		$select = array(
 			array(
 				'merchant_number as id',
-				'merchant_number as "Merchant No."',
-				'merchant_code as "Merchant Code"',
-				'merchant_biz_name as "Biz Name"',
-				'merchant_address as "Address"',
-				'merchant_email_address as "Email Address"',
-				'merchant_contact_person as "Contact Person"',
-				'merchant_contact_no as "Contact No."',
-				'merchant_date_created as "Date Added"',
 				'merchant_status as "Status"',
+				'merchant_number as "Merchant Number"',
+				'merchant_code as Code',
+				'merchant_fname as "First Name"',
+				'merchant_mname as "Middle Name"',
+				'merchant_lname as "Last Name"',
+				'merchant_mobile_no as "Mobile No."',
+				'merchant_contact_no as "Contact No."',
+				'merchant_email_address as "Email Address"',
+				'IF(merchant_gender = 2, "Female", "Male") as "Gender"',
+				'merchant_dob as "Date of Birth"',
+				'merchant_address as "House No./ Unit No. / Building"',
+				'merchant_street as "Street"',
+				'merchant_brgy as "Barangay"',
+				'merchant_city as "City"',
+				'province_name as "Province"',
+				'country_name as "Country"',
 			)
 		);
 
@@ -49,6 +72,16 @@ class Merchants extends Admin_Controller {
 				'table_name' 	=> 'tms_admins',
 				'condition'		=> 'tms_admins.oauth_bridge_id = oauth_bridges.oauth_bridge_parent_id'
 			),
+			array(
+				'table_name' 	=> 'countries',
+				'condition'		=> 'countries.country_id = merchants.country_id',
+				'type'			=> 'left'
+			),
+			array(
+				'table_name' 	=> 'provinces',
+				'condition'		=> 'provinces.province_id = merchants.province_id',
+				'type'			=> 'left'
+			)
 		);
 
 		$total_rows = $this->merchants->get_count(
@@ -65,21 +98,65 @@ class Merchants extends Admin_Controller {
 	}
 
 	public function new() {
+		$this->_data['form_url']		= base_url() . "merchants/new";
+		$this->_data['notification'] 	= $this->session->flashdata('notification');
+
 		$admin_account_data_results = $this->_admin_account_data['results'];
 		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
 
-		$this->_data['form_url']		= base_url() . "merchants/new";
-		$this->_data['notification'] 	= $this->session->flashdata('notification');
+		$country_id = 169; // PH
+
+		$countries = $this->countries->get_data(
+			array(
+				'country_id as id',
+				'country_name as name'
+			),
+			array(
+				'country_status' => 1
+			),
+			array(),
+			array(),
+			array(
+				'filter' 	=> "country_name",
+				'sort'		=> "ASC"
+			)
+		);
+
+		$provinces = $this->provinces->get_data(
+			array(
+				'province_id as id',
+				'province_name as name'
+			),
+			array(
+				'country_id' 		=> $country_id,
+				'province_status' 	=> 1
+			),
+			array(),
+			array(),
+			array(
+				'filter' 	=> "province_name",
+				'sort'		=> "ASC"
+			)
+		);
 
 		if ($_POST) {
 			if ($this->form_validation->run('validate')) {
 				$merchant_code	= $this->input->post("merchant-code");
-				$biz_name		= $this->input->post("business-name");
+				$fname			= $this->input->post("first-name");
+				$mname			= $this->input->post("middle-name");
+				$lname			= $this->input->post("last-name");
+				$gender			= $this->input->post("gender");
+				$dob			= $this->input->post("dob");
 				$address		= $this->input->post("address");
-				$contact_person	= $this->input->post("contact-person");
+				$street			= $this->input->post("street");
+				$brgy			= $this->input->post("brgy");
+				$city			= $this->input->post("city");
+				$country_id		= $this->input->post("country");
+				$province_id	= $this->input->post("province");
+				$mobile_no		= $this->input->post("mobile-no");
 				$contact_no		= $this->input->post("contact-no");
 				$email_address	= $this->input->post("email-address");
-				
+
 				$merchant_number = $this->generate_account_number("M");
 
 				$bridge_id = $this->generate_code(
@@ -102,14 +179,43 @@ class Merchants extends Admin_Controller {
 				$insert_data = array(
 					'merchant_number'			=> $merchant_number,
 					'merchant_code'				=> $merchant_code,
-					'merchant_biz_name'			=> $biz_name,
+					'merchant_fname'			=> $fname,
+					'merchant_mname'			=> $mname,
+					'merchant_lname'			=> $lname,
+					'merchant_gender'			=> $gender,
+					'merchant_dob'				=> $dob,
 					'merchant_address'			=> $address,
-					'merchant_contact_person'	=> $contact_person,
+					'merchant_street'			=> $street,
+					'merchant_brgy'				=> $brgy,
+					'merchant_city'				=> $city,
+					'country_id'				=> $country_id,
+					'province_id'				=> $province_id,
+					'merchant_mobile_no'		=> $mobile_no,
 					'merchant_contact_no'		=> $contact_no,
 					'merchant_email_address'	=> $email_address,
 					'merchant_date_created'		=> $this->_today,
 					'merchant_status'			=> 1, // activated
 					'oauth_bridge_id'			=> $bridge_id
+				);
+
+				$wallet_address = $this->generate_code(
+					array(
+						'merchant_number' 				=> $merchant_number,
+						'oauth_bridge_id'				=> $bridge_id,
+						'wallet_address_date_created'	=> "{$this->_today}",
+						'tms_admin_id'					=> "{$this->_tms_admin}"
+					)
+				); 
+
+				// create wallet address
+				$this->wallet_addresses->insert(
+					array(
+						'wallet_address' 				=> $wallet_address,
+						'wallet_balance'				=> openssl_encrypt(0, $this->_ssl_method, getenv("BPKEY")),
+						'wallet_hold_balance'			=> openssl_encrypt(0, $this->_ssl_method, getenv("BPKEY")),
+						'oauth_bridge_id'				=> $bridge_id,
+						'wallet_address_date_created'	=> $this->_today
+					)
 				);
 
 				$this->merchants->insert(
@@ -121,6 +227,34 @@ class Merchants extends Admin_Controller {
 			}
 		}
 
+		$this->_data['gender'] = $this->generate_selection(
+			"gender", 
+			$this->_gender, 
+			1, 
+			"id", 
+			"name", 
+			true
+		);
+
+		$this->_data['country']	= $this->generate_selection(
+			"country", 
+			$countries, 
+			$country_id, 
+			"id", 
+			"name", 
+			true
+		);
+		
+		$this->_data['province']	= $this->generate_selection(
+			"province", 
+			$provinces, 
+			"", 
+			"id", 
+			"name", 
+			false,
+			"Please Select Province"
+		);
+
 		$this->_data['title']  = "New Merchant";
 		$this->set_template("merchants/form", $this->_data);
 	}
@@ -129,6 +263,8 @@ class Merchants extends Admin_Controller {
 		$this->_data['is_update']		= true;
 		$this->_data['form_url']		= base_url() . "merchants/update/{$merchant_number}";
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
+
+		$country_id = 169; // PH
 
 		$row = $this->merchants->get_datum(
 			'',
@@ -153,31 +289,93 @@ class Merchants extends Admin_Controller {
 			redirect(base_url() . "merchants");
 		}
 
+
+		$country_id 	= $row->country_id;
+		$province_id	= $row->province_id;
+		$gender_id		= $row->merchant_gender;
+
+		$countries = $this->countries->get_data(
+			array(
+				'country_id as id',
+				'country_name as name'
+			),
+			array(
+				'country_status'	=> 1
+			),
+			array(),
+			array(),
+			array(
+				'filter' 	=> "country_name",
+				'sort'		=> "ASC"
+			)
+		);
+
+		$provinces = $this->provinces->get_data(
+			array(
+				'province_id as id',
+				'province_name as name'
+			),
+			array(
+				'country_id' 		=> $country_id,
+				'province_status' 	=> 1
+			),
+			array(),
+			array(),
+			array(
+				'filter' 	=> "province_name",
+				'sort'		=> "ASC"
+			)
+		);
+
 		$this->_data['post'] = array(
-			'merchant-code' 	=> $row->merchant_code,
-			'business-name'		=> $row->merchant_biz_name,
-			'address'			=> $row->merchant_address,
-			'contact-person'	=> $row->merchant_contact_person,
-			'contact-no'		=> $row->merchant_contact_no,
-			'email-address'		=> $row->merchant_email_address,
-			'status'			=> $row->merchant_status == 1 ? "checked" : ""
+			'merchant-code'	=> $row->merchant_code,
+			'first-name'	=> $row->merchant_fname,
+			'middle-name'	=> $row->merchant_mname,
+			'last-name'		=> $row->merchant_lname,
+			'dob'			=> $row->merchant_dob,
+			'address'		=> $row->merchant_address,
+			'street'		=> $row->merchant_street,
+			'brgy'			=> $row->merchant_brgy,
+			'city'			=> $row->merchant_city,
+			'mobile-no'		=> $row->merchant_mobile_no,
+			'contact-no'	=> $row->merchant_contact_no,
+			'email-address'	=> $row->merchant_email_address,
+			'status'		=> $row->merchant_status == 1 ? "checked" : ""
 		);
 
 		if ($_POST) {
 			if ($this->form_validation->run('validate')) {
 				$merchant_code	= $this->input->post("merchant-code");
-				$biz_name		= $this->input->post("business-name");
+				$fname			= $this->input->post("first-name");
+				$mname			= $this->input->post("middle-name");
+				$lname			= $this->input->post("last-name");
+				$gender			= $this->input->post("gender");
+				$dob			= $this->input->post("dob");
 				$address		= $this->input->post("address");
-				$contact_person	= $this->input->post("contact-person");
+				$street			= $this->input->post("street");
+				$brgy			= $this->input->post("brgy");
+				$city			= $this->input->post("city");
+				$country_id		= $this->input->post("country");
+				$province_id	= $this->input->post("province");
+				$mobile_no		= $this->input->post("mobile-no");
 				$contact_no		= $this->input->post("contact-no");
 				$email_address	= $this->input->post("email-address");
 				$status			= $this->input->post("status");
 
 				$update_data = array(
 					'merchant_code'				=> $merchant_code,
-					'merchant_biz_name'			=> $biz_name,
+					'merchant_fname'			=> $fname,
+					'merchant_mname'			=> $mname,
+					'merchant_lname'			=> $lname,
+					'merchant_gender'			=> $gender,
+					'merchant_dob'				=> $dob,
 					'merchant_address'			=> $address,
-					'merchant_contact_person'	=> $contact_person,
+					'merchant_street'			=> $street,
+					'merchant_brgy'				=> $brgy,
+					'merchant_city'				=> $city,
+					'country_id'				=> $country_id,
+					'province_id'				=> $province_id,
+					'merchant_mobile_no'		=> $mobile_no,
 					'merchant_contact_no'		=> $contact_no,
 					'merchant_email_address'	=> $email_address,
 					'merchant_status'			=> $status == 1 ? 1 : 0,
@@ -192,6 +390,34 @@ class Merchants extends Admin_Controller {
 				redirect($this->_data['form_url']);
 			}
 		}
+
+
+		$this->_data['gender'] = $this->generate_selection(
+			"gender", 
+			$this->_gender, 
+			$gender_id, 
+			"id", 
+			"name", 
+			true
+		);
+
+		$this->_data['country']	= $this->generate_selection(
+			"country", 
+			$countries, 
+			$country_id, 
+			"id", 
+			"name", 
+			true
+		);
+		
+		$this->_data['province']	= $this->generate_selection(
+			"province", 
+			$provinces, 
+			$province_id, 
+			"id", 
+			"name", 
+			true
+		);
 
 		$this->_data['title']  = "Update Merchant";
 		$this->set_template("merchants/form", $this->_data);

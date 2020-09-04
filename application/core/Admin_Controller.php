@@ -130,8 +130,8 @@ class Admin_Controller extends Global_Controller {
 	public function put_wallet_data($wallet_address, $balance, $hold_balance, $last_date_updated) {
 		$this->load->model('admin/wallet_addresses_model', 'wallet_addresses');
 
-		$encrypted_balance 			= openssl_encrypt($balance, $this->_ssl_method, getenv("SYSKEY"));
-		$encrypted_hold_balance 	= openssl_encrypt($hold_balance, $this->_ssl_method, getenv("SYSKEY"));
+		$encrypted_balance 			= openssl_encrypt($balance, $this->_ssl_method, getenv("BPKEY"));
+		$encrypted_hold_balance 	= openssl_encrypt($hold_balance, $this->_ssl_method, getenv("BPKEY"));
 	}
 
 	public function generate_account_number($prefix = "") {
@@ -148,17 +148,40 @@ class Admin_Controller extends Global_Controller {
 
 		$this->load->model('admin/tms_admin_accounts_model', 'admin_accounts');
 
-		$tms_admin_row = $this->admin_accounts->get_datum(
+		$tms_admin_account_row = $this->admin_accounts->get_datum(
 			'',
 			array(
 				'account_username' => $username
 			)
 		)->row();
 
-		if ($tms_admin_row != "") {
-			$acc_id = $tms_admin_row->account_number;
+		if ($tms_admin_account_row != "") {
+			$acc_id = $tms_admin_account_row->account_number;
 
 			if ($type == "tms_admin" && $id != "") {
+				if ($acc_id == $id) {
+					$flag = false;
+				} else {
+					$flag = true;
+					goto end;
+				}
+			} else {
+				$flag = true;
+				goto end;
+			}
+		}
+
+		$merchant_account_row = $this->merchant_accounts->get_datum(
+			'',
+			array(
+				'account_username' => $username
+			)
+		)->row();
+
+		if ($merchant_account_row != "") {
+			$acc_id = $merchant_account_row->account_number;
+
+			if ($type == "merchant" && $id != "") {
 				if ($acc_id == $id) {
 					$flag = false;
 				} else {
@@ -417,10 +440,26 @@ HTML;
 		);
 
 		$menu_items[] = array(
+			'menu_id'			=> 'income-scheme-types',
+			'menu_title'		=> 'Income Scheme Types',
+			'menu_url'			=> 	base_url() . "income-scheme-types",
+			'menu_controller'	=> 'income_scheme_types',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
 			'menu_id'			=> 'merchants',
 			'menu_title'		=> 'Merchants',
 			'menu_url'			=> 	base_url() . "merchants",
 			'menu_controller'	=> 'merchants',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
+			'menu_id'			=> 'merchant-accounts',
+			'menu_title'		=> 'Merchant Accounts',
+			'menu_url'			=> 	base_url() . "merchant-accounts",
+			'menu_controller'	=> 'merchant_accounts',
 			'menu_icon'			=> 'view-dashboard',
 		);
 

@@ -36,9 +36,16 @@ class Admin_Controller extends Global_Controller {
 	}
 
 	public function get_account_data() {
-		$this->load->model('admin/oauth_clients_model', 'oauth_clients');
-		$this->load->model('admin/tms_admins_model', 'admins');
+		$this->load->model('admin/tms_admin_accounts_model', 'accounts');
 		$this->load->model('admin/wallet_addresses_model', 'wallet_addresses');
+
+		$account = $this->session->userdata("{$this->_base_session}");
+
+		if (!isset($account['id'])) {
+			redirect(base_url() . "logout");
+		}
+
+		$id = $account['id'];
 
 		/*
 			- wallet address
@@ -47,27 +54,36 @@ class Admin_Controller extends Global_Controller {
 			- secret key
 		*/
 
-		$tms_admin_row = $this->admins->get_datum(
+		$row = $this->accounts->get_datum(
 			'',
 			array(
-				'tms_admin_id' => $this->_tms_admin
+				'account_number' => $id
+			),
+			array(),
+			array(
+				array(
+					'table_name' 	=> 'oauth_bridges',
+					'condition'		=> 'oauth_bridges.oauth_bridge_id = admin_accounts.oauth_bridge_id'
+				)
 			)
 		)->row();
-
-		if ($tms_admin_row == "") {
+		
+		if ($row == "") {
 			return array(
 				'status' 	=> false,
 				'message' 	=> 'Cannot find account data!'
 			);
 		}
 
-		$wallet_address = $this->get_wallet_address($tms_admin_row->oauth_bridge_id);
+		$admin_bridge_id = $row->oauth_bridge_parent_id;
+
+		$wallet_address = $this->get_wallet_address($admin_bridge_id);
 
 		return array(
 			'status' => true,
 			'results' => array(
 				'wallet_address' 	=> $wallet_address,
-				'oauth_bridge_id'	=> $tms_admin_row->oauth_bridge_id,
+				'oauth_bridge_id'	=> $admin_bridge_id,
 				'secret_id'			=> '',
 				'secret_key'		=> '',
 			)
@@ -143,10 +159,11 @@ class Admin_Controller extends Global_Controller {
 		return hash_hmac("sha256", $json, getenv("SYSKEY"));
 	}
 
-	public function validate_username($type, $username, $id) {
+	public function validate_username($type, $username, $id = "") {
 		$flag = false;
 
 		$this->load->model('admin/tms_admin_accounts_model', 'admin_accounts');
+		$this->load->model('admin/merchant_accounts_model', 'merchant_accounts');
 
 		$tms_admin_account_row = $this->admin_accounts->get_datum(
 			'',
@@ -424,18 +441,18 @@ HTML;
 		);
 
 		$menu_items[] = array(
-			'menu_id'			=> 'top-up-otc',
-			'menu_title'		=> 'Top Up (OTC)',
-			'menu_url'			=> 	base_url() . "top-up-otc",
-			'menu_controller'	=> 'top_up_otc',
+			'menu_id'			=> 'incoming',
+			'menu_title'		=> 'Incoming',
+			'menu_url'			=> 	base_url() . "incoming",
+			'menu_controller'	=> 'incoming',
 			'menu_icon'			=> 'view-dashboard',
 		);
 
 		$menu_items[] = array(
-			'menu_id'			=> 'encash-otc',
-			'menu_title'		=> 'Encash (OTC)',
-			'menu_url'			=> 	base_url() . "encash-otc",
-			'menu_controller'	=> 'encash_otc',
+			'menu_id'			=> 'outgoing',
+			'menu_title'		=> 'Outgoing',
+			'menu_url'			=> 	base_url() . "outgoing",
+			'menu_controller'	=> 'outgoing',
 			'menu_icon'			=> 'view-dashboard',
 		);
 

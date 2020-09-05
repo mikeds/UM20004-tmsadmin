@@ -145,7 +145,7 @@ class Merchant_accounts extends Admin_Controller {
 					array(
 						'account_number' 		=> $account_number,
 						'account_date_added'	=> "{$this->_today}",
-						'tms_admin_id'			=> "{$this->_tms_admin}"
+						'oauth_bridge_parent_id'	=> $admin_oauth_bridge_id
 					)
 				);
 

@@ -69,6 +69,11 @@ $route["income-scheme-types/(:num)"]        = "admin/Income_scheme_types/index/$
 $route["income-scheme-types/new"]           = "admin/Income_scheme_types/new";
 $route["income-scheme-types/update/(:num)"] = "admin/Income_scheme_types/update/$1";
 
+$route["income-schemes"]               = "admin/Income_schemes";
+$route["income-schemes/(:num)"]        = "admin/Income_schemes/index/$1";
+$route["income-schemes/update/(:num)"] = "admin/Income_schemes/update/$1";
+$route["income-schemes/delete/(:num)"] = "admin/Income_schemes/delete/$1";
+
 $route['top-up-otc']    = "admin/Top_up_otc";
 $route['encash-otc']    = "admin/Encash_otc";
 

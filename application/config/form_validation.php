@@ -53,6 +53,28 @@ switch( strtolower(get_controller()) ) {
 		);
 	break;
 
+	case 'income_schemes' : 
+		$config = array(
+			'validate' => array(
+				array( 	
+					'field' => 'merchant',
+					'label' => 'Merchant',
+					'rules'	=> 'trim|xss_clean|required'
+				),
+				array( 	
+					'field' => 'type',
+					'label' => 'Type',
+					'rules'	=> 'trim|required|xss_clean'
+				),
+				array( 	
+					'field' => 'value',
+					'label' => 'Value',
+					'rules'	=> 'trim|required|xss_clean'
+				)
+			),
+		);
+	break;
+
 	case 'admin_accounts' : 
 		$config = array(
 			'validate' => array(

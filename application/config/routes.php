@@ -74,8 +74,8 @@ $route["income-schemes/(:num)"]        = "admin/Income_schemes/index/$1";
 $route["income-schemes/update/(:num)"] = "admin/Income_schemes/update/$1";
 $route["income-schemes/delete/(:num)"] = "admin/Income_schemes/delete/$1";
 
-$route['top-up-otc']    = "admin/Top_up_otc";
-$route['encash-otc']    = "admin/Encash_otc";
+$route['incoming']      = "admin/Incoming";
+$route['outgoing']      = "admin/Outgoing";
 
 $route['merchants']                 = "admin/Merchants";
 $route['merchants/new']             = "admin/Merchants/new";

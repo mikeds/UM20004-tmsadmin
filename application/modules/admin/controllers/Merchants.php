@@ -29,6 +29,9 @@ class Merchants extends Admin_Controller {
 	}
 
 	public function index($page = 1) {
+		$admin_account_data_results = $this->_admin_account_data['results'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+		
 		$this->_data['add_label']= "New Merchant";
 		$this->_data['add_url']	 = base_url() . "merchants/new";
 
@@ -60,7 +63,7 @@ class Merchants extends Admin_Controller {
 		);
 
 		$where = array(
-			'tms_admin_id' => $this->_tms_admin
+			'oauth_bridge_parent_id' => $admin_oauth_bridge_id
 		);
 
 		$inner_joints = array(
@@ -163,7 +166,7 @@ class Merchants extends Admin_Controller {
 					array(
 						'merchant_number' 		=> $merchant_number,
 						'merchant_date_added'	=> "{$this->_today}",
-						'tms_admin_id'			=> "{$this->_tms_admin}"
+						'admin_oauth_bridge_id'	=> $admin_oauth_bridge_id
 					)
 				);
 
@@ -203,7 +206,7 @@ class Merchants extends Admin_Controller {
 						'merchant_number' 				=> $merchant_number,
 						'oauth_bridge_id'				=> $bridge_id,
 						'wallet_address_date_created'	=> "{$this->_today}",
-						'tms_admin_id'					=> "{$this->_tms_admin}"
+						'admin_oauth_bridge_id'			=> $admin_oauth_bridge_id
 					)
 				); 
 
@@ -260,6 +263,9 @@ class Merchants extends Admin_Controller {
 	}
 
 	public function update($merchant_number) {
+		$admin_account_data_results = $this->_admin_account_data['results'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+
 		$this->_data['is_update']		= true;
 		$this->_data['form_url']		= base_url() . "merchants/update/{$merchant_number}";
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
@@ -269,8 +275,8 @@ class Merchants extends Admin_Controller {
 		$row = $this->merchants->get_datum(
 			'',
 			array(
-				'tms_admin_id' 		=> $this->_tms_admin,
-				'merchant_number'	=> $merchant_number
+				'oauth_bridge_parent_id'	=> $admin_oauth_bridge_id,
+				'merchant_number'			=> $merchant_number
 			),
 			array(),
 			array(

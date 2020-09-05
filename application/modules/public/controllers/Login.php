@@ -34,8 +34,7 @@ class Login extends Public_Controller {
 					array(
 						'account_username'	=> $username,
 						'account_password'	=> $password,
-						'account_status' 	=> 1,
-						'tms_admin_id'		=> $this->_tms_admin
+						'account_status' 	=> 1
 					),
 					array(),
 					$inner_joints

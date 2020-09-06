@@ -139,12 +139,19 @@ class Merchant_accounts extends Admin_Controller {
 				}
 
 				$password = hash("sha256", $password);
-				$account_number = $this->generate_account_number("M");
+				$account_number = $this->generate_code(
+					array(
+						"merchant_account",
+						$admin_oauth_bridge_id,
+						$this->_today
+					),
+					"crc32"
+				);
 
 				$bridge_id = $this->generate_code(
 					array(
-						'account_number' 		=> $account_number,
-						'account_date_added'	=> "{$this->_today}",
+						'account_number' 			=> $account_number,
+						'account_date_added'		=> "{$this->_today}",
 						'oauth_bridge_parent_id'	=> $admin_oauth_bridge_id
 					)
 				);

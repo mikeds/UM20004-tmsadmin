@@ -108,7 +108,9 @@ class Income_schemes extends Admin_Controller {
 		$select = array(
 			'scheme_merchant_id as id',
 			'merchants.merchant_number as "Merchant Number"',
-			'CONCAT(merchant_fname, " ", merchant_mname, " ", merchant_lname) as "Merchant Name"'
+			'CONCAT(merchant_fname, " ", merchant_mname, " ", merchant_lname) as "Merchant Name"',
+			'IF(scheme_merchant_type = 1, "Constant", "Percentage") as Type',
+			'scheme_merchant_value as Value'
 		);
 
 		$actions = array(
@@ -200,7 +202,8 @@ class Income_schemes extends Admin_Controller {
 				$this->income_scheme_merchants->insert(
 					array(
 						'merchant_number' 				=> $merchant_number,
-						'scheme_type_id' 				=> $type == 1 ? 1 : 2,
+						'scheme_type_id'				=> $id,
+						'scheme_merchant_type' 			=> $type == 1 ? 1 : 2,
 						'scheme_merchant_value' 		=> $value,
 						'scheme_merchant_date_added'	=> $this->_today
 					)

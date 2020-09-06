@@ -160,7 +160,14 @@ class Merchants extends Admin_Controller {
 				$contact_no		= $this->input->post("contact-no");
 				$email_address	= $this->input->post("email-address");
 
-				$merchant_number = $this->generate_account_number("M");
+				$merchant_number = $this->generate_code(
+					array(
+						"merchant",
+						$admin_oauth_bridge_id,
+						$this->_today
+					),
+					"crc32"
+				);
 
 				$bridge_id = $this->generate_code(
 					array(
@@ -201,29 +208,15 @@ class Merchants extends Admin_Controller {
 					'oauth_bridge_id'			=> $bridge_id
 				);
 
-				$wallet_address = $this->generate_code(
-					array(
-						'merchant_number' 				=> $merchant_number,
-						'oauth_bridge_id'				=> $bridge_id,
-						'wallet_address_date_created'	=> "{$this->_today}",
-						'admin_oauth_bridge_id'			=> $admin_oauth_bridge_id
-					)
-				); 
-
-				// create wallet address
-				$this->wallet_addresses->insert(
-					array(
-						'wallet_address' 				=> $wallet_address,
-						'wallet_balance'				=> openssl_encrypt(0, $this->_ssl_method, getenv("BPKEY")),
-						'wallet_hold_balance'			=> openssl_encrypt(0, $this->_ssl_method, getenv("BPKEY")),
-						'oauth_bridge_id'				=> $bridge_id,
-						'wallet_address_date_created'	=> $this->_today
-					)
-				);
-
 				$this->merchants->insert(
 					$insert_data
 				);
+
+				// create wallet address
+				$this->create_wallet_address($merchant_number, $bridge_id, $admin_oauth_bridge_id);
+
+				// create token auth for api
+				$this->create_token_auth($merchant_number, $bridge_id);
 
 				$this->session->set_flashdata('notification', $this->generate_notification('success', 'Successfully Added!'));
 				redirect($this->_data['form_url']);

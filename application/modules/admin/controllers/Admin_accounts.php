@@ -93,7 +93,14 @@ class Admin_accounts extends Admin_Controller {
 				}
 
 				$password = hash("sha256", $password);
-				$account_number = $this->generate_account_number("BP");
+				$account_number = $this->generate_code(
+					array(
+						"admin_account",
+						$admin_oauth_bridge_id,
+						$this->_today
+					),
+					"crc32"
+				);
 
 				$bridge_id = $this->generate_code(
 					array(

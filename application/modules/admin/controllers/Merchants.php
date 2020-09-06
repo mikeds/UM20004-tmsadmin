@@ -172,7 +172,7 @@ class Merchants extends Admin_Controller {
 				$bridge_id = $this->generate_code(
 					array(
 						'merchant_number' 		=> $merchant_number,
-						'merchant_date_added'	=> "{$this->_today}",
+						'merchant_date_added'	=> $this->_today,
 						'admin_oauth_bridge_id'	=> $admin_oauth_bridge_id
 					)
 				);

@@ -2,7 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Incoming extends Admin_Controller {
-
+	private
+		$_admin_account_data = NULL;
+		
 	public function after_init() {
 		$this->set_scripts_and_styles();
 		

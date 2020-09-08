@@ -30,7 +30,7 @@ class Merchants extends Admin_Controller {
 
 	public function index($page = 1) {
 		$admin_account_data_results = $this->_admin_account_data['results'];
-		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 		
 		$this->_data['add_label']= "New Merchant";
 		$this->_data['add_url']	 = base_url() . "merchants/new";
@@ -43,6 +43,7 @@ class Merchants extends Admin_Controller {
 			array(
 				'merchant_number as id',
 				'merchant_status as "Status"',
+				'IF(merchant_email_status = 1, "Verified", "Unverified") as "Email Status"',
 				'merchant_number as "Merchant Number"',
 				'merchant_code as Code',
 				'merchant_fname as "First Name"',
@@ -105,7 +106,7 @@ class Merchants extends Admin_Controller {
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 
 		$admin_account_data_results = $this->_admin_account_data['results'];
-		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$country_id = 169; // PH
 
@@ -172,7 +173,7 @@ class Merchants extends Admin_Controller {
 				$bridge_id = $this->generate_code(
 					array(
 						'merchant_number' 		=> $merchant_number,
-						'merchant_date_added'	=> "{$this->_today}",
+						'merchant_date_added'	=> $this->_today,
 						'admin_oauth_bridge_id'	=> $admin_oauth_bridge_id
 					)
 				);
@@ -257,7 +258,7 @@ class Merchants extends Admin_Controller {
 
 	public function update($merchant_number) {
 		$admin_account_data_results = $this->_admin_account_data['results'];
-		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$this->_data['is_update']		= true;
 		$this->_data['form_url']		= base_url() . "merchants/update/{$merchant_number}";

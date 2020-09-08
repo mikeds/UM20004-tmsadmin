@@ -5,10 +5,27 @@ class Dashboard extends Admin_Controller {
 
 	public function after_init() {
 		$this->set_scripts_and_styles();
+
+		$this->_admin_account_data = $this->get_account_data();
+	}
+
+	private function get_wallet_balance() {
+        $account_results            = $this->_admin_account_data['results'];
+        $admin_oauth_bridge_id		= $account_results['admin_oauth_bridge_id'];
+        $account_oauth_bridge_id    = $account_results['oauth_bridge_id'];
+        $wallet_address             = $account_results['wallet_address'];
+
+		$wallet_data 				= $this->get_wallet_data($wallet_address);
+		$wallet_data_results    	= $wallet_data['results'];
+		$balance 					= $wallet_data_results['balance'];
+		return $balance;
 	}
 
 	public function index() {
-		$this->_data['title']  = "Dashboard";
+		$balance	= number_format($this->get_wallet_balance(), 2, ".", ",");
+
+		$this->_data['balance'] 	= $balance;
+		$this->_data['title']  		= "Dashboard";
 		$this->set_template("dashboard/index", $this->_data);
 	}
 }

@@ -16,7 +16,7 @@ class Income_schemes extends Admin_Controller {
 		$this->load->model('admin/merchants_model', 'merchants');
 
 		$admin_account_data_results = $this->_admin_account_data['results'];
-		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$where = array(
 			'oauth_bridge_parent_id' => $admin_oauth_bridge_id
@@ -42,7 +42,7 @@ class Income_schemes extends Admin_Controller {
 
 	public function index($page = 1) {
 		$admin_account_data_results = $this->_admin_account_data['results'];
-		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$actions = array(
 			'update'
@@ -82,7 +82,7 @@ class Income_schemes extends Admin_Controller {
 
 	public function update($id) {
 		$admin_account_data_results = $this->_admin_account_data['results'];
-		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 		
 		$this->_data['form_url']	= base_url() . "income-schemes/update/{$id}";
 		$this->_data['notification']= $this->session->flashdata('notification');
@@ -221,7 +221,7 @@ class Income_schemes extends Admin_Controller {
 
 	public function delete($id) {
 		$admin_account_data_results = $this->_admin_account_data['results'];
-		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$this->_data['form_url']	= base_url() . "income-schemes/delete/{$id}";
 		$this->_data['notification']= $this->session->flashdata('notification');

@@ -30,7 +30,7 @@ class Merchants extends Admin_Controller {
 
 	public function index($page = 1) {
 		$admin_account_data_results = $this->_admin_account_data['results'];
-		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 		
 		$this->_data['add_label']= "New Merchant";
 		$this->_data['add_url']	 = base_url() . "merchants/new";
@@ -105,7 +105,7 @@ class Merchants extends Admin_Controller {
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 
 		$admin_account_data_results = $this->_admin_account_data['results'];
-		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$country_id = 169; // PH
 
@@ -257,7 +257,7 @@ class Merchants extends Admin_Controller {
 
 	public function update($merchant_number) {
 		$admin_account_data_results = $this->_admin_account_data['results'];
-		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$this->_data['is_update']		= true;
 		$this->_data['form_url']		= base_url() . "merchants/update/{$merchant_number}";

@@ -15,7 +15,7 @@ class Admin_accounts extends Admin_Controller {
 
 	public function index($page = 1) {
 		$admin_account_data_results = $this->_admin_account_data['results'];
-		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$this->_data['add_label']= "New Account";
 		$this->_data['add_url']	 = base_url() . "admin-accounts/new";
@@ -63,7 +63,7 @@ class Admin_accounts extends Admin_Controller {
 
 	public function new() {
 		$admin_account_data_results = $this->_admin_account_data['results'];
-		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$this->_data['form_url']		= base_url() . "admin-accounts/new";
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
@@ -146,7 +146,7 @@ class Admin_accounts extends Admin_Controller {
 
 	public function update($account_number) {
 		$admin_account_data_results = $this->_admin_account_data['results'];
-		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$this->_data['form_url']		= base_url() . "admin-accounts/update/{$account_number}";
 		$this->_data['notification'] 	= $this->session->flashdata('notification');

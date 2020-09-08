@@ -36,6 +36,23 @@ switch( strtolower(get_controller()) ) {
 		);
 	break;
 
+	case 'vault' : 
+		$config = array(
+			'validate' => array(
+				array( 	
+					'field' => 'amount',
+					'label' => 'Amount',
+					'rules'	=> 'trim|xss_clean|numeric|required'
+				),
+				array( 	
+					'field' => 'password',
+					'label' => 'Password',
+					'rules'	=> 'trim|xss_clean|required'
+				)
+			)
+		);
+	break;
+
 	case 'income_scheme_types' : 
 		$config = array(
 			'validate' => array(

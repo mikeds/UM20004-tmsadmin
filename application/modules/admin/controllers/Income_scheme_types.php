@@ -15,7 +15,7 @@ class Income_scheme_types extends Admin_Controller {
 
 	public function index($page = 1) {
 		$admin_account_data_results = $this->_admin_account_data['results'];
-		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$this->_data['add_label']= "New Scheme Type";
 		$this->_data['add_url']	 = base_url() . "income-scheme-types/new";
@@ -58,7 +58,7 @@ class Income_scheme_types extends Admin_Controller {
 
 	public function new() {
 		$admin_account_data_results = $this->_admin_account_data['results'];
-		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$this->_data['form_url']		= base_url() . "income-scheme-types/new";
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
@@ -106,7 +106,7 @@ class Income_scheme_types extends Admin_Controller {
 
 	public function update($id) {
 		$admin_account_data_results = $this->_admin_account_data['results'];
-		$admin_oauth_bridge_id		= $admin_account_data_results['oauth_bridge_id'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$this->_data['form_url']		= base_url() . "income-scheme-types/update/{$id}";
 		$this->_data['notification'] 	= $this->session->flashdata('notification');

@@ -75,17 +75,19 @@ class Admin_Controller extends Global_Controller {
 			);
 		}
 
-		$admin_bridge_id = $row->oauth_bridge_parent_id;
+		$oauth_bridge_id = $row->oauth_bridge_id;
+		$admin_oauth_bridge_id = $row->oauth_bridge_parent_id;
 
-		$wallet_address = $this->get_wallet_address($admin_bridge_id);
+		$wallet_address = $this->get_wallet_address($admin_oauth_bridge_id);
 
 		return array(
 			'status' => true,
 			'results' => array(
-				'wallet_address' 	=> $wallet_address,
-				'oauth_bridge_id'	=> $admin_bridge_id,
-				'secret_id'			=> '',
-				'secret_key'		=> '',
+				'wallet_address' 		=> $wallet_address,
+				'oauth_bridge_id'		=> $oauth_bridge_id,
+				'admin_oauth_bridge_id'	=> $admin_oauth_bridge_id,
+				'secret_id'				=> '',
+				'secret_key'			=> '',
 			)
 		);
 	}
@@ -131,8 +133,8 @@ class Admin_Controller extends Global_Controller {
 		$encrypted_balance 		= $row->wallet_balance;
 		$encrypted_hold_balance = $row->wallet_hold_balance;
 
-		$balance 		= openssl_decrypt($encrypted_balance, $this->_ssl_method, getenv("SYSKEY"));
-		$hold_balance 	= openssl_decrypt($encrypted_hold_balance, $this->_ssl_method, getenv("SYSKEY"));
+		$balance 		= openssl_decrypt($encrypted_balance, $this->_ssl_method, getenv("BPKEY"));
+		$hold_balance 	= openssl_decrypt($encrypted_hold_balance, $this->_ssl_method, getenv("BPKEY"));
 
 		return array(
 			'status' => true,
@@ -143,11 +145,8 @@ class Admin_Controller extends Global_Controller {
 		);
 	}
 
-	public function put_wallet_data($wallet_address, $balance, $hold_balance, $last_date_updated) {
-		$this->load->model('admin/wallet_addresses_model', 'wallet_addresses');
-
-		$encrypted_balance 			= openssl_encrypt($balance, $this->_ssl_method, getenv("BPKEY"));
-		$encrypted_hold_balance 	= openssl_encrypt($hold_balance, $this->_ssl_method, getenv("BPKEY"));
+	public function encrypt_wallet_balance($balance) {
+		return openssl_encrypt($balance, $this->_ssl_method, getenv("BPKEY"));
 	}
 
 	public function generate_code($data, $hash = "sha256") {
@@ -558,6 +557,14 @@ HTML;
 			'menu_title'		=> 'Admin Accounts',
 			'menu_url'			=> 	base_url() . "admin-accounts",
 			'menu_controller'	=> 'admin_accounts',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
+			'menu_id'			=> 'vault',
+			'menu_title'		=> 'Vault',
+			'menu_url'			=> 	base_url() . "vault",
+			'menu_controller'	=> 'vault',
 			'menu_icon'			=> 'view-dashboard',
 		);
 

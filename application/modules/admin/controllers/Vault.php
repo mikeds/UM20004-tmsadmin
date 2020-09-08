@@ -104,7 +104,8 @@ class Vault extends Admin_Controller {
                         'transaction_requested_by'  => $account_oauth_bridge_id,
                         'transaction_requested_to'	=> $admin_oauth_bridge_id,
                         'transaction_date_created'  => $this->_today
-                    )
+                    ),
+                    "crc32"
                 );
 
                 $this->transactions->insert(
@@ -118,6 +119,7 @@ class Vault extends Admin_Controller {
                         'transaction_requested_to'  => getenv("SYSADD"),
                         'transaction_created_by'    => $account_oauth_bridge_id,
                         'transaction_date_created'  => $this->_today,
+                        'transaction_date_approved' => $this->_today,
                         'transaction_status'        => 1 // approved
                     )
                 );
@@ -125,8 +127,11 @@ class Vault extends Admin_Controller {
                 // add new ledger data
                 $ledger_data = array(
                     'tx_id'                         => $transaction_id,
+                    'ledger_datum_desc'             => 'add_vault_balance',
                     'ledger_from_wallet_address'    => getenv("SYSADD"),
                     'ledger_to_wallet_address'      => $wallet_address,
+                    'ledger_from_oauth_bridge_id'   => getenv("SYSADD"),
+                    'ledger_to_oauth_bridge_id'     => $account_oauth_bridge_id,
                     'ledger_datum_old_balance'      => $old_balance,
                     'ledger_datum_new_balance'      => $new_balance,
                     'ledger_datum_amount'           => $total_amount,
@@ -134,7 +139,8 @@ class Vault extends Admin_Controller {
                 );
 
                 $ledger_datum_id = $this->generate_code(
-                    $ledger_data
+                    $ledger_data,
+                    "crc32"
                 );
 
                 $ledger_data = array_merge(

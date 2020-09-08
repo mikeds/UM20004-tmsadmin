@@ -31,8 +31,126 @@ class Admin_Controller extends Global_Controller {
 		$this->after_init();
 	}
 
-	public function get_wallet_info($bridge_id) {
+	public function filter_ledger($data) {
+		$results = array();
 
+		foreach ($data as $datum) {
+			$tx_id					= $datum['tx_id'];
+
+			$from_wallet_address	= $datum['ledger_from_wallet_address'];
+			$to_wallet_address		= $datum['ledger_to_wallet_address'];
+
+			$from_oauth_bridge_id	= $datum['ledger_from_oauth_bridge_id'];
+			$to_oauth_bridge_id		= $datum['ledger_to_oauth_bridge_id'];
+
+			$old_balance			= $datum['ledger_datum_old_balance'];
+			$new_balance			= $datum['ledger_datum_new_balance'];
+			$amount					= $datum['ledger_datum_amount'];
+
+			$data_added				= $datum['ledger_datum_date_added'];
+
+			$sender_name	= "";
+			$receiver_name	= "";
+
+			$sender_row	 	= $this->get_oauth_account_info($from_oauth_bridge_id);
+			$receiver_row	= $this->get_oauth_account_info($to_oauth_bridge_id);
+
+			if ($sender_row) {
+				$sender_name = trim($sender_row['account_fname'] . " " . $sender_row['account_mname'] . " " . $sender_row['account_lname']);
+			} else {
+				if ($from_wallet_address == getenv("SYSADD")) {
+					$sender_name = "SYSTEM";
+				}
+			}
+
+			if ($receiver_row) {
+				$receiver_name = trim($receiver_row['account_fname'] . " " . $receiver_row['account_mname'] . " " . $receiver_row['account_lname']);
+			} else {
+				if ($from_wallet_address == getenv("SYSADD")) {
+					$receiver_name = "SYSTEM";
+				}
+			}
+
+			$results[] = array(
+				'Sender Name'		=> $sender_name,
+				'Receiver Name'		=> $receiver_name,
+				'Old Balance'		=> number_format($old_balance, 2, ".", ","),
+				'New Balance'		=> number_format($new_balance, 2, ".", ","),
+				'Amount'			=> number_format($amount, 2, ".", ","),
+				'Date Added'		=> $data_added
+			);
+		}
+
+		return $results;
+	}
+
+	public function get_oauth_account_info($oauth_bridge_id) {
+		$this->load->model("admin/accounts_model", "accounts");
+		$this->load->model("admin/tms_admin_accounts_model", "tms_admin_accounts");
+		$this->load->model("admin/merchant_accounts_model", "merchant_accounts");
+		$this->load->model("admin/client_accounts_model", "client_accounts");
+			
+		$where = array(
+			'oauth_bridge_id'	=> $oauth_bridge_id
+		);
+
+		$row_account = $this->accounts->get_datum(
+			'',
+			$where
+		)->row();
+
+		if ($row_account != "") {
+			return array(
+				'account_number'	=> $row_account->account_number,
+				'account_fname'		=> $row_account->account_fname,
+				'account_mname'		=> $row_account->account_mname,
+				'account_lname'		=> $row_account->account_lname, 
+			);
+		}
+
+		$row_admin = $this->tms_admin_accounts->get_datum(
+			'',
+			$where
+		)->row();
+
+		if ($row_admin != "") {
+			return array(
+				'account_number'	=> $row_admin->account_number,
+				'account_fname'		=> $row_admin->account_fname,
+				'account_mname'		=> $row_admin->account_mname,
+				'account_lname'		=> $row_admin->account_lname, 
+			);
+		}
+
+		$row_merchant = $this->merchant_accounts->get_datum(
+			'',
+			$where
+		)->row();
+
+		if ($row_merchant != "") {
+			return array(
+				'account_number'	=> $row_merchant->account_number,
+				'account_fname'		=> $row_merchant->account_fname,
+				'account_mname'		=> $row_merchant->account_mname,
+				'account_lname'		=> $row_merchant->account_lname, 
+			);
+		}
+
+		$row_client = $this->client_accounts->get_datum(
+			'',
+			$where
+		)->row();
+
+		if ($row_client != "") {
+			return array(
+				'account_number'	=> $row_client->account_number,
+				'account_fname'		=> $row_client->account_fname,
+				'account_mname'		=> $row_client->account_mname,
+				'account_lname'		=> $row_client->account_lname, 
+			);
+		}
+
+		return false;
 	}
 
 	public function get_account_data() {
@@ -206,15 +324,15 @@ class Admin_Controller extends Global_Controller {
 		$this->load->model('admin/tms_admin_accounts_model', 'admin_accounts');
 		$this->load->model('admin/merchant_accounts_model', 'merchant_accounts');
 
-		$ccount_row = $this->admin_accounts->get_datum(
+		$account_row = $this->accounts->get_datum(
 			'',
 			array(
 				'account_username' => $username
 			)
 		)->row();
 
-		if ($ccount_row != "") {
-			$acc_id = $ccount_row->account_number;
+		if ($account_row != "") {
+			$acc_id = $account_row->account_number;
 
 			if ($type == "admin" && $id != "") {
 				if ($acc_id == $id) {

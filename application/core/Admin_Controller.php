@@ -639,6 +639,14 @@ HTML;
 		);
 
 		$menu_items[] = array(
+			'menu_id'			=> 'transaction-fees',
+			'menu_title'		=> 'Transaction Fees',
+			'menu_url'			=> 	base_url() . "transaction-fees",
+			'menu_controller'	=> 'transaction_fees',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
 			'menu_id'			=> 'income-scheme-types',
 			'menu_title'		=> 'Income Scheme Types',
 			'menu_url'			=> 	base_url() . "income-scheme-types",

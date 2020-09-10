@@ -135,7 +135,7 @@
 								<div class="col-xl-12">
 									<div class="form-control">
 										<input type="checkbox" id="status" name="status" value="1" <?=isset($post["status"]) ? $post["status"] : ""?>>
-										<label for="status">&nbsp; Uncheck to deactivate account.</label>
+										<label for="status">&nbsp; Check to verified account.</label>
 									</div>
 								</div>
 							</div><br>

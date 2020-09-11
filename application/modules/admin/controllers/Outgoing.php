@@ -20,17 +20,31 @@ class Outgoing extends Admin_Controller {
 		$wallet_address             = $account_results['wallet_address'];
 		
 		$select = array(
-			'*'
+			'transaction_id as "TX ID"',
+			'transaction_sender_ref_id as "Sender Ref ID"',
+			'transaction_type_name as "TX Type"',
+			'transaction_requested_by as "Requested By"',
+			'FORMAT(transaction_amount, 2) as "TX Amount"',
+			'FORMAT(transaction_fee, 2) as "Fee"',
+			'FORMAT(ledger_datum_old_balance, 2) as "Old Balance"',
+			'FORMAT(ledger_datum_amount, 2) as "Debit Amount"',
+			'FORMAT(ledger_datum_new_balance, 2) as "New Balance"',
+			'ledger_datum_date_added as "Date Deducted"'
 		);
 
 		$where = array(
-			'ledger_from_wallet_address'	=> $wallet_address
+			'ledger_datum_bridge_id'	=> $admin_oauth_bridge_id,
+			'ledger_datum_type'			=> 1
 		);
 
 		$inner_joints = array(
 			array(
 				'table_name'	=> 'transactions',
 				'condition'		=> 'transactions.transaction_id = ledger_data.tx_id'
+			),
+			array(
+				'table_name'	=> 'transaction_types',
+				'condition'		=> 'transaction_types.transaction_type_id = transactions.transaction_type_id'
 			)
 		);
 
@@ -38,12 +52,16 @@ class Outgoing extends Admin_Controller {
 			$select,
 			$where,
 			array(),
-			$inner_joints
+			$inner_joints,
+			array(
+				'filter'	=> 'transaction_date_created, ledger_datum_date_added',
+				'sort'		=> 'DESC'
+			)
 		);
 
-		$outgoin_data = $this->filter_ledger($data);
+		$outgoing_data = $this->filter_ledger($data);
 
-		$this->_data['listing'] = $this->table_listing('', $outgoin_data);
+		$this->_data['listing'] = $this->table_listing('', $outgoing_data);
 		$this->_data['title']  = "Outgoing";
 		$this->set_template("outgoing/list", $this->_data);
 	}

@@ -36,6 +36,18 @@ switch( strtolower(get_controller()) ) {
 		);
 	break;
 
+	case 'top_up' : 
+		$config = array(
+			'validate' => array(
+				array( 	
+					'field' => 'password',
+					'label' => 'Password',
+					'rules'	=> 'trim|required|xss_clean'
+				)
+			),
+		);
+	break;
+
 	case 'transaction_fees' : 
 		$config = array(
 			'validate' => array(

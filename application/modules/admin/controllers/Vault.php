@@ -28,10 +28,6 @@ class Vault extends Admin_Controller {
             
         $transaction_type_id = "TXTYPE_100101"; // vault
 
-        $fee = 0;
-        $amount = 0;
-        $total_amount = 0;
-
         if ($_POST) {
             if ($this->form_validation->run('validate')) {
                 $amount     = $this->input->post("amount");
@@ -72,29 +68,6 @@ class Vault extends Admin_Controller {
                     redirect($this->_data['form_url']);
                 }
 
-                $total_amount = $amount + $fee; // total amount
-
-                // computation
-                $wallet_data_results    = $wallet_data['results'];
-                $wallet_balance         = $wallet_data_results['balance'];
-
-                $old_balance            = $wallet_balance;
-                $encryted_old_balance   = $this->encrypt_wallet_balance($old_balance);
-
-                $new_balance            = $old_balance + $total_amount;
-                $encryted_new_balance   = $this->encrypt_wallet_balance($new_balance);
-
-                $wallet_data = array(
-                    'wallet_balance'                => $encryted_new_balance,
-                    'wallet_address_date_updated'   => $this->_today
-                );
-
-                // update wallet balances
-                $this->wallet_addresses->update(
-                    $wallet_address,
-                    $wallet_data
-                );
-
                 // add new transaction
                 $transaction_id = $this->generate_code(
                     array(
@@ -107,6 +80,9 @@ class Vault extends Admin_Controller {
                     ),
                     "crc32"
                 );
+
+                $total_amount = $amount;
+                $fee = 0;
 
                 $this->transactions->insert(
                     array(
@@ -124,42 +100,21 @@ class Vault extends Admin_Controller {
                     )
                 );
 
-                // add new ledger data
-                $ledger_data = array(
-                    'tx_id'                         => $transaction_id,
-                    'ledger_datum_desc'             => 'add_vault_balance',
-                    'ledger_from_wallet_address'    => getenv("SYSADD"),
-                    'ledger_to_wallet_address'      => $wallet_address,
-                    'ledger_from_oauth_bridge_id'   => getenv("SYSADD"),
-                    'ledger_to_oauth_bridge_id'     => $account_oauth_bridge_id,
-                    'ledger_datum_old_balance'      => $old_balance,
-                    'ledger_datum_new_balance'      => $new_balance,
-                    'ledger_datum_amount'           => $total_amount,
-                    'ledger_datum_date_added'       => $this->_today
-                );
-
-                $ledger_datum_id = $this->generate_code(
-                    $ledger_data,
-                    "crc32"
-                );
-
-                $ledger_data = array_merge(
-                    $ledger_data,
-                    array(
-                        'ledger_datum_id'   => $ledger_datum_id,
-                    )
-                );
-
-                $ledger_datum_checking_data = $this->generate_code($ledger_data);
-
-                $this->ledger->insert(
-                    array_merge(
-                        $ledger_data,
-                        array(
-                            'ledger_datum_checking_data' => $ledger_datum_checking_data
-                        )
-                    )
-                );
+				$receiver_amount 	    = $amount;
+				$receiver_total_amount	= $receiver_amount;
+                $receiver_wallet_address    = $account_results['wallet_address'];
+                
+                $receiver_new_balances = $this->update_wallet($receiver_wallet_address, $receiver_total_amount);
+				if ($receiver_new_balances) {
+					// record to ledger
+					$this->new_ledger_datum(
+						"top_up_otc_credit", 
+						$transaction_id, 
+						getenv("SYSADD"),
+						$receiver_wallet_address,
+						$receiver_new_balances
+					);
+				}
 
                 $this->session->set_flashdata('notification', $this->generate_notification('success', 'Successfully added balance!'));
                 redirect($this->_data['form_url']);

@@ -31,54 +31,147 @@ class Admin_Controller extends Global_Controller {
 		$this->after_init();
 	}
 
+	public function new_ledger_datum($description = "", $transaction_id, $from_wallet_address, $to_wallet_address, $balances) {
+		$this->load->model("admin/ledger_data_model", "ledger");
+		$this->load->model("admin/wallet_addresses_model", "wallet_addresses");
+
+		$to_oauth_bridge_id 	= getenv("SYSADD");
+		$from_oauth_bridge_id 	= getenv("SYSADD");
+
+
+		$from_row = $this->wallet_addresses->get_datum(
+			'',
+			array(
+				'wallet_address' => $from_wallet_address
+			)
+		)->row();
+
+		if ($from_row != "") {
+			$from_oauth_bridge_id 	= $from_row->oauth_bridge_id;
+		}
+
+		$to_row = $this->wallet_addresses->get_datum(
+			'',
+			array(
+				'wallet_address' => $to_wallet_address
+			)
+		)->row();
+
+		if ($to_row != "") {
+			$to_oauth_bridge_id 	= $to_row->oauth_bridge_id;
+		}
+
+		$old_balance = $balances['old_balance'];
+		$new_balance = $balances['new_balance'];
+		$amount		 = $balances['amount'];
+
+		$ledger_type = 0; // unknown
+
+		if ($amount < 0) {
+			$ledger_type = 1; // debit
+		} else if ($amount >= 0) {
+			$ledger_type = 2; // credit
+		}
+
+		// add new ledger data
+		$ledger_data = array(
+			'tx_id'                         => $transaction_id,
+			'ledger_datum_type'				=> $ledger_type,
+			'ledger_datum_bridge_id'		=> $to_oauth_bridge_id,
+			'ledger_datum_desc'             => $description,
+			'ledger_from_wallet_address'    => $from_wallet_address,
+			'ledger_to_wallet_address'      => $to_wallet_address,
+			'ledger_from_oauth_bridge_id'   => $from_oauth_bridge_id,
+			'ledger_to_oauth_bridge_id'     => $to_oauth_bridge_id,
+			'ledger_datum_old_balance'      => $old_balance,
+			'ledger_datum_new_balance'      => $new_balance,
+			'ledger_datum_amount'           => $amount,
+			'ledger_datum_date_added'       => $this->_today
+		);
+
+		$ledger_datum_id = $this->generate_code(
+			$ledger_data,
+			"crc32"
+		);
+
+		$ledger_data = array_merge(
+			$ledger_data,
+			array(
+				'ledger_datum_id'   => $ledger_datum_id,
+			)
+		);
+
+		$ledger_datum_checking_data = $this->generate_code($ledger_data);
+
+		$this->ledger->insert(
+			array_merge(
+				$ledger_data,
+				array(
+					'ledger_datum_checking_data' => $ledger_datum_checking_data
+				)
+			)
+		);
+	}
+
+	public function update_wallet($wallet_address, $amount) {
+		$this->load->model("admin/wallet_addresses_model", "wallet_addresses");
+
+		$row = $this->wallet_addresses->get_datum(
+			'',
+			array(
+				'wallet_address'	=> $wallet_address
+			)
+		)->row();
+
+		if ($row == "") {
+			return false;
+		}
+
+		$wallet_balance         = $this->decrypt_wallet_balance($row->wallet_balance);
+
+		$old_balance            = $wallet_balance;
+		$encryted_old_balance   = $this->encrypt_wallet_balance($old_balance);
+
+		$new_balance            = $old_balance + $amount;
+		$encryted_new_balance   = $this->encrypt_wallet_balance($new_balance);
+
+		$wallet_data = array(
+			'wallet_balance'                => $encryted_new_balance,
+			'wallet_address_date_updated'   => $this->_today
+		);
+
+		// update wallet balances
+		$this->wallet_addresses->update(
+			$wallet_address,
+			$wallet_data
+		);
+
+		return array(
+			'old_balance'	=> $old_balance,
+			'new_balance'	=> $new_balance,
+			'amount'		=> $amount
+		);
+	}
+
+	public function decrypt_wallet_balance($encrypted_balance) {
+		return openssl_decrypt($encrypted_balance, $this->_ssl_method, getenv("BPKEY"));
+	}
+
 	public function filter_ledger($data) {
 		$results = array();
 
 		foreach ($data as $datum) {
-			$tx_id					= $datum['tx_id'];
+			$row = $this->get_oauth_account_info($datum['Requested By']);
 
-			$from_wallet_address	= $datum['ledger_from_wallet_address'];
-			$to_wallet_address		= $datum['ledger_to_wallet_address'];
+			$tmp_result = $datum;
 
-			$from_oauth_bridge_id	= $datum['ledger_from_oauth_bridge_id'];
-			$to_oauth_bridge_id		= $datum['ledger_to_oauth_bridge_id'];
-
-			$old_balance			= $datum['ledger_datum_old_balance'];
-			$new_balance			= $datum['ledger_datum_new_balance'];
-			$amount					= $datum['ledger_datum_amount'];
-
-			$data_added				= $datum['ledger_datum_date_added'];
-
-			$sender_name	= "";
-			$receiver_name	= "";
-
-			$sender_row	 	= $this->get_oauth_account_info($from_oauth_bridge_id);
-			$receiver_row	= $this->get_oauth_account_info($to_oauth_bridge_id);
-
-			if ($sender_row) {
-				$sender_name = trim($sender_row['account_fname'] . " " . $sender_row['account_mname'] . " " . $sender_row['account_lname']);
+			if ($row) {
+				$tmp_result['Requested By'] = trim($row['account_fname'] . " ". $row['account_lname'] . " " . $row['account_lname']);
 			} else {
-				if ($from_wallet_address == getenv("SYSADD")) {
-					$sender_name = "SYSTEM";
-				}
+				$tmp_result['Requested By'] = "SYSTEM";
 			}
 
-			if ($receiver_row) {
-				$receiver_name = trim($receiver_row['account_fname'] . " " . $receiver_row['account_mname'] . " " . $receiver_row['account_lname']);
-			} else {
-				if ($from_wallet_address == getenv("SYSADD")) {
-					$receiver_name = "SYSTEM";
-				}
-			}
-
-			$results[] = array(
-				'Sender Name'		=> $sender_name,
-				'Receiver Name'		=> $receiver_name,
-				'Old Balance'		=> number_format($old_balance, 2, ".", ","),
-				'New Balance'		=> number_format($new_balance, 2, ".", ","),
-				'Amount'			=> number_format($amount, 2, ".", ","),
-				'Date Added'		=> $data_added
-			);
+			$results[] = $tmp_result;
 		}
 
 		return $results;
@@ -623,6 +716,14 @@ HTML;
 		);
 
 		$menu_items[] = array(
+			'menu_id'			=> 'ledger',
+			'menu_title'		=> 'Ledger',
+			'menu_url'			=> 	base_url() . "ledger",
+			'menu_controller'	=> 'ledger',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
 			'menu_id'			=> 'incoming',
 			'menu_title'		=> 'Incoming',
 			'menu_url'			=> 	base_url() . "incoming",
@@ -635,6 +736,14 @@ HTML;
 			'menu_title'		=> 'Outgoing',
 			'menu_url'			=> 	base_url() . "outgoing",
 			'menu_controller'	=> 'outgoing',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
+			'menu_id'			=> 'top-up',
+			'menu_title'		=> 'Top-up Listing',
+			'menu_url'			=> 	base_url() . "top-up",
+			'menu_controller'	=> 'top_up',
 			'menu_icon'			=> 'view-dashboard',
 		);
 

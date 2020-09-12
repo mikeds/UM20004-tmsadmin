@@ -12,6 +12,10 @@
  
 // ------------------------------------------------------------------------
 
+function is_decimal( $val ) {
+    return is_numeric( $val ) && floor( $val ) != $val;
+}
+
 if (! function_exists('null_to_empty')){
 	function null_to_empty($variable) {
 		$variable = is_null($variable) ? "" : $variable;

@@ -36,24 +36,268 @@ switch( strtolower(get_controller()) ) {
 		);
 	break;
 
-	case 'marketplace' : 
+	case 'top_up' : 
 		$config = array(
-			'product_new' => array(
+			'validate' => array(
 				array( 	
-					'field' => 'category',
-					'label' => 'Category',
+					'field' => 'password',
+					'label' => 'Password',
+					'rules'	=> 'trim|required|xss_clean'
+				)
+			),
+		);
+	break;
+
+	case 'transaction_fees' : 
+		$config = array(
+			'validate' => array(
+				array( 	
+					'field' => 'from',
+					'label' => 'From Value',
 					'rules'	=> 'trim|required|xss_clean|numeric'
 				),
 				array( 	
-					'field' => 'product-name',
-					'label' => 'Product Name',
+					'field' => 'to',
+					'label' => 'To Value',
+					'rules'	=> 'trim|required|xss_clean|numeric'
+				),
+				array( 	
+					'field' => 'fee-amount',
+					'label' => ' Fee Amount',
+					'rules'	=> 'trim|required|xss_clean|numeric'
+				),
+			),
+		);
+	break;
+
+	case 'vault' : 
+		$config = array(
+			'validate' => array(
+				array( 	
+					'field' => 'amount',
+					'label' => 'Amount',
+					'rules'	=> 'trim|xss_clean|numeric|required'
+				),
+				array( 	
+					'field' => 'password',
+					'label' => 'Password',
+					'rules'	=> 'trim|xss_clean|required'
+				)
+			)
+		);
+	break;
+
+	case 'income_scheme_types' : 
+		$config = array(
+			'validate' => array(
+				array( 	
+					'field' => 'code',
+					'label' => 'Code',
+					'rules'	=> 'trim|xss_clean|alpha_numeric|min_length[4]'
+				),
+				array( 	
+					'field' => 'name',
+					'label' => 'Name',
+					'rules'	=> 'trim|required|min_length[4]|xss_clean|alpha_numeric_spaces'
+				)
+			),
+		);
+	break;
+
+	case 'income_schemes' : 
+		$config = array(
+			'validate' => array(
+				array( 	
+					'field' => 'merchant',
+					'label' => 'Merchant',
+					'rules'	=> 'trim|xss_clean|required'
+				),
+				array( 	
+					'field' => 'type',
+					'label' => 'Type',
 					'rules'	=> 'trim|required|xss_clean'
 				),
 				array( 	
-					'field' => 'product-description',
-					'label' => 'Product Description',
+					'field' => 'value',
+					'label' => 'Value',
 					'rules'	=> 'trim|required|xss_clean'
 				)
+			),
+		);
+	break;
+
+	case 'admin_accounts' : 
+		$config = array(
+			'validate' => array(
+				array( 	
+					'field' => 'username',
+					'label' => 'Username',
+					'rules'	=> $required_alphanumeric_rules
+				),
+				array( 	
+					'field' => 'first-name',
+					'label' => 'First Name',
+					'rules'	=> $required_rules
+				),
+				array( 	
+					'field' => 'middle-name',
+					'label' => 'Middle Name',
+					'rules'	=> $default_rules
+				),
+				array( 	
+					'field' => 'last-name',
+					'label' => 'Last Name',
+					'rules'	=> $required_rules
+				),
+				array( 	
+					'field' => 'passsword',
+					'label' => 'Password',
+					'rules'	=> "trim|xss_clean"
+				),
+				array( 	
+					'field' => 'repeat-passsword',
+					'label' => 'Repeat Password',
+					'rules'	=> "trim|xss_clean"
+				),
+				array( 	
+					'field' => 'status',
+					'label' => 'Status',
+					'rules'	=> $default_numeric_rules
+				),
+			),
+		);
+	break;
+
+	case 'merchants' : 
+		$config = array(
+			'validate' => array(
+				array( 	
+					'field' => 'merchant-code',
+					'label' => 'Merchant Code',
+					'rules'	=> "trim|xss_clean|alpha_numeric"
+				),
+				array( 	
+					'field' => 'first-name',
+					'label' => 'First Name',
+					'rules'	=> $required_rules
+				),
+				array( 	
+					'field' => 'middle-name',
+					'label' => 'Middle Name',
+					'rules'	=> $default_rules
+				),
+				array( 	
+					'field' => 'last-name',
+					'label' => 'Last Name',
+					'rules'	=> $required_rules
+				),
+				array( 	
+					'field' => 'dob',
+					'label' => 'Date of Birth',
+					'rules'	=> "trim|xss_clean|required"
+				),
+				array( 	
+					'field' => 'address',
+					'label' => 'House No./ Unit No. / Building',
+					'rules'	=> "trim|xss_clean|required"
+				),
+				array( 	
+					'field' => 'street',
+					'label' => 'Street',
+					'rules'	=> "trim|xss_clean|required"
+				),
+				array( 	
+					'field' => 'barangay',
+					'label' => 'Barangay',
+					'rules'	=> "trim|xss_clean"
+				),
+				array( 	
+					'field' => 'city',
+					'label' => 'City',
+					'rules'	=> "trim|xss_clean|required"
+				),
+				array( 	
+					'field' => 'country',
+					'label' => 'Country',
+					'rules'	=> "trim|xss_clean|required"
+				),
+				array( 	
+					'field' => 'province',
+					'label' => 'Province',
+					'rules'	=> "trim|xss_clean|required|numeric"
+				),
+				array( 	
+					'field' => 'gender',
+					'label' => 'Gender',
+					'rules'	=> "trim|xss_clean|required|numeric"
+				),
+				array( 	
+					'field' => 'mobile-no',
+					'label' => 'Mobile Number',
+					'rules'	=> "trim|xss_clean|alpha_numeric"
+				),
+				array(
+					'field' => 'contact-no',
+					'label' => 'Contact Number',
+					'rules'	=> "trim|xss_clean|alpha_numeric"
+				),
+				array( 	
+					'field' => 'email-address',
+					'label' => 'Email Address',
+					'rules'	=> "trim|xss_clean|required"
+				),
+				array( 	
+					'field' => 'status',
+					'label' => 'Status',
+					'rules'	=> $default_numeric_rules
+				),
+			),
+		);
+	break;
+
+	case 'merchant_accounts' : 
+		$config = array(
+			'validate' => array(
+				array( 	
+					'field' => 'merchant',
+					'label' => 'Merchant Name',
+					'rules'	=> "trim|xss_clean|required|alpha_numeric"
+				),
+				array( 	
+					'field' => 'username',
+					'label' => 'Username',
+					'rules'	=> $required_alphanumeric_rules
+				),
+				array( 	
+					'field' => 'first-name',
+					'label' => 'First Name',
+					'rules'	=> $required_rules
+				),
+				array( 	
+					'field' => 'middle-name',
+					'label' => 'Middle Name',
+					'rules'	=> $default_rules
+				),
+				array( 	
+					'field' => 'last-name',
+					'label' => 'Last Name',
+					'rules'	=> $required_rules
+				),
+				array( 	
+					'field' => 'passsword',
+					'label' => 'Password',
+					'rules'	=> "trim|xss_clean"
+				),
+				array( 	
+					'field' => 'repeat-passsword',
+					'label' => 'Repeat Password',
+					'rules'	=> "trim|xss_clean"
+				),
+				array( 	
+					'field' => 'status',
+					'label' => 'Status',
+					'rules'	=> $default_numeric_rules
+				),
 			),
 		);
 	break;

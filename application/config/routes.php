@@ -50,10 +50,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
-$route["default_controller"]    = "admin/Dashboard";
+$route["default_controller"]        = "admin/Dashboard";
 
-$route["login"]                 = "public/Login";
-$route["logout"]                = "public/Logout";
+$route["vault"] = "admin/Vault/add";
+
+$route["transactions/qr-code/(:any)"] = "admin/Qr_code/index/$1";
+
+$route['transaction-fees']                  = "admin/Transaction_fees";
+$route['transaction-fees/update/(:any)']    = "admin/Transaction_fees/update/$1";
+
+$route["admin-accounts"]                = "admin/Admin_accounts";
+$route["admin-accounts/(:num)"]         = "admin/Admin_accounts/index/$1";
+$route["admin-accounts/new"]            = "admin/Admin_accounts/new";
+$route["admin-accounts/update/(:any)"]  = "admin/Admin_accounts/update/$1";
+
+$route["merchant-accounts"]                = "admin/Merchant_accounts";
+$route["merchant-accounts/(:num)"]         = "admin/Merchant_accounts/index/$1";
+$route["merchant-accounts/new"]            = "admin/Merchant_accounts/new";
+$route["merchant-accounts/update/(:any)"]  = "admin/Merchant_accounts/update/$1";
+
+$route["income-scheme-types"]               = "admin/Income_scheme_types";
+$route["income-scheme-types/(:num)"]        = "admin/Income_scheme_types/index/$1";
+$route["income-scheme-types/new"]           = "admin/Income_scheme_types/new";
+$route["income-scheme-types/update/(:num)"] = "admin/Income_scheme_types/update/$1";
+
+$route["income-schemes"]               = "admin/Income_schemes";
+$route["income-schemes/(:num)"]        = "admin/Income_schemes/index/$1";
+$route["income-schemes/update/(:num)"] = "admin/Income_schemes/update/$1";
+$route["income-schemes/delete/(:num)"] = "admin/Income_schemes/delete/$1";
+
+$route['ledger']        = "admin/Ledger";
+$route['incoming']      = "admin/Incoming";
+$route['outgoing']      = "admin/Outgoing";
+
+$route['merchants']                 = "admin/Merchants";
+$route['merchants/new']             = "admin/Merchants/new";
+$route['merchants/update/(:any)']   = "admin/Merchants/update/$1";
+
+$route['top-up']                    = "admin/Top_up";
+$route['top-up/update/(:any)']      = "admin/Top_up/update/$1";
+
+$route["login"]         = "public/Login";
+$route["logout"]        = "public/Logout";
 
 $route['404_override'] = 'public/Error_404';
 $route['translate_uri_dashes'] = FALSE;

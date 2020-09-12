@@ -54,7 +54,7 @@ class Incoming extends Admin_Controller {
 			array(),
 			$inner_joints,
 			array(
-				'filter'	=> 'transaction_date_created, ledger_datum_date_added',
+				'filter'	=> 'ledger_datum_date_added',
 				'sort'		=> 'ASC'
 			)
 		);

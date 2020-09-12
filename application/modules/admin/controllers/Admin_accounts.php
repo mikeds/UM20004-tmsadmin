@@ -25,16 +25,14 @@ class Admin_accounts extends Admin_Controller {
 		);
 
 		$select = array(
-			array(
-				'account_number as id',
-				'account_number as "Account No."',
-				'account_username as "Username"',
-				'account_fname as "First Name"',
-				'account_mname as "Middle Name"',
-				'account_lname as "Last Name"',
-				'account_date_added as "Date Added"',
-				'account_status as "Status"',
-			)
+			'account_number as id',
+			'account_number as "Account No."',
+			'account_username as "Username"',
+			'account_fname as "First Name"',
+			'account_mname as "Middle Name"',
+			'account_lname as "Last Name"',
+			'account_date_added as "Date Added"',
+			'account_status as "Status"',
 		);
 
 		$where = array(

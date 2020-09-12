@@ -56,6 +56,9 @@ $route["vault"] = "admin/Vault/add";
 
 $route["transactions/qr-code/(:any)"] = "admin/Qr_code/index/$1";
 
+$route['transaction-fees']                  = "admin/Transaction_fees";
+$route['transaction-fees/update/(:any)']    = "admin/Transaction_fees/update/$1";
+
 $route["admin-accounts"]                = "admin/Admin_accounts";
 $route["admin-accounts/(:num)"]         = "admin/Admin_accounts/index/$1";
 $route["admin-accounts/new"]            = "admin/Admin_accounts/new";
@@ -76,12 +79,16 @@ $route["income-schemes/(:num)"]        = "admin/Income_schemes/index/$1";
 $route["income-schemes/update/(:num)"] = "admin/Income_schemes/update/$1";
 $route["income-schemes/delete/(:num)"] = "admin/Income_schemes/delete/$1";
 
+$route['ledger']        = "admin/Ledger";
 $route['incoming']      = "admin/Incoming";
 $route['outgoing']      = "admin/Outgoing";
 
 $route['merchants']                 = "admin/Merchants";
 $route['merchants/new']             = "admin/Merchants/new";
 $route['merchants/update/(:any)']   = "admin/Merchants/update/$1";
+
+$route['top-up']                    = "admin/Top_up";
+$route['top-up/update/(:any)']      = "admin/Top_up/update/$1";
 
 $route["login"]         = "public/Login";
 $route["logout"]        = "public/Logout";

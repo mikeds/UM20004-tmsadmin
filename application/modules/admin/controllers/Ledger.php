@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Outgoing extends Admin_Controller {
+class Ledger extends Admin_Controller {
 	private
 		$_admin_account_data = NULL;
 		
@@ -27,14 +27,13 @@ class Outgoing extends Admin_Controller {
 			'FORMAT(transaction_amount, 2) as "TX Amount"',
 			'FORMAT(transaction_fee, 2) as "Fee"',
 			'FORMAT(ledger_datum_old_balance, 2) as "Old Balance"',
-			'FORMAT(ledger_datum_amount, 2) as "Debit Amount"',
+			'FORMAT(ledger_datum_amount, 2) as "Debit/Credit Amount"',
 			'FORMAT(ledger_datum_new_balance, 2) as "New Balance"',
-			'ledger_datum_date_added as "Date Deducted"'
+			'ledger_datum_date_added as "Date Added"'
 		);
 
 		$where = array(
-			'ledger_datum_bridge_id'	=> $admin_oauth_bridge_id,
-			'ledger_datum_type'			=> 1
+			'ledger_datum_bridge_id'	=> $admin_oauth_bridge_id
 		);
 
 		$inner_joints = array(
@@ -59,10 +58,10 @@ class Outgoing extends Admin_Controller {
 			)
 		);
 
-		$outgoing_data = $this->filter_ledger($data);
+		$ledger_data = $this->filter_ledger($data);
 
-		$this->_data['listing'] = $this->table_listing('', $outgoing_data);
-		$this->_data['title']  = "Outgoing";
-		$this->set_template("outgoing/list", $this->_data);
+		$this->_data['listing'] = $this->table_listing('', $ledger_data);
+		$this->_data['title']  = "Ledger";
+		$this->set_template("ledger/list", $this->_data);
 	}
 }

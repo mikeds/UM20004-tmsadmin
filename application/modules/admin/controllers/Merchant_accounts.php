@@ -52,17 +52,15 @@ class Merchant_accounts extends Admin_Controller {
 		);
 
 		$select = array(
-			array(
-				'account_number as id',
-				'CONCAT(merchant_fname, " ", merchant_mname, " ", merchant_lname) as "Merchant"',
-				'account_number as "Account No."',
-				'account_username as "Username"',
-				'account_fname as "Account First Name"',
-				'account_mname as "Account Middle Name"',
-				'account_lname as "Account Last Name"',
-				'account_date_added as "Date Added"',
-				'account_status as "Status"',
-			)
+			'account_number as id',
+			'CONCAT(merchant_fname, " ", merchant_mname, " ", merchant_lname) as "Merchant"',
+			'account_number as "Account No."',
+			'account_username as "Username"',
+			'account_fname as "Account First Name"',
+			'account_mname as "Account Middle Name"',
+			'account_lname as "Account Last Name"',
+			'account_date_added as "Date Added"',
+			'account_status as "Status"',
 		);
 
 		$where = array(

@@ -40,27 +40,25 @@ class Merchants extends Admin_Controller {
 		);
 
 		$select = array(
-			array(
-				'merchant_number as id',
-				'merchant_status as "Status"',
-				'IF(merchant_email_status = 1, "Verified", "Unverified") as "Email Status"',
-				'merchant_number as "Merchant Number"',
-				'merchant_code as Code',
-				'merchant_fname as "First Name"',
-				'merchant_mname as "Middle Name"',
-				'merchant_lname as "Last Name"',
-				'merchant_mobile_no as "Mobile No."',
-				'merchant_contact_no as "Contact No."',
-				'merchant_email_address as "Email Address"',
-				'IF(merchant_gender = 2, "Female", "Male") as "Gender"',
-				'merchant_dob as "Date of Birth"',
-				'merchant_address as "House No./ Unit No. / Building"',
-				'merchant_street as "Street"',
-				'merchant_brgy as "Barangay"',
-				'merchant_city as "City"',
-				'province_name as "Province"',
-				'country_name as "Country"',
-			)
+			'merchant_number as id',
+			'merchant_status as "Status"',
+			'IF(merchant_email_status = 1, "Verified", "Unverified") as "Email Status"',
+			'merchant_number as "Merchant Number"',
+			'merchant_code as Code',
+			'merchant_fname as "First Name"',
+			'merchant_mname as "Middle Name"',
+			'merchant_lname as "Last Name"',
+			'merchant_mobile_no as "Mobile No."',
+			'merchant_contact_no as "Contact No."',
+			'merchant_email_address as "Email Address"',
+			'IF(merchant_gender = 2, "Female", "Male") as "Gender"',
+			'merchant_dob as "Date of Birth"',
+			'merchant_address as "House No./ Unit No. / Building"',
+			'merchant_street as "Street"',
+			'merchant_brgy as "Barangay"',
+			'merchant_city as "City"',
+			'province_name as "Province"',
+			'country_name as "Country"',
 		);
 
 		$where = array(

@@ -36,6 +36,40 @@ switch( strtolower(get_controller()) ) {
 		);
 	break;
 
+	case 'top_up' : 
+		$config = array(
+			'validate' => array(
+				array( 	
+					'field' => 'password',
+					'label' => 'Password',
+					'rules'	=> 'trim|required|xss_clean'
+				)
+			),
+		);
+	break;
+
+	case 'transaction_fees' : 
+		$config = array(
+			'validate' => array(
+				array( 	
+					'field' => 'from',
+					'label' => 'From Value',
+					'rules'	=> 'trim|required|xss_clean|numeric'
+				),
+				array( 	
+					'field' => 'to',
+					'label' => 'To Value',
+					'rules'	=> 'trim|required|xss_clean|numeric'
+				),
+				array( 	
+					'field' => 'fee-amount',
+					'label' => ' Fee Amount',
+					'rules'	=> 'trim|required|xss_clean|numeric'
+				),
+			),
+		);
+	break;
+
 	case 'vault' : 
 		$config = array(
 			'validate' => array(

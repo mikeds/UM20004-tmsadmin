@@ -15,7 +15,7 @@ class Admin_Controller extends Global_Controller {
 		$_base_controller = "admin",
 		$_base_session = "session",
 		$_data = array(), // shared data with child controller
-		$_limit = 20;
+		$_limit = 50;
 
 	/**
 	 * Constructor
@@ -741,7 +741,7 @@ HTML;
 
 		$menu_items[] = array(
 			'menu_id'			=> 'top-up',
-			'menu_title'		=> 'Top-up Listing',
+			'menu_title'		=> 'Top-up Request',
 			'menu_url'			=> 	base_url() . "top-up",
 			'menu_controller'	=> 'top_up',
 			'menu_icon'			=> 'view-dashboard',

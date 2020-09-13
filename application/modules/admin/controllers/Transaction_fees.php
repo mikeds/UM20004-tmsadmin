@@ -96,6 +96,10 @@ class Transaction_fees extends Admin_Controller {
 			}
 		}
 
+		$actions = array(
+			'delete'
+		);
+
 		$results = $this->fees->get_data(
 			array(
 				'transaction_fee_id as id',
@@ -117,8 +121,57 @@ class Transaction_fees extends Admin_Controller {
 			)
 		);	
 
-		$this->_data['listing'] = $this->table_listing('', $results);
-		$this->_data['title']  = "Add Fees";
+		$this->_data['listing'] = $this->table_listing('', $results, count($results), 0, count($results), $actions, 4);
+		$this->_data['title']  = "Add Fees to {$row->transaction_type_name}";
 		$this->set_template("fees/form", $this->_data);
+	}
+
+
+	public function delete($id) {
+		$admin_account_data_results = $this->_admin_account_data['results'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
+
+		$this->_data['form_url']	= base_url() . "transaction-fees/delete/{$id}";
+		$this->_data['notification']= $this->session->flashdata('notification');
+
+		// check if income type is exist
+		$datum = $this->fees->get_datum(
+			'',
+			array(
+				'transaction_fee_id'		=> $id,
+				'oauth_bridge_parent_id'	=> $admin_oauth_bridge_id
+			),
+			array(),
+			array(
+				array(
+					'table_name'	=> 'transaction_types',
+					'condition'		=> 'transaction_types.transaction_type_id = transaction_fees.transaction_type_id'
+				)
+			)
+		)->row();
+
+		if ($datum == "") {
+			redirect(base_url() . "transact-fees");
+		}
+
+		$this->_data['cancel_url']		= base_url() . "transaction-fees/update/" . $datum->transaction_type_id;
+		$this->_data['transaction_fee']	= "{$datum->transaction_type_name}, range: {$datum->transaction_fee_from}-{$datum->transaction_fee_to}, fee_amount: {$datum->transaction_fee_amount}";
+
+		if ($_POST) {
+			$proceed = $this->input->post("proceed");
+
+			if ($proceed != "PROCEED") {
+				$this->session->set_flashdata('notification', $this->generate_notification('warning', 'Please type PROCEED to delete!'));
+				redirect($this->_data['form_url']);
+			}
+
+			$this->fees->delete($id);
+
+			$this->session->set_flashdata('notification', $this->generate_notification('info', "Successfully delete transaction fee!"));
+			redirect($this->_data['cancel_url']);
+		}
+		
+		$this->_data['title']	= "Delete TX Fee";
+		$this->set_template("fees/form_delete", $this->_data);
 	}
 }

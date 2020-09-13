@@ -58,6 +58,7 @@ $route["transactions/qr-code/(:any)"] = "admin/Qr_code/index/$1";
 
 $route['transaction-fees']                  = "admin/Transaction_fees";
 $route['transaction-fees/update/(:any)']    = "admin/Transaction_fees/update/$1";
+$route['transaction-fees/delete/(:num)']    = "admin/Transaction_fees/delete/$1";
 
 $route["admin-accounts"]                = "admin/Admin_accounts";
 $route["admin-accounts/(:num)"]         = "admin/Admin_accounts/index/$1";

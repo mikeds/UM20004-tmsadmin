@@ -94,6 +94,8 @@ $route['top-up/update/(:any)']      = "admin/Top_up/update/$1";
 $route["login"]         = "public/Login";
 $route["logout"]        = "public/Logout";
 
+$route["dragonpay"] = "public/Dragonpay";
+
 $route['404_override'] = 'public/Error_404';
 $route['translate_uri_dashes'] = FALSE;
 

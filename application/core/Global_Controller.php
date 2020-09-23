@@ -7,11 +7,11 @@
  */
 class Global_Controller extends MX_Controller {
 	private
-		$_today = "",
 		$_stylesheets = array(),
 		$_scripts = array();
 
 	protected
+		$_today = "",
 		$_upload_path = FCPATH . UPLOAD_PATH,
 		$_ssl_method = "AES-128-ECB";
 

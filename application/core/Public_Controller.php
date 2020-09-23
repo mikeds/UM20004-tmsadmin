@@ -22,6 +22,9 @@ class Public_Controller extends Global_Controller {
 	public function __construct() {
 		// Initialize all configs, helpers, libraries from parent
 		parent::__construct();
+		date_default_timezone_set("Asia/Manila");
+		$this->_today = date("Y-m-d H:i:s");
+		
 		$this->validate_login();
 		$this->after_init();
 	}

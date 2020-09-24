@@ -54,7 +54,7 @@ class Admin_accounts extends Admin_Controller {
 		$offset = $this->get_pagination_offset($page, $this->_limit, $total_rows);
 	    $results = $this->admin_accounts->get_data($select, $where, array(), $inner_joints, array('filter'=>'account_date_added', 'sort'=>'DESC'), $offset, $this->_limit);
 
-		$this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 4);
+		$this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 2);
 		$this->_data['title']  = "Admin Accounts";
 		$this->set_template("admin_accounts/list", $this->_data);
 	}

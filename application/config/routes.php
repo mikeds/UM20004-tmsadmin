@@ -57,6 +57,7 @@ $route["vault"] = "admin/Vault/add";
 $route["transactions/qr-code/(:any)"] = "admin/Qr_code/index/$1";
 
 $route['transaction-fees']                  = "admin/Transaction_fees";
+$route['transaction-fees/(:num)']           = "admin/Transaction_fees/index/$1";
 $route['transaction-fees/update/(:any)']    = "admin/Transaction_fees/update/$1";
 $route['transaction-fees/delete/(:num)']    = "admin/Transaction_fees/delete/$1";
 
@@ -82,20 +83,24 @@ $route["income-schemes/delete/(:num)"] = "admin/Income_schemes/delete/$1";
 
 $route['ledger']                            = "admin/Ledger";
 
-$route['ledger-merchant']                   = "admin/Ledger_merchant";
-$route['ledger-merchant/search/(:any)']     = "admin/Ledger_merchant/search/$1";
+$route['ledger-merchant']                       = "admin/Ledger_merchant";
+$route['ledger-merchant/search/(:any)']         = "admin/Ledger_merchant/search/$1";
+$route['ledger-merchant/search/(:any)/(:num)']  = "admin/Ledger_merchant/search/$1/$2";
 
-$route['ledger-client']                     = "admin/Ledger_client";
-$route['ledger-client/search/(:any)']       = "admin/Ledger_client/search/$1";
+$route['ledger-client']                         = "admin/Ledger_client";
+$route['ledger-client/search/(:any)']           = "admin/Ledger_client/search/$1";
+$route['ledger-client/search/(:any)/(:num)']    = "admin/Ledger_client/search/$1/$2";
 
 $route['incoming']      = "admin/Incoming";
 $route['outgoing']      = "admin/Outgoing";
 
 $route['merchants']                 = "admin/Merchants";
+$route['merchants/(:num)']          = "admin/Merchants/index/$1";
 $route['merchants/new']             = "admin/Merchants/new";
 $route['merchants/update/(:any)']   = "admin/Merchants/update/$1";
 
 $route['top-up']                    = "admin/Top_up";
+$route['top-up/(:num)']             = "admin/Top_up/index/$1";
 $route['top-up/update/(:any)']      = "admin/Top_up/update/$1";
 
 $route["login"]         = "public/Login";

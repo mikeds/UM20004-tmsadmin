@@ -42,7 +42,7 @@ class Transaction_fees extends Admin_Controller {
 		$offset = $this->get_pagination_offset($page, $this->_limit, $total_rows);
 	    $results = $this->types->get_data($select, $where, array(), $inner_joints, array('filter'=>'transaction_type_user', 'sort'=>'ASC'), $offset, $this->_limit);
 
-		$this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 4);
+		$this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 2);
 		$this->_data['title']  = "Transaction Types";
 		$this->set_template("fees/list", $this->_data);
 	}

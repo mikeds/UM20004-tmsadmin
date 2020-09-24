@@ -31,7 +31,42 @@ class Admin_Controller extends Global_Controller {
 		$this->after_init();
 	}
 
+	public function get_clients() {
+		$this->load->model("admin/client_accounts_model", "client_accounts");
+
+		$account 					= $this->get_account_data();
+		$admin_account_data_results = $account['results'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
+
+		$where = array(
+			'oauth_bridge_parent_id' => $admin_oauth_bridge_id
+		);
+
+		$inner_joints = array(
+			array(
+				'table_name' 	=> 'oauth_bridges',
+				'condition'		=> 'oauth_bridges.oauth_bridge_id = client_accounts.oauth_bridge_id'
+			),
+			array(
+				'table_name' 	=> 'oauth_clients',
+				'condition'		=> 'oauth_clients.client_id = oauth_bridges.oauth_bridge_id'
+			)
+		);
+
+		return $this->client_accounts->get_data(
+			array(
+				'account_number as id',
+				'CONCAT(account_fname, " ", account_mname, " ", account_lname) as name',
+			),
+			$where,
+			array(), 
+			$inner_joints
+		);
+	}
+
 	public function get_merchants() {
+		$this->load->model("admin/merchants_model", "merchants");
+
 		$account 					= $this->get_account_data();
 		$admin_account_data_results = $account['results'];
 		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
@@ -44,6 +79,10 @@ class Admin_Controller extends Global_Controller {
 			array(
 				'table_name' 	=> 'oauth_bridges',
 				'condition'		=> 'oauth_bridges.oauth_bridge_id = merchants.oauth_bridge_id'
+			),
+			array(
+				'table_name' 	=> 'oauth_clients',
+				'condition'		=> 'oauth_clients.client_id = oauth_bridges.oauth_bridge_id'
 			)
 		);
 
@@ -755,6 +794,14 @@ HTML;
 			'menu_title'		=> 'Ledger (Merchant)',
 			'menu_url'			=> 	base_url() . "ledger-merchant",
 			'menu_controller'	=> 'ledger_merchant',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
+			'menu_id'			=> 'ledger-client',
+			'menu_title'		=> 'Ledger (Client)',
+			'menu_url'			=> 	base_url() . "ledger-client",
+			'menu_controller'	=> 'ledger_client',
 			'menu_icon'			=> 'view-dashboard',
 		);
 

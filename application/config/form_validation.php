@@ -36,6 +36,18 @@ switch( strtolower(get_controller()) ) {
 		);
 	break;
 
+	case 'ledger_merchant' : 
+		$config = array(
+			'validate' => array(
+				array( 	
+					'field' => 'merchant',
+					'label' => 'Merchant Name',
+					'rules'	=> "trim|xss_clean|required|alpha_numeric"
+				)
+			),
+		);
+	break;
+
 	case 'top_up' : 
 		$config = array(
 			'validate' => array(

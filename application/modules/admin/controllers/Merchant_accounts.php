@@ -14,32 +14,6 @@ class Merchant_accounts extends Admin_Controller {
 		$this->_admin_account_data = $this->get_account_data();
 	}
 
-	private function get_merchants() {
-		$admin_account_data_results = $this->_admin_account_data['results'];
-		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
-
-		$where = array(
-			'oauth_bridge_parent_id' => $admin_oauth_bridge_id
-		);
-
-		$inner_joints = array(
-			array(
-				'table_name' 	=> 'oauth_bridges',
-				'condition'		=> 'oauth_bridges.oauth_bridge_id = merchants.oauth_bridge_id'
-			)
-		);
-
-		return $this->merchants->get_data(
-			array(
-				'merchant_number as id',
-				'CONCAT(merchant_fname, " ", merchant_mname, " ", merchant_lname) as name',
-			),
-			$where,
-			array(), 
-			$inner_joints
-		);
-	}
-
 	public function index($page = 1) {
 		$admin_account_data_results = $this->_admin_account_data['results'];
 		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
@@ -108,7 +82,7 @@ class Merchant_accounts extends Admin_Controller {
 			"id", 
 			"name", 
 			false,
-			"Select Merchant Name"
+			"Select Merchant"
 		);
 
 		if ($_POST) {

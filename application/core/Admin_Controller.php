@@ -31,6 +31,33 @@ class Admin_Controller extends Global_Controller {
 		$this->after_init();
 	}
 
+	public function get_merchants() {
+		$account 					= $this->get_account_data();
+		$admin_account_data_results = $account['results'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
+
+		$where = array(
+			'oauth_bridge_parent_id' => $admin_oauth_bridge_id
+		);
+
+		$inner_joints = array(
+			array(
+				'table_name' 	=> 'oauth_bridges',
+				'condition'		=> 'oauth_bridges.oauth_bridge_id = merchants.oauth_bridge_id'
+			)
+		);
+
+		return $this->merchants->get_data(
+			array(
+				'merchant_number as id',
+				'CONCAT(merchant_fname, " ", merchant_mname, " ", merchant_lname) as name',
+			),
+			$where,
+			array(), 
+			$inner_joints
+		);
+	}
+
 	public function new_ledger_datum($description = "", $transaction_id, $from_wallet_address, $to_wallet_address, $balances) {
 		$this->load->model("admin/ledger_data_model", "ledger");
 		$this->load->model("admin/wallet_addresses_model", "wallet_addresses");
@@ -720,6 +747,14 @@ HTML;
 			'menu_title'		=> 'Ledger',
 			'menu_url'			=> 	base_url() . "ledger",
 			'menu_controller'	=> 'ledger',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
+			'menu_id'			=> 'ledger-merchant',
+			'menu_title'		=> 'Ledger (Merchant)',
+			'menu_url'			=> 	base_url() . "ledger-merchant",
+			'menu_controller'	=> 'ledger_merchant',
 			'menu_icon'			=> 'view-dashboard',
 		);
 

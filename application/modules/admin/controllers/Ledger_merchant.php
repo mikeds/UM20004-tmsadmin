@@ -130,7 +130,7 @@ class Ledger_merchant extends Admin_Controller {
 		$ledger_data = $this->filter_ledger($data);
 
 		$this->_data['listing'] = $this->table_listing('', $ledger_data, $total_rows, $offset, $this->_limit, array(), 4);
-		$this->_data['title']  = "Merchant Ledger <b>({$merchant_name})</b>";
+		$this->_data['title']  = "Merchant Ledger ({$merchant_name})";
 		$this->set_template("ledger_merchant/list", $this->_data);
 	}
 }

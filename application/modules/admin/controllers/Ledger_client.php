@@ -128,7 +128,7 @@ class Ledger_client extends Admin_Controller {
 		$ledger_data = $this->filter_ledger($data);
 
 		$this->_data['listing'] = $this->table_listing('', $ledger_data, $total_rows, $offset, $this->_limit, array(), 4);
-		$this->_data['title']  = "Client Ledger <b>({$client_name})</b>";
+		$this->_data['title']  = "Client Ledger ({$client_name})";
 		$this->set_template("ledger_client/list", $this->_data);
 	}
 }

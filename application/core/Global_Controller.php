@@ -260,6 +260,8 @@ class Global_Controller extends MX_Controller {
 			$url =  site_url( $user_type . DIR_SEPARATOR . create_url_title(strtolower(get_controller()), "dash") . DIR_SEPARATOR ) . ( $extra_url != '' ? $extra_url . DIR_SEPARATOR: '' );
 			$url = strtolower($url);
 
+			$url = $custom_url != "" ? $custom_url : $url;
+
 			// set table template
 			$tmpl = array ( 
 				'table_open'  => '<div class="table-responsive"><table class="table table-dark table-bordered">', 

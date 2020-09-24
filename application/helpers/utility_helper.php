@@ -12,6 +12,11 @@
  
 // ------------------------------------------------------------------------
 
+function validate_date($date, $format = 'Y-m-d') {
+    $d = DateTime::createFromFormat($format, $date);
+    return $d && $d->format($format) == $date;
+}
+
 function is_decimal( $val ) {
     return is_numeric( $val ) && floor( $val ) != $val;
 }

@@ -51,7 +51,7 @@ class Income_scheme_types extends Admin_Controller {
 		$offset = $this->get_pagination_offset($page, $this->_limit, $total_rows);
 	    $results = $this->income_scheme_types->get_data($select, $where, array(), $inner_joints, array('filter'=>'scheme_type_date_created', 'sort'=>'DESC'), $offset, $this->_limit);
 
-		$this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 4);
+		$this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 2);
 		$this->_data['title']  = "Income Scheme Types";
 		$this->set_template("income_scheme_types/list", $this->_data);
 	}

@@ -81,8 +81,12 @@ $route["income-schemes/update/(:num)"] = "admin/Income_schemes/update/$1";
 $route["income-schemes/delete/(:num)"] = "admin/Income_schemes/delete/$1";
 
 $route['ledger']                            = "admin/Ledger";
+
 $route['ledger-merchant']                   = "admin/Ledger_merchant";
 $route['ledger-merchant/search/(:any)']     = "admin/Ledger_merchant/search/$1";
+
+$route['ledger-client']                     = "admin/Ledger_client";
+$route['ledger-client/search/(:any)']       = "admin/Ledger_client/search/$1";
 
 $route['incoming']      = "admin/Incoming";
 $route['outgoing']      = "admin/Outgoing";

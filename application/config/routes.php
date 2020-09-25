@@ -81,19 +81,23 @@ $route["income-schemes/(:num)"]        = "admin/Income_schemes/index/$1";
 $route["income-schemes/update/(:num)"] = "admin/Income_schemes/update/$1";
 $route["income-schemes/delete/(:num)"] = "admin/Income_schemes/delete/$1";
 
-$route['ledger']                                = "admin/Ledger";
-$route['ledger/(:num)']                         = "admin/Ledger/index/$1";
+// $route['ledger']                                = "admin/Ledger";
+// $route['ledger/(:num)']                         = "admin/Ledger/index/$1";
 
 $route['ledger-merchant']                       = "admin/Ledger_merchant";
-$route['ledger-merchant/search/(:any)']         = "admin/Ledger_merchant/search/$1";
-$route['ledger-merchant/search/(:any)/(:num)']  = "admin/Ledger_merchant/search/$1/$2";
+$route['ledger-merchant/(:num)']                = "admin/Ledger_merchant/index/$1";
+
+// $route['ledger-merchant/search/(:any)']         = "admin/Ledger_merchant/search/$1";
+// $route['ledger-merchant/search/(:any)/(:num)']  = "admin/Ledger_merchant/search/$1/$2";
 
 $route['ledger-client']                         = "admin/Ledger_client";
-$route['ledger-client/search/(:any)']           = "admin/Ledger_client/search/$1";
-$route['ledger-client/search/(:any)/(:num)']    = "admin/Ledger_client/search/$1/$2";
+$route['ledger-client/(:num)']                  = "admin/Ledger_client/index/$1";
 
-$route['incoming']      = "admin/Incoming";
-$route['outgoing']      = "admin/Outgoing";
+// $route['ledger-client/search/(:any)']           = "admin/Ledger_client/search/$1";
+// $route['ledger-client/search/(:any)/(:num)']    = "admin/Ledger_client/search/$1/$2";
+
+$route['income-sharing']      = "admin/Incoming";
+// $route['outgoing']      = "admin/Outgoing";
 
 $route['merchants']                 = "admin/Merchants";
 $route['merchants/(:num)']          = "admin/Merchants/index/$1";

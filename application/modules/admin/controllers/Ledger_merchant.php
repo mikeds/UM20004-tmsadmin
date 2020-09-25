@@ -15,49 +15,51 @@ class Ledger_merchant extends Admin_Controller {
 		$this->_admin_account_data = $this->get_account_data();
 	}
 
-	public function index() {
-		$this->_data['form_url']		= base_url() . "ledger-merchant";
-		$this->_data['notification'] 	= $this->session->flashdata('notification');
+	// public function index() {
+	// 	$this->_data['form_url']		= base_url() . "ledger-merchant";
+	// 	$this->_data['notification'] 	= $this->session->flashdata('notification');
 
-		$redirect_url					= base_url() . "ledger-merchant/search";
+	// 	$redirect_url					= base_url() . "ledger-merchant/search";
 
-		$merchants = $this->get_merchants();
+	// 	$merchants = $this->get_merchants();
 
-		$this->_data['merchants'] = $this->generate_selection(
-			"merchant", 
-			$merchants, 
-			"", 
-			"id", 
-			"name", 
-			false,
-			"Select Merchant"
-		);
+	// 	$this->_data['merchants'] = $this->generate_selection(
+	// 		"merchant", 
+	// 		$merchants, 
+	// 		"", 
+	// 		"id", 
+	// 		"name", 
+	// 		false,
+	// 		"Select Merchant"
+	// 	);
 
-		if ($_POST) {
-			if ($this->form_validation->run('validate')) {
-				$merchant_number = $this->input->post("merchant");
+	// 	if ($_POST) {
+	// 		if ($this->form_validation->run('validate')) {
+	// 			$merchant_number = $this->input->post("merchant");
 
-				$query = "/{$merchant_number}";
+	// 			$query = "/{$merchant_number}";
 
-				$redirect_url .= $query;
+	// 			$redirect_url .= $query;
 
-				redirect($redirect_url);
-			}
-		}
+	// 			redirect($redirect_url);
+	// 		}
+	// 	}
 
-		$this->_data['title']  = "Ledger - Search Merchant";
-		$this->set_template("ledger_merchant/form", $this->_data);
-	}
+	// 	$this->_data['title']  = "Ledger - Search Merchant";
+	// 	$this->set_template("ledger_merchant/form", $this->_data);
+	// }
 
 	
-	public function search($merchant_number, $page = 1) {
+	public function index($page = 1) {
 		$admin_account_data_results = $this->_admin_account_data['results'];
 		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
-		$this->_data['form_url']		= base_url() . "ledger-merchant/search/{$merchant_number}";
+		$this->_data['form_url']		= base_url() . "ledger-merchant";
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 
 		$redirect_url					= "";
+
+		$merchant_number	= isset($_GET['accno']) ? ($_GET['accno'] ? $_GET['accno'] : "" ) : "";
 
 		$txid	= isset($_GET['txid']) ? ($_GET['txid'] ? $_GET['txid'] : "" ) : "";
 		$refid	= isset($_GET['refid']) ? ($_GET['refid'] ? $_GET['refid'] : "" ) : "";
@@ -73,6 +75,8 @@ class Ledger_merchant extends Admin_Controller {
 		$post = array();
 
 		if ($_POST) {
+			$merchant_number = $this->input->post("merchant");
+
 			$txid	= $this->input->post('tx-id');
 			$refid	= $this->input->post('ref-id');
 	
@@ -103,32 +107,36 @@ class Ledger_merchant extends Admin_Controller {
 			true
 		);
 
-		$row = $this->merchants->get_datum(
-			'',
-			array(
-				'merchant_number'			=> $merchant_number,
-				'oauth_bridge_parent_id'	=> $admin_oauth_bridge_id
-			),
-			array(),
-			array(
+		$where = array();
+
+		if ($merchant_number != "") {
+			$row = $this->merchants->get_datum(
+				'',
 				array(
-					'table_name'	=> 'oauth_bridges',
-					'condition'		=> 'oauth_bridges.oauth_bridge_id = merchants.oauth_bridge_id'
+					'merchant_number'			=> $merchant_number,
+					'oauth_bridge_parent_id'	=> $admin_oauth_bridge_id
+				),
+				array(),
+				array(
+					array(
+						'table_name'	=> 'oauth_bridges',
+						'condition'		=> 'oauth_bridges.oauth_bridge_id = merchants.oauth_bridge_id'
+					)
 				)
-			)
-		)->row();
-		
-		if ($row == "") {
-			redirect(base_url() . "ledger-merchant");
+			)->row();
+			
+			if ($row != "") {
+				$merchant_name = trim("{$row->merchant_fname} {$row->merchant_mname} {$row->merchant_lname}");
+
+				$merchant_oauth_bridge_id = $row->oauth_bridge_id;
+				
+				$where = array(
+					'ledger_datum_bridge_id'	=> $merchant_oauth_bridge_id
+				);
+
+				$redirect_url = $redirect_url == "" ? "?accno={$merchant_number}" : "";
+			}
 		}
-
-		$merchant_name = trim("{$row->merchant_fname} {$row->merchant_mname} {$row->merchant_lname}");
-
-		$merchant_oauth_bridge_id = $row->oauth_bridge_id;
-		
-		$where = array(
-			'ledger_datum_bridge_id'	=> $merchant_oauth_bridge_id
-		);
 
 		if ($from != "") {
 			if ($from != "" && $to == "" && validate_date($from)) {
@@ -164,7 +172,7 @@ class Ledger_merchant extends Admin_Controller {
 					)
 				);
 
-				$redirect_url = $redirect_url == "" ? "?from={$from}&to={$to}" : "";
+				$redirect_url = $redirect_url == "" ? "?from={$from}&to={$to}" : "&from={$from}&to={$to}";
 			}
 		}
 
@@ -236,7 +244,7 @@ class Ledger_merchant extends Admin_Controller {
 			'transaction_id as "TX ID"',
 			'transaction_sender_ref_id as "Sender Ref ID"',
 			'transaction_type_name as "TX Type"',
-			'transaction_requested_by as "Requested By"',
+			'transaction_requested_by as "TX By"',
 			'FORMAT(transaction_amount, 2) as "TX Amount"',
 			'FORMAT(transaction_fee, 2) as "Fee"',
 			'FORMAT(ledger_datum_old_balance, 2) as "Old Balance"',
@@ -253,6 +261,10 @@ class Ledger_merchant extends Admin_Controller {
 			array(
 				'table_name'	=> 'transaction_types',
 				'condition'		=> 'transaction_types.transaction_type_id = transactions.transaction_type_id'
+			),
+			array(
+				'table_name'	=> 'merchants',
+				'condition'		=> 'merchants.oauth_bridge_id = ledger_data.ledger_datum_bridge_id'
 			)
 		);
 
@@ -285,7 +297,7 @@ class Ledger_merchant extends Admin_Controller {
 			$offset, 
 			$this->_limit, 
 			array(), 
-			4,
+			2,
 			false,
 			false,
 			'',
@@ -293,7 +305,19 @@ class Ledger_merchant extends Admin_Controller {
 			$this->_data['form_url']
 		);
 
-		$this->_data['title']  = "Merchant Ledger ({$merchant_name})";
+		$merchants = $this->get_merchants();
+
+		$this->_data['merchants'] = $this->generate_selection(
+			"merchant", 
+			$merchants, 
+			$merchant_number, 
+			"id", 
+			"name", 
+			false,
+			"Select Merchant"
+		);
+
+		$this->_data['title']  = "Mechant Ledger";
 		$this->set_template("ledger_merchant/list", $this->_data);
 	}
 }

@@ -62,7 +62,7 @@ class Incoming extends Admin_Controller {
 		$incoming_data = $this->filter_ledger($data);
 
 		$this->_data['listing'] = $this->table_listing('', $incoming_data);
-		$this->_data['title']  = "Incoming";
+		$this->_data['title']  = "Income Sharing";
 		$this->set_template("incoming/list", $this->_data);
 	}
 }

@@ -227,14 +227,14 @@ class Admin_Controller extends Global_Controller {
 		$results = array();
 
 		foreach ($data as $datum) {
-			$row = $this->get_oauth_account_info($datum['Requested By']);
+			$row = $this->get_oauth_account_info($datum['TX By']);
 
 			$tmp_result = $datum;
 
 			if ($row) {
-				$tmp_result['Requested By'] = trim($row['account_fname'] . " ". $row['account_lname'] . " " . $row['account_lname']);
+				$tmp_result['TX By'] = trim($row['account_fname'] . " ". $row['account_lname'] . " " . $row['account_lname']);
 			} else {
-				$tmp_result['Requested By'] = "SYSTEM";
+				$tmp_result['TX By'] = "SYSTEM";
 			}
 
 			$results[] = $tmp_result;
@@ -781,13 +781,13 @@ HTML;
 			// )
 		);
 
-		$menu_items[] = array(
-			'menu_id'			=> 'ledger',
-			'menu_title'		=> 'Ledger',
-			'menu_url'			=> 	base_url() . "ledger",
-			'menu_controller'	=> 'ledger',
-			'menu_icon'			=> 'view-dashboard',
-		);
+		// $menu_items[] = array(
+		// 	'menu_id'			=> 'ledger',
+		// 	'menu_title'		=> 'Ledger',
+		// 	'menu_url'			=> 	base_url() . "ledger",
+		// 	'menu_controller'	=> 'ledger',
+		// 	'menu_icon'			=> 'view-dashboard',
+		// );
 
 		$menu_items[] = array(
 			'menu_id'			=> 'ledger-merchant',
@@ -805,21 +805,13 @@ HTML;
 			'menu_icon'			=> 'view-dashboard',
 		);
 
-		$menu_items[] = array(
-			'menu_id'			=> 'incoming',
-			'menu_title'		=> 'Incoming',
-			'menu_url'			=> 	base_url() . "incoming",
-			'menu_controller'	=> 'incoming',
-			'menu_icon'			=> 'view-dashboard',
-		);
-
-		$menu_items[] = array(
-			'menu_id'			=> 'outgoing',
-			'menu_title'		=> 'Outgoing',
-			'menu_url'			=> 	base_url() . "outgoing",
-			'menu_controller'	=> 'outgoing',
-			'menu_icon'			=> 'view-dashboard',
-		);
+		// $menu_items[] = array(
+		// 	'menu_id'			=> 'outgoing',
+		// 	'menu_title'		=> 'Outgoing',
+		// 	'menu_url'			=> 	base_url() . "outgoing",
+		// 	'menu_controller'	=> 'outgoing',
+		// 	'menu_icon'			=> 'view-dashboard',
+		// );
 
 		$menu_items[] = array(
 			'menu_id'			=> 'top-up',
@@ -850,6 +842,14 @@ HTML;
 			'menu_title'		=> 'Income Schemes',
 			'menu_url'			=> 	base_url() . "income-schemes",
 			'menu_controller'	=> 'income_schemes',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
+			'menu_id'			=> 'incoming',
+			'menu_title'		=> 'Income Sharing',
+			'menu_url'			=> 	base_url() . "income-sharing",
+			'menu_controller'	=> 'incoming',
 			'menu_icon'			=> 'view-dashboard',
 		);
 

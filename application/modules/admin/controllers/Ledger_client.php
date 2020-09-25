@@ -14,48 +14,50 @@ class Ledger_client extends Admin_Controller {
 		$this->_admin_account_data = $this->get_account_data();
 	}
 
-	public function index() {
-		$this->_data['form_url']		= base_url() . "ledger-client";
-		$this->_data['notification'] 	= $this->session->flashdata('notification');
+	// public function index() {
+	// 	$this->_data['form_url']		= base_url() . "ledger-client";
+	// 	$this->_data['notification'] 	= $this->session->flashdata('notification');
 
-		$redirect_url					= base_url() . "ledger-client/search";
+	// 	$redirect_url					= base_url() . "ledger-client/search";
 
-		$clients = $this->get_clients();
+	// 	$clients = $this->get_clients();
 
-		$this->_data['clients'] = $this->generate_selection(
-			"client", 
-			$clients, 
-			"", 
-			"id", 
-			"name", 
-			false,
-			"Select Client"
-		);
+	// 	$this->_data['clients'] = $this->generate_selection(
+	// 		"client", 
+	// 		$clients, 
+	// 		"", 
+	// 		"id", 
+	// 		"name", 
+	// 		false,
+	// 		"Select Client"
+	// 	);
 
-		if ($_POST) {
-			if ($this->form_validation->run('validate')) {
-				$account_number = $this->input->post("client");
+	// 	if ($_POST) {
+	// 		if ($this->form_validation->run('validate')) {
+	// 			$account_number = $this->input->post("client");
 
-				$query = "/{$account_number}";
+	// 			$query = "/{$account_number}";
 
-				$redirect_url .= $query;
+	// 			$redirect_url .= $query;
 
-				redirect($redirect_url);
-			}
-		}
+	// 			redirect($redirect_url);
+	// 		}
+	// 	}
 
-		$this->_data['title']  = "Ledger - Search Client";
-		$this->set_template("ledger_client/form", $this->_data);
-	}
+	// 	$this->_data['title']  = "Ledger - Search Client";
+	// 	$this->set_template("ledger_client/form", $this->_data);
+	// }
 
-	public function search($account_number, $page = 1) {
+	public function index($page = 1) {
 		$admin_account_data_results = $this->_admin_account_data['results'];
 		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
-		$this->_data['form_url']		= base_url() . "ledger-client/search/{$account_number}";
+		$this->_data['form_url']		= base_url() . "ledger-client";
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 
 		$redirect_url					= "";
+
+		$account_number = isset($_GET['accno']) ? ($_GET['accno'] ? $_GET['accno'] : "" ) : "";
 
 		$txid	= isset($_GET['txid']) ? ($_GET['txid'] ? $_GET['txid'] : "" ) : "";
 		$refid	= isset($_GET['refid']) ? ($_GET['refid'] ? $_GET['refid'] : "" ) : "";
@@ -71,6 +73,8 @@ class Ledger_client extends Admin_Controller {
 		$post = array();
 
 		if ($_POST) {
+			$account_number = $this->input->post("client");
+
 			$txid	= $this->input->post('tx-id');
 			$refid	= $this->input->post('ref-id');
 	
@@ -101,32 +105,36 @@ class Ledger_client extends Admin_Controller {
 			true
 		);
 
-		$row = $this->client_accounts->get_datum(
-			'',
-			array(
-				'account_number'			=> $account_number,
-				'oauth_bridge_parent_id'	=> $admin_oauth_bridge_id
-			),
-			array(),
-			array(
+		$where = array();
+
+		if ($account_number != "") {
+			$row = $this->client_accounts->get_datum(
+				'',
 				array(
-					'table_name'	=> 'oauth_bridges',
-					'condition'		=> 'oauth_bridges.oauth_bridge_id = client_accounts.oauth_bridge_id'
+					'account_number'			=> $account_number,
+					'oauth_bridge_parent_id'	=> $admin_oauth_bridge_id
+				),
+				array(),
+				array(
+					array(
+						'table_name'	=> 'oauth_bridges',
+						'condition'		=> 'oauth_bridges.oauth_bridge_id = client_accounts.oauth_bridge_id'
+					)
 				)
-			)
-		)->row();
+			)->row();
 
-		if ($row == "") {
-			redirect(base_url() . "ledger-client");
+			if ($row != "") {
+				$client_name = trim("{$row->account_fname} {$row->account_mname} {$row->account_lname}");
+
+				$client_oauth_bridge_id = $row->oauth_bridge_id;
+	
+				$where = array(
+					'ledger_datum_bridge_id'	=> $client_oauth_bridge_id
+				);
+
+				$redirect_url = $redirect_url == "" ? "?accno={$account_number}" : "";
+			}
 		}
-
-		$client_name = trim("{$row->account_fname} {$row->account_mname} {$row->account_lname}");
-
-		$client_oauth_bridge_id = $row->oauth_bridge_id;
-
-		$where = array(
-			'ledger_datum_bridge_id'	=> $client_oauth_bridge_id
-		);
 
 		if ($from != "") {
 			if ($from != "" && $to == "" && validate_date($from)) {
@@ -162,7 +170,7 @@ class Ledger_client extends Admin_Controller {
 					)
 				);
 
-				$redirect_url = $redirect_url == "" ? "?from={$from}&to={$to}" : "";
+				$redirect_url = $redirect_url == "" ? "?from={$from}&to={$to}" : "&from={$from}&to={$to}";
 			}
 		}
 
@@ -234,7 +242,7 @@ class Ledger_client extends Admin_Controller {
 			'transaction_id as "TX ID"',
 			'transaction_sender_ref_id as "Sender Ref ID"',
 			'transaction_type_name as "TX Type"',
-			'transaction_requested_by as "Requested By"',
+			'transaction_requested_by as "TX By"',
 			'FORMAT(transaction_amount, 2) as "TX Amount"',
 			'FORMAT(transaction_fee, 2) as "Fee"',
 			'FORMAT(ledger_datum_old_balance, 2) as "Old Balance"',
@@ -251,6 +259,10 @@ class Ledger_client extends Admin_Controller {
 			array(
 				'table_name'	=> 'transaction_types',
 				'condition'		=> 'transaction_types.transaction_type_id = transactions.transaction_type_id'
+			),
+			array(
+				'table_name'	=> 'client_accounts',
+				'condition'		=> 'client_accounts.oauth_bridge_id = ledger_data.ledger_datum_bridge_id'
 			)
 		);
 
@@ -283,14 +295,27 @@ class Ledger_client extends Admin_Controller {
 			$offset, 
 			$this->_limit, 
 			array(), 
-			4,
+			2,
 			false,
 			false,
 			'',
 			'',
 			$this->_data['form_url']
 		);
-		$this->_data['title']  = "Client Ledger ({$client_name})";
+
+		$clients = $this->get_clients();
+
+		$this->_data['clients'] = $this->generate_selection(
+			"client", 
+			$clients, 
+			$account_number, 
+			"id", 
+			"name", 
+			false,
+			"Select Client"
+		);
+
+		$this->_data['title']  = "Client Ledger";
 		$this->set_template("ledger_client/list", $this->_data);
 	}
 }

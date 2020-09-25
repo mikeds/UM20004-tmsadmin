@@ -7,7 +7,7 @@
 	<div class="col-md-12"><br/>
 		<div class="card">
 			<div class="card-header">
-				<?=isset($title) ? $title : ""?>
+				Ledger Filter
 			</div>
 			<div class="card-body">
 				<form role="form" action="<?=isset($form_url) ? $form_url : '#'?>" method="POST" enctype="multipart/form-data">
@@ -15,6 +15,15 @@
 						<div class="col-md-12">
 							<?=(isset($notification) ? (!empty($notification) ? $notification : '' ) : '') ?>
 						</div>     
+					</div>
+					<div class="row">
+						<div class="col-xl-4">
+							<div class="form-group">
+								<label>Merchant List </label>
+								<?=isset($merchants) ? $merchants : ""?>
+								<span class="text-danger"><?=form_error('merchant')?></span>
+							</div>
+						</div>
 					</div>
 					<div class="row">
 						<div class="col-xl-4">
@@ -78,7 +87,7 @@
 	<div class="col-md-12"><br/>
 		<div class="card">
 			<div class="card-header">
-				Ledger Data
+				<?=isset($title) ? $title : ""?>
 			</div>
 			<div class="card-body">
 				<?php

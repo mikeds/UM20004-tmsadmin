@@ -44,6 +44,50 @@ class Merchants_model extends CI_Model {
 		return $query;
 	}
 
+	function get_data_not_in(
+		$select = array('*'), 
+		$data = array(),
+		$data_not_in = array(),
+		$inner_joints
+		) {
+		
+		$this->db->select(ARRtoSTR($select));
+
+		$this->db->from( $this->_table );
+
+		if (!empty($inner_joints)) {
+			foreach($inner_joints as $join) {
+				if (isset($join['type'])) {
+					$this->db->join(
+						$join['table_name'],
+						$join['condition'],
+						$join['type']
+					);
+				} else {
+					$this->db->join(
+						$join['table_name'],
+						$join['condition']
+					);
+				}
+			}
+		}
+
+		if(!empty($data)){
+			$this->db->where($data);
+		}
+
+		if(!empty($data_not_in)){
+			$this->db->where_not_in($this->_id, $data_not_in);
+		}
+
+		$query = $this->db->get();
+
+		$results = $query->result_array();
+
+		return $results;
+
+	}
+
 	function get_data( $select = array('*'), $data = array(), $like= array(), $inner_joints = array(), $order_by = array(), $offset = 0, $limit = 0, $group_by = '' ) {
 		
 		$this->db->select(ARRtoSTR($select),false);

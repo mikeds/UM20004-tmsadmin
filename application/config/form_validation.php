@@ -145,6 +145,11 @@ switch( strtolower(get_controller()) ) {
 					'field' => 'value',
 					'label' => 'Value',
 					'rules'	=> 'trim|required|xss_clean'
+				),
+				array( 	
+					'field' => 'position',
+					'label' => 'Position',
+					'rules'	=> 'trim|required|xss_clean'
 				)
 			),
 		);

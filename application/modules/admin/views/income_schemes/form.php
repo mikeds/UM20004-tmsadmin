@@ -11,9 +11,18 @@
 							<div class="row"> 
 								<div class="col-md-12">
 									<?=(isset($notification) ? (!empty($notification) ? $notification : '' ) : '') ?>
-								</div>     
+								</div>
 							</div>
-							<div class="row ">
+							<div class="row">
+								<div class="col-xl-12">
+									<div class="form-group">
+										<label>Position </label>
+										<?=isset($position) ? $position : ""?>
+										<span class="text-danger"><?=form_error('position')?></span>
+									</div>
+								</div>
+							</div>
+							<div class="row">
 								<div class="col-xl-6">
 									<div class="form-group">
 										<label>Merchant </label>

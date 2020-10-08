@@ -79,7 +79,10 @@ $route["income-scheme-types/update/(:num)"] = "admin/Income_scheme_types/update/
 $route["income-schemes"]               = "admin/Income_schemes";
 $route["income-schemes/(:num)"]        = "admin/Income_schemes/index/$1";
 $route["income-schemes/update/(:num)"] = "admin/Income_schemes/update/$1";
+$route["income-schemes/edit/(:num)"]   = "admin/Income_schemes/edit/$1";
 $route["income-schemes/delete/(:num)"] = "admin/Income_schemes/delete/$1";
+
+$route["income-schemes/get-merchants-in-scheme/(:num)/(:num)"]   = "admin/Income_schemes/get_merchants_in_scheme/$1/$2";
 
 // $route['ledger']                                = "admin/Ledger";
 // $route['ledger/(:num)']                         = "admin/Ledger/index/$1";

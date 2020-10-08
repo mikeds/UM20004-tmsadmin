@@ -845,13 +845,13 @@ HTML;
 			'menu_icon'			=> 'view-dashboard',
 		);
 
-		$menu_items[] = array(
-			'menu_id'			=> 'incoming',
-			'menu_title'		=> 'Income Sharing',
-			'menu_url'			=> 	base_url() . "income-sharing",
-			'menu_controller'	=> 'incoming',
-			'menu_icon'			=> 'view-dashboard',
-		);
+		// $menu_items[] = array(
+		// 	'menu_id'			=> 'incoming',
+		// 	'menu_title'		=> 'Income Sharing',
+		// 	'menu_url'			=> 	base_url() . "income-sharing",
+		// 	'menu_controller'	=> 'incoming',
+		// 	'menu_icon'			=> 'view-dashboard',
+		// );
 
 		$menu_items[] = array(
 			'menu_id'			=> 'merchants',

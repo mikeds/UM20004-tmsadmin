@@ -111,10 +111,15 @@ $route['top-up']                    = "admin/Top_up";
 $route['top-up/(:num)']             = "admin/Top_up/index/$1";
 $route['top-up/update/(:any)']      = "admin/Top_up/update/$1";
 
+$route["crawler/dragonpay"]                 = "public/Crawler/dragonpay";
+$route["cron/dragonpay"]                    = "public/Cron/dragonpay";
+$route["cron/dragonpay/(:any)"]             = "public/Cron/dragonpay/$1";
+$route["cron/dragonpay/(:any)/(:any)"]      = "public/Cron/dragonpay/$1/$2";
+
 $route["login"]         = "public/Login";
 $route["logout"]        = "public/Logout";
 
-$route["dragonpay"] = "public/Dragonpay";
+// $route["dragonpay"] = "public/Dragonpay";
 
 $route['404_override'] = 'public/Error_404';
 $route['translate_uri_dashes'] = FALSE;

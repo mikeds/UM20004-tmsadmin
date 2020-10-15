@@ -177,6 +177,11 @@ class Top_up extends Admin_Controller {
 
 				$sender_wallet_address		= $account_results['wallet_address'];
 				$receiver_wallet_address	= $this->get_wallet_address($merchant_oauth_bridge_id);
+
+				if ($sender_wallet_address == "" || $receiver_wallet_address == "") {
+					$this->session->set_flashdata('notification', $this->generate_notification('warning', 'Account information not found!'));
+                    redirect($this->_data['form_url']);
+				}
 				
 				$sender_new_balances = $this->update_wallet($sender_wallet_address, $sender_total_amount);
 				if ($sender_new_balances) {

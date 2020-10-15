@@ -223,6 +223,10 @@ class Admin_Controller extends Global_Controller {
 		return openssl_decrypt($encrypted_balance, $this->_ssl_method, getenv("BPKEY"));
 	}
 
+	public function encrypt_wallet_balance($balance) {
+		return openssl_encrypt($balance, $this->_ssl_method, getenv("BPKEY"));
+	}
+
 	public function filter_ledger($data) {
 		$results = array();
 
@@ -420,10 +424,6 @@ class Admin_Controller extends Global_Controller {
 				'hold_balance'	=> $hold_balance
 			)
 		);
-	}
-
-	public function encrypt_wallet_balance($balance) {
-		return openssl_encrypt($balance, $this->_ssl_method, getenv("BPKEY"));
 	}
 
 	public function generate_code($data, $hash = "sha256") {

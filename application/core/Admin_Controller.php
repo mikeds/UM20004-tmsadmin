@@ -790,6 +790,14 @@ HTML;
 		// );
 
 		$menu_items[] = array(
+			'menu_id'			=> 'transactions',
+			'menu_title'		=> 'Transactions',
+			'menu_url'			=> 	base_url() . "transactions",
+			'menu_controller'	=> 'transactions',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
 			'menu_id'			=> 'ledger-merchant',
 			'menu_title'		=> 'Ledger (Merchant)',
 			'menu_url'			=> 	base_url() . "ledger-merchant",

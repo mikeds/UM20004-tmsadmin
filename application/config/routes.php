@@ -56,6 +56,9 @@ $route["vault"] = "admin/Vault/add";
 
 $route["transactions/qr-code/(:any)"] = "admin/Qr_code/index/$1";
 
+$route["transactions"]          = "admin/Transactions";
+$route["transactions/(:num)"]   = "admin/Transactions/index/$1";
+
 $route['transaction-fees']                  = "admin/Transaction_fees";
 $route['transaction-fees/(:num)']           = "admin/Transaction_fees/index/$1";
 $route['transaction-fees/update/(:any)']    = "admin/Transaction_fees/update/$1";

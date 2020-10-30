@@ -61,6 +61,7 @@ class Income_schemes extends Admin_Controller {
 		if (count($select) == 0) {
 			$select = array(
 				'scheme_merchant_id as id',
+				'scheme_merchant_index as "Level No."',
 				'merchants.merchant_number as "Merchant Number"',
 				'CONCAT(merchant_fname, " ", merchant_mname, " ", merchant_lname) as "Merchant Name"',
 				'IF(scheme_merchant_type = 1, "Constant", "Percentage") as Type',
@@ -104,7 +105,7 @@ class Income_schemes extends Admin_Controller {
 			array(),
 			$inner_joints,
 			array(
-				'filter' => 'merchant_fname',
+				'filter' => 'scheme_merchant_index',
 				'sort' => 'ASC'
 			)
 		);

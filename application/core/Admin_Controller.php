@@ -250,6 +250,7 @@ class Admin_Controller extends Global_Controller {
 	public function get_oauth_account_info($oauth_bridge_id) {
 		$this->load->model("admin/accounts_model", "accounts");
 		$this->load->model("admin/tms_admin_accounts_model", "tms_admin_accounts");
+		$this->load->model("admin/merchants_model", "merchants");
 		$this->load->model("admin/merchant_accounts_model", "merchant_accounts");
 		$this->load->model("admin/client_accounts_model", "client_accounts");
 			
@@ -285,19 +286,33 @@ class Admin_Controller extends Global_Controller {
 			);
 		}
 
-		$row_merchant = $this->merchant_accounts->get_datum(
+		$row_merchant_account = $this->merchant_accounts->get_datum(
 			'',
 			$where
 		)->row();
 
-		if ($row_merchant != "") {
+		if ($row_merchant_account != "") {
 			return array(
-				'account_number'	=> $row_merchant->account_number,
-				'account_fname'		=> $row_merchant->account_fname,
-				'account_mname'		=> $row_merchant->account_mname,
-				'account_lname'		=> $row_merchant->account_lname, 
+				'account_number'	=> $row_merchant_account->account_number,
+				'account_fname'		=> $row_merchant_account->account_fname,
+				'account_mname'		=> $row_merchant_account->account_mname,
+				'account_lname'		=> $row_merchant_account->account_lname, 
 			);
 		}
+
+		// $row_merchant = $this->merchants->get_datum(
+		// 	'',
+		// 	$where
+		// )->row();
+
+		// if ($row_merchant != "") {
+		// 	return array(
+		// 		'account_number'	=> $row_merchant->merchant_number,
+		// 		'account_fname'		=> $row_merchant->merchant_fname,
+		// 		'account_mname'		=> $row_merchant->merchant_mname,
+		// 		'account_lname'		=> $row_merchant->merchant_lname, 
+		// 	);
+		// }
 
 		$row_client = $this->client_accounts->get_datum(
 			'',

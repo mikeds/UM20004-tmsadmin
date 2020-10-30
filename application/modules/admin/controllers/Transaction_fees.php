@@ -71,7 +71,7 @@ class Transaction_fees extends Admin_Controller {
 				$to			= $this->input->post("to");
 				$fee_amount	= $this->input->post("fee-amount");
 
-				if (is_decimal($from) || is_decimal($to) || is_decimal($amount_fee)) {
+				if (is_decimal($from) || is_decimal($to) || is_decimal($fee_amount)) {
 					$this->session->set_flashdata('notification', $this->generate_notification('warning', 'Separator and/or centavo values not allowed. Please remove comma or dot/ decimal/s to continue.'));
 					redirect($this->_data['form_url']);
 				}

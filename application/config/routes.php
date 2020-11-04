@@ -122,6 +122,9 @@ $route["cron/dragonpay/(:any)/(:any)"]      = "public/Cron/dragonpay/$1/$2";
 $route["login"]         = "public/Login";
 $route["logout"]        = "public/Logout";
 
+$route["settlement-report"]         = "admin/Settlement_report";
+$route["settlement-report/(:num)"]  = "admin/Settlement_report/index/$1";
+
 // $route["dragonpay"] = "public/Dragonpay";
 
 $route['404_override'] = 'public/Error_404';

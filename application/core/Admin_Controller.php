@@ -901,6 +901,14 @@ HTML;
 		);
 
 		$menu_items[] = array(
+			'menu_id'			=> 'settlement-report',
+			'menu_title'		=> 'Settlement Report',
+			'menu_url'			=> 	base_url() . "settlement-report",
+			'menu_controller'	=> 'settlement_report',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
 			'menu_id'			=> 'vault',
 			'menu_title'		=> 'Vault',
 			'menu_url'			=> 	base_url() . "vault",

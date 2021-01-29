@@ -74,16 +74,24 @@ $route["merchant-accounts/(:num)"]         = "admin/Merchant_accounts/index/$1";
 $route["merchant-accounts/new"]            = "admin/Merchant_accounts/new";
 $route["merchant-accounts/update/(:any)"]  = "admin/Merchant_accounts/update/$1";
 
-$route["income-scheme-types"]               = "admin/Income_scheme_types";
-$route["income-scheme-types/(:num)"]        = "admin/Income_scheme_types/index/$1";
-$route["income-scheme-types/new"]           = "admin/Income_scheme_types/new";
-$route["income-scheme-types/update/(:num)"] = "admin/Income_scheme_types/update/$1";
+$route["income-groups"]                 = "admin/Income_groups";
+$route["income-groups/(:num)"]          = "admin/Income_groups/index/$1";
+$route["income-groups/new"]             = "admin/Income_groups/new";
+$route["income-groups/update/(:any)"]   = "admin/Income_groups/update/$1";
 
-$route["income-schemes"]               = "admin/Income_schemes";
-$route["income-schemes/(:num)"]        = "admin/Income_schemes/index/$1";
-$route["income-schemes/update/(:num)"] = "admin/Income_schemes/update/$1";
-$route["income-schemes/edit/(:num)"]   = "admin/Income_schemes/edit/$1";
-$route["income-schemes/delete/(:num)"] = "admin/Income_schemes/delete/$1";
+$route["income-groups/merchant-list"]           = "admin/Income_groups/merchant_list";
+$route["income-groups/merchant-list/(:any)"]    = "admin/Income_groups/merchant_list/$1";
+
+// $route["income-scheme-types"]               = "admin/Income_scheme_types";
+// $route["income-scheme-types/(:num)"]        = "admin/Income_scheme_types/index/$1";
+// $route["income-scheme-types/new"]           = "admin/Income_scheme_types/new";
+// $route["income-scheme-types/update/(:num)"] = "admin/Income_scheme_types/update/$1";
+
+// $route["income-schemes"]               = "admin/Income_schemes";
+// $route["income-schemes/(:num)"]        = "admin/Income_schemes/index/$1";
+// $route["income-schemes/update/(:num)"] = "admin/Income_schemes/update/$1";
+// $route["income-schemes/edit/(:num)"]   = "admin/Income_schemes/edit/$1";
+// $route["income-schemes/delete/(:num)"] = "admin/Income_schemes/delete/$1";
 
 $route["income-schemes/get-merchants-in-scheme/(:num)/(:num)"]   = "admin/Income_schemes/get_merchants_in_scheme/$1/$2";
 

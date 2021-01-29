@@ -67,7 +67,8 @@ class Income_groups extends Admin_Controller {
 			$group_id = $_GET['group_id'];
 		}
 
-		$this->_data['form_url']		= base_url() . "income-groups/new" . (($group_id != "") ? "?group_id={$group_id}" : "");
+		$base_form_url				= base_url() . "income-groups/new";
+		$this->_data['form_url']	= $base_form_url . (($group_id != "") ? "?group_id={$group_id}" : "");
 
 		if ($_POST) {
 			$merchant_number = $this->input->post('members');
@@ -174,7 +175,7 @@ class Income_groups extends Admin_Controller {
 			);
 
 			$this->session->set_flashdata('notification', $this->generate_notification('success', 'Successully saved to group!'));
-			redirect($this->_data['form_url'] . "?group_id={$group_id}");
+			redirect($base_form_url . "?group_id={$group_id}");
 		}
 
 		$members = $this->get_group_members($group_id);

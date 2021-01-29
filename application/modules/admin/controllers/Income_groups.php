@@ -169,7 +169,8 @@ class Income_groups extends Admin_Controller {
 				'igm_id'			=> $igm_id,
 				'igm_parent_id'		=> $igm_parent_id,
 				'oauth_bridge_id'	=> $row->oauth_bridge_id,
-				'ig_id'				=> $group_id
+				'ig_id'				=> $group_id,
+				'igm_date_added'	=> $this->_today
 			);
 
 			$this->income_groups_members->insert(
@@ -290,7 +291,8 @@ class Income_groups extends Admin_Controller {
 					'igm_id'			=> $igm_id,
 					'igm_parent_id'		=> $igm_parent_id,
 					'oauth_bridge_id'	=> $row->oauth_bridge_id,
-					'ig_id'				=> $group_id
+					'ig_id'				=> $group_id,
+					'igm_date_added'	=> $this->_today
 				)
 			);
 
@@ -340,6 +342,10 @@ class Income_groups extends Admin_Controller {
 					'table_name' 	=> 'merchants',
 					'condition'		=> 'merchants.oauth_bridge_id = income_groups_members.oauth_bridge_id'
 				)
+			),
+			array(
+				'filter'	=> 'igm_date_added',
+				'sort'		=> 'DESC'
 			)
 		);
 

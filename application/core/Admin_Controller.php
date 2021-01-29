@@ -853,20 +853,28 @@ HTML;
 		);
 
 		$menu_items[] = array(
-			'menu_id'			=> 'income-scheme-types',
-			'menu_title'		=> 'Income Scheme Types',
-			'menu_url'			=> 	base_url() . "income-scheme-types",
-			'menu_controller'	=> 'income_scheme_types',
+			'menu_id'			=> 'income-groups',
+			'menu_title'		=> 'Income Groups',
+			'menu_url'			=> 	base_url() . "income-groups",
+			'menu_controller'	=> 'income_groups',
 			'menu_icon'			=> 'view-dashboard',
 		);
 
-		$menu_items[] = array(
-			'menu_id'			=> 'income-schemes',
-			'menu_title'		=> 'Income Schemes',
-			'menu_url'			=> 	base_url() . "income-schemes",
-			'menu_controller'	=> 'income_schemes',
-			'menu_icon'			=> 'view-dashboard',
-		);
+		// $menu_items[] = array(
+		// 	'menu_id'			=> 'income-scheme-types',
+		// 	'menu_title'		=> 'Income Scheme Types',
+		// 	'menu_url'			=> 	base_url() . "income-scheme-types",
+		// 	'menu_controller'	=> 'income_scheme_types',
+		// 	'menu_icon'			=> 'view-dashboard',
+		// );
+
+		// $menu_items[] = array(
+		// 	'menu_id'			=> 'income-schemes',
+		// 	'menu_title'		=> 'Income Schemes',
+		// 	'menu_url'			=> 	base_url() . "income-schemes",
+		// 	'menu_controller'	=> 'income_schemes',
+		// 	'menu_icon'			=> 'view-dashboard',
+		// );
 
 		// $menu_items[] = array(
 		// 	'menu_id'			=> 'incoming',

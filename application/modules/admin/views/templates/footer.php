@@ -16,6 +16,7 @@
 <!-- container-scroller -->
 	<script>
 		var base_url = '<?=base_url()?>';
+		var params	= '<?=isset($params) ? $params : ""?>';
 	</script>
 	<?php
 		foreach ($javascripts as $javascript ) {

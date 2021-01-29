@@ -97,7 +97,7 @@ class Income_groups extends Admin_Controller {
 				redirect($this->_data['form_url']);
 			}
 
-			$igm_parent_id = $merchant_number == 0 ? "" : $row_group_member->igm_id;
+			$igm_parent_id = $merchant_number == '0' ? "" : $row_group_member->igm_id;
 
 			$email_address = $this->input->post('email-address');
 
@@ -165,13 +165,15 @@ class Income_groups extends Admin_Controller {
 				"crc32"
 			);
 
+			$insert_member = array(
+				'igm_id'			=> $igm_id,
+				'igm_parent_id'		=> $igm_parent_id,
+				'oauth_bridge_id'	=> $row->oauth_bridge_id,
+				'ig_id'				=> $group_id
+			);
+
 			$this->income_groups_members->insert(
-				array(
-					'igm_id'			=> $igm_id,
-					'igm_parent_id'		=> $igm_parent_id,
-					'oauth_bridge_id'	=> $row->oauth_bridge_id,
-					'ig_id'				=> $group_id
-				)
+				$insert_member
 			);
 
 			$this->session->set_flashdata('notification', $this->generate_notification('success', 'Successully saved to group!'));
@@ -246,7 +248,7 @@ class Income_groups extends Admin_Controller {
 				redirect($this->_data['form_url']);
 			}
 
-			$igm_parent_id = $merchant_number == 0 ? "" : $row_group_member->igm_id;
+			$igm_parent_id = $merchant_number == '0' ? "" : $row_group_member->igm_id;
 
 			$email_address = $this->input->post('email-address');
 
@@ -352,13 +354,14 @@ class Income_groups extends Admin_Controller {
 			$parent_id 	= $datum['igm_parent_id'];
 
 			if ($parent_id == "") {
-				$results[$node_id] = array(
-					// 'id'			=> $acc_id,
-					'name'			=> $acc_name,
-					'email_address'	=> $acc_email_address,
-					'mobile_no'		=> $acc_mobile_no
-				);
-
+				if (!isset($results[$node_id])) {
+					$results[$node_id] = array(
+						// 'id'			=> $acc_id,
+						'name'			=> $acc_name,
+						'email_address'	=> $acc_email_address,
+						'mobile_no'		=> $acc_mobile_no
+					);
+				}
 				continue;
 			}
 

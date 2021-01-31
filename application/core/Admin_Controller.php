@@ -845,20 +845,28 @@ HTML;
 		);
 
 		$menu_items[] = array(
-			'menu_id'			=> 'transaction-fees',
-			'menu_title'		=> 'Transaction Fees',
-			'menu_url'			=> 	base_url() . "transaction-fees",
-			'menu_controller'	=> 'transaction_fees',
-			'menu_icon'			=> 'view-dashboard',
-		);
-
-		$menu_items[] = array(
 			'menu_id'			=> 'income-groups',
 			'menu_title'		=> 'Income Groups',
 			'menu_url'			=> 	base_url() . "income-groups",
 			'menu_controller'	=> 'income_groups',
 			'menu_icon'			=> 'view-dashboard',
 		);
+
+		$menu_items[] = array(
+			'menu_id'			=> 'income-shares',
+			'menu_title'		=> 'Income Shares',
+			'menu_url'			=> 	base_url() . "income-shares",
+			'menu_controller'	=> 'income_shares',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		// $menu_items[] = array(
+		// 	'menu_id'			=> 'transaction-fees',
+		// 	'menu_title'		=> 'Transaction Fees',
+		// 	'menu_url'			=> 	base_url() . "transaction-fees",
+		// 	'menu_controller'	=> 'transaction_fees',
+		// 	'menu_icon'			=> 'view-dashboard',
+		// );
 
 		// $menu_items[] = array(
 		// 	'menu_id'			=> 'income-scheme-types',

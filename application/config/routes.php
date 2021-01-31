@@ -82,6 +82,10 @@ $route["income-groups/update/(:any)"]   = "admin/Income_groups/update/$1";
 $route["income-groups/merchant-list"]           = "admin/Income_groups/merchant_list";
 $route["income-groups/merchant-list/(:any)"]    = "admin/Income_groups/merchant_list/$1";
 
+$route["income-shares"]                 = "admin/Income_shares";
+$route["income-shares/(:num)"]          = "admin/Income_shares/index/$1";
+$route["income-shares/update/(:any)"]   = "admin/Income_shares/update/$1";
+
 // $route["income-scheme-types"]               = "admin/Income_scheme_types";
 // $route["income-scheme-types/(:num)"]        = "admin/Income_scheme_types/index/$1";
 // $route["income-scheme-types/new"]           = "admin/Income_scheme_types/new";

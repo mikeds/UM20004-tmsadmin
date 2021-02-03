@@ -109,7 +109,10 @@ class Income_shares extends Admin_Controller {
 					
 					if ($row == "") {
 						$is_id = $this->generate_code(
-							$datum,
+							array(
+								$datum,
+								$this->_today
+							),
 							"crc32"
 						);
 

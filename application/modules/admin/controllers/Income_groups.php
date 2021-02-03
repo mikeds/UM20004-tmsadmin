@@ -355,6 +355,8 @@ class Income_groups extends Admin_Controller {
 			$acc_email_address 	= $datum['merchant_email_address'];
 			$acc_mobile_no		= $datum['merchant_mobile_no'];
 
+			$acc_fname			= $datum['merchant_fname'];
+
 			$node_id	= $acc_name . "-" . $acc_id;
 
 			$parent_id 	= $datum['igm_parent_id'];
@@ -392,6 +394,8 @@ class Income_groups extends Admin_Controller {
 				$acc_parent_mobile_no		= $row->merchant_mobile_no;
 
 				$node_parent_id		= $acc_parent_name . "-" . $acc_parent_id ;
+
+				$sub_name = $row->merchant_fname;
 
 				if (isset($results[$node_parent_id])) {
 					$results[$node_parent_id]['subs'][$node_id] = array(

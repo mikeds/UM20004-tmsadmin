@@ -74,15 +74,31 @@ $route["merchant-accounts/(:num)"]         = "admin/Merchant_accounts/index/$1";
 $route["merchant-accounts/new"]            = "admin/Merchant_accounts/new";
 $route["merchant-accounts/update/(:any)"]  = "admin/Merchant_accounts/update/$1";
 
+
+# INCOME GROUPS - CASH IN OTC
 $route["income-groups-cash-in-otc"]                 = "admin/Income_groups_cash_in_otc";
 $route["income-groups-cash-in-otc/(:num)"]          = "admin/Income_groups_cash_in_otc/index/$1";
 $route["income-groups-cash-in-otc/new"]             = "admin/Income_groups_cash_in_otc/new";
 $route["income-groups-cash-in-otc/update/(:any)"]   = "admin/Income_groups_cash_in_otc/update/$1";
 $route["income-groups-cash-in-otc/delete/(:any)"]   = "admin/Income_groups_cash_in_otc/delete/$1";
 
+# INCOME SHARES - CASH IN OTC
 $route["income-shares-cash-in-otc"]                 = "admin/Income_shares_cash_in_otc";
 $route["income-shares-cash-in-otc/(:num)"]          = "admin/Income_shares_cash_in_otc/index/$1";
 $route["income-shares-cash-in-otc/update/(:any)"]   = "admin/Income_shares_cash_in_otc/update/$1";
+
+
+# INCOME GROUPS - CASH OUT OTC
+$route["income-groups-cash-out-otc"]                 = "admin/Income_groups_cash_out_otc";
+$route["income-groups-cash-out-otc/(:num)"]          = "admin/Income_groups_cash_out_otc/index/$1";
+$route["income-groups-cash-out-otc/new"]             = "admin/Income_groups_cash_out_otc/new";
+$route["income-groups-cash-out-otc/update/(:any)"]   = "admin/Income_groups_cash_out_otc/update/$1";
+$route["income-groups-cash-out-otc/delete/(:any)"]   = "admin/Income_groups_cash_out_otc/delete/$1";
+
+# INCOME SHARES - CASH OUT OTC
+$route["income-shares-cash-out-otc"]                 = "admin/Income_shares_cash_out_otc";
+$route["income-shares-cash-out-otc/(:num)"]          = "admin/Income_shares_cash_out_otc/index/$1";
+$route["income-shares-cash-out-otc/update/(:any)"]   = "admin/Income_shares_cash_out_otc/update/$1";
 
 // $route["income-groups/(:num)"]          = "admin/Income_groups/index/$1";
 // $route["income-groups/new"]             = "admin/Income_groups/new";

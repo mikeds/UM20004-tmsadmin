@@ -74,17 +74,26 @@ $route["merchant-accounts/(:num)"]         = "admin/Merchant_accounts/index/$1";
 $route["merchant-accounts/new"]            = "admin/Merchant_accounts/new";
 $route["merchant-accounts/update/(:any)"]  = "admin/Merchant_accounts/update/$1";
 
-$route["income-groups"]                 = "admin/Income_groups";
-$route["income-groups/(:num)"]          = "admin/Income_groups/index/$1";
-$route["income-groups/new"]             = "admin/Income_groups/new";
-$route["income-groups/update/(:any)"]   = "admin/Income_groups/update/$1";
+$route["income-groups-cash-in-otc"]                 = "admin/Income_groups_cash_in_otc";
+$route["income-groups-cash-in-otc/(:num)"]          = "admin/Income_groups_cash_in_otc/index/$1";
+$route["income-groups-cash-in-otc/new"]             = "admin/Income_groups_cash_in_otc/new";
+$route["income-groups-cash-in-otc/update/(:any)"]   = "admin/Income_groups_cash_in_otc/update/$1";
+$route["income-groups-cash-in-otc/delete/(:any)"]   = "admin/Income_groups_cash_in_otc/delete/$1";
 
-$route["income-groups/merchant-list"]           = "admin/Income_groups/merchant_list";
-$route["income-groups/merchant-list/(:any)"]    = "admin/Income_groups/merchant_list/$1";
+$route["income-shares-cash-in-otc"]                 = "admin/Income_shares_cash_in_otc";
+$route["income-shares-cash-in-otc/(:num)"]          = "admin/Income_shares_cash_in_otc/index/$1";
+$route["income-shares-cash-in-otc/update/(:any)"]   = "admin/Income_shares_cash_in_otc/update/$1";
 
-$route["income-shares"]                 = "admin/Income_shares";
-$route["income-shares/(:num)"]          = "admin/Income_shares/index/$1";
-$route["income-shares/update/(:any)"]   = "admin/Income_shares/update/$1";
+// $route["income-groups/(:num)"]          = "admin/Income_groups/index/$1";
+// $route["income-groups/new"]             = "admin/Income_groups/new";
+// $route["income-groups/update/(:any)"]   = "admin/Income_groups/update/$1";
+
+// $route["income-groups/merchant-list"]           = "admin/Income_groups/merchant_list";
+// $route["income-groups/merchant-list/(:any)"]    = "admin/Income_groups/merchant_list/$1";
+
+// $route["income-shares"]                 = "admin/Income_shares";
+// $route["income-shares/(:num)"]          = "admin/Income_shares/index/$1";
+// $route["income-shares/update/(:any)"]   = "admin/Income_shares/update/$1";
 
 // $route["income-scheme-types"]               = "admin/Income_scheme_types";
 // $route["income-scheme-types/(:num)"]        = "admin/Income_scheme_types/index/$1";

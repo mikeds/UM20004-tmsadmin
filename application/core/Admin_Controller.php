@@ -855,6 +855,11 @@ HTML;
 					'menu_title'		=> 'Cash In - OTC',
 					'menu_url'			=> 	base_url() . "income-groups-cash-in-otc",
 					'menu_controller'	=> 'income_groups_cash_in_otc',
+				),
+				array(
+					'menu_title'		=> 'Cash Out - OTC',
+					'menu_url'			=> 	base_url() . "income-groups-cash-out-otc",
+					'menu_controller'	=> 'income_groups_cash_out_otc',
 				)
 			)
 		);
@@ -870,6 +875,11 @@ HTML;
 					'menu_title'		=> 'Cash In - OTC',
 					'menu_url'			=> 	base_url() . "income-shares-cash-in-otc",
 					'menu_controller'	=> 'income_shares_cash_in_otc',
+				),
+				array(
+					'menu_title'		=> 'Cash Out - OTC',
+					'menu_url'			=> 	base_url() . "income-shares-cash-out-otc",
+					'menu_controller'	=> 'income_shares_cash_out_otc',
 				)
 			)
 		);

@@ -847,18 +847,48 @@ HTML;
 		$menu_items[] = array(
 			'menu_id'			=> 'income-groups',
 			'menu_title'		=> 'Income Groups',
-			'menu_url'			=> 	base_url() . "income-groups",
+			'menu_url'			=> 	'#',
 			'menu_controller'	=> 'income_groups',
 			'menu_icon'			=> 'view-dashboard',
+			'menu_sub_items'	=> array(
+				array(
+					'menu_title'		=> 'Cash In - OTC',
+					'menu_url'			=> 	base_url() . "income-groups-cash-in-otc",
+					'menu_controller'	=> 'income_groups_cash_in_otc',
+				)
+			)
 		);
 
 		$menu_items[] = array(
 			'menu_id'			=> 'income-shares',
 			'menu_title'		=> 'Income Shares',
-			'menu_url'			=> 	base_url() . "income-shares",
+			'menu_url'			=> 	'#',
 			'menu_controller'	=> 'income_shares',
 			'menu_icon'			=> 'view-dashboard',
+			'menu_sub_items'	=> array(
+				array(
+					'menu_title'		=> 'Cash In - OTC',
+					'menu_url'			=> 	base_url() . "income-shares-cash-in-otc",
+					'menu_controller'	=> 'income_shares_cash_in_otc',
+				)
+			)
 		);
+
+		// $menu_items[] = array(
+		// 	'menu_id'			=> 'income-groups',
+		// 	'menu_title'		=> 'Income Groups',
+		// 	'menu_url'			=> 	base_url() . "income-groups",
+		// 	'menu_controller'	=> 'income_groups',
+		// 	'menu_icon'			=> 'view-dashboard',
+		// );
+
+		// $menu_items[] = array(
+		// 	'menu_id'			=> 'income-shares',
+		// 	'menu_title'		=> 'Income Shares',
+		// 	'menu_url'			=> 	base_url() . "income-shares",
+		// 	'menu_controller'	=> 'income_shares',
+		// 	'menu_icon'			=> 'view-dashboard',
+		// );
 
 		// $menu_items[] = array(
 		// 	'menu_id'			=> 'transaction-fees',

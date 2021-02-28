@@ -154,13 +154,11 @@ class Income_groups_model extends CI_Model {
 		}else{
 			return false;
 		}
-	} 
+	}
 
-	/*
-	public function delete($id){
-		$this->db->where($this->_id, $id); 
+	public function delete($where){
+		$this->db->where($where); 
 		$this->db->delete($this->_table_x);
 	}
-	*/
 }
 

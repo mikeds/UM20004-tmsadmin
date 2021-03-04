@@ -141,16 +141,6 @@
 									</div>
 								</div>
 							</div>
-							<?php if (isset($is_update)) { ?>
-							<div class="row">
-								<div class="col-xl-12">
-									<div class="form-control">
-										<input type="checkbox" id="status" name="status" value="1" <?=isset($post["status"]) ? $post["status"] : ""?>>
-										<label for="status">&nbsp; Check to verified account.</label>
-									</div>
-								</div>
-							</div><br>
-							<?php } ?>
 							<div class="row">
 								<div class="col-xl-4">
 									<div class="form-group">

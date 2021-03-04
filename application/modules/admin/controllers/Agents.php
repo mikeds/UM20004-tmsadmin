@@ -42,8 +42,9 @@ class Agents extends Admin_Controller {
 
 		$select = array(
 			'merchant_number as id',
+			'merchant_ref_code as "Ref Code"',
 			'merchant_status as "Status"',
-			'IF(merchant_email_status = 1, "Verified", "Unverified") as "Email Status"',
+			// 'IF(merchant_email_status = 1, "Verified", "Unverified") as "Email Status"',
 			'merchant_number as "Merchant Number"',
 			'merchant_code as Code',
 			'merchant_fname as "First Name"',
@@ -205,7 +206,11 @@ class Agents extends Admin_Controller {
 					)
 				);
 
+				$ref_code = substr(number_format(strtotime($this->_today) * rand(),0,'',''),0,6);
+				$ref_code = substr($fname, 0, 1) . substr($lname, 0, 1) . $ref_code;
+
 				$insert_data = array(
+					'merchant_ref_code'			=> strtolower($ref_code),
 					'merchant_number'			=> $merchant_number,
 					'merchant_code'				=> $merchant_code,
 					'merchant_fname'			=> $fname,
@@ -473,6 +478,18 @@ class Agents extends Admin_Controller {
 					'merchant_email_address'	=> $email_address,
 					'merchant_status'			=> $status == 1 ? 1 : 0,
 				);
+
+				if ($fname != $row->merchant_fname || $lname != $row->merchant_lname) {
+					$ref_code = substr(number_format(strtotime($this->_today) * rand(),0,'',''),0,6);
+					$ref_code = substr($fname, 0, 1) . substr($lname, 0, 1) . $ref_code;
+
+					$update_data = array_merge(
+						$update_data,
+						array(
+							'merchant_ref_code' => strtolower($ref_code)
+						)
+					);
+				}
 
 				$this->merchants->update(
 					$merchant_number,

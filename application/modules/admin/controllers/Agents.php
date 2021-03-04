@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Merchants extends Admin_Controller {
+class Agents extends Admin_Controller {
 	private
 		$_admin_account_data = NULL;
 
@@ -24,6 +24,7 @@ class Merchants extends Admin_Controller {
 		$this->load->model('admin/countries_model', 'countries');
 		$this->load->model('admin/provinces_model', 'provinces');
 		$this->load->model('admin/wallet_addresses_model', 'wallet_addresses');
+		$this->load->model('admin/merchant_accounts_model', 'merchant_accounts');
 
 		$this->_admin_account_data = $this->get_account_data();
 	}
@@ -32,8 +33,8 @@ class Merchants extends Admin_Controller {
 		$admin_account_data_results = $this->_admin_account_data['results'];
 		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 		
-		$this->_data['add_label']= "New Merchant";
-		$this->_data['add_url']	 = base_url() . "merchants/new";
+		$this->_data['add_label']= "New Agent";
+		$this->_data['add_url']	 = base_url() . "agents/new";
 
 		$actions = array(
 			'update'
@@ -63,7 +64,7 @@ class Merchants extends Admin_Controller {
 
 		$where = array(
 			'oauth_bridge_parent_id' 	=> $admin_oauth_bridge_id,
-			'merchant_role'				=> 1 // merchant
+			'merchant_role'				=> 2 // agents
 		);
 
 		$inner_joints = array(
@@ -96,12 +97,12 @@ class Merchants extends Admin_Controller {
 	    $results = $this->merchants->get_data($select, $where, array(), $inner_joints, array('filter'=>'merchant_date_created', 'sort'=>'DESC'), $offset, $this->_limit);
 
 		$this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 2);
-		$this->_data['title']  = "Merchants";
-		$this->set_template("merchants/list", $this->_data);
+		$this->_data['title']  = "New Agent";
+		$this->set_template("agents/list", $this->_data);
 	}
 
 	public function new() {
-		$this->_data['form_url']		= base_url() . "merchants/new";
+		$this->_data['form_url']		= base_url() . "agents/new";
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 
 		$admin_account_data_results = $this->_admin_account_data['results'];
@@ -154,11 +155,29 @@ class Merchants extends Admin_Controller {
 				$street			= $this->input->post("street");
 				$brgy			= $this->input->post("brgy");
 				$city			= $this->input->post("city");
-				$country_id		= $this->input->post("country");
+				// $country_id		= $this->input->post("country");
 				$province_id	= $this->input->post("province");
 				$mobile_no		= $this->input->post("mobile-no");
 				$contact_no		= $this->input->post("contact-no");
 				$email_address	= $this->input->post("email-address");
+
+				$repeat_password	= $this->input->post("repeat-password");
+				$password			= $this->input->post("password");
+
+				if ($this->validate_username("merchant", $email_address)) {
+					$this->session->set_flashdata('notification', $this->generate_notification('warning', 'Username Already Exist!'));
+					redirect($this->_data['form_url']);
+				}
+
+				if ($password == "" || $repeat_password == "") {
+					$this->session->set_flashdata('notification', $this->generate_notification('warning', 'Please fill-up password fields!'));
+					redirect($this->_data['form_url']);
+				}
+
+				if ($password != $repeat_password) {
+					$this->session->set_flashdata('notification', $this->generate_notification('warning', 'Password not the same!'));
+					redirect($this->_data['form_url']);
+				}
 
 				$merchant_number = $this->generate_code(
 					array(
@@ -205,7 +224,8 @@ class Merchants extends Admin_Controller {
 					'merchant_email_address'	=> $email_address,
 					'merchant_date_created'		=> $this->_today,
 					'merchant_status'			=> 1, // activated
-					'oauth_bridge_id'			=> $bridge_id
+					'oauth_bridge_id'			=> $bridge_id,
+					'merchant_role'				=> 2 // agents
 				);
 
 				$this->merchants->insert(
@@ -217,6 +237,50 @@ class Merchants extends Admin_Controller {
 
 				// create token auth for api
 				$this->create_token_auth($merchant_number, $bridge_id);
+
+				// create account
+				$password = hash("sha256", $password);
+				$account_number = $this->generate_code(
+					array(
+						"agent_account",
+						$admin_oauth_bridge_id,
+						$this->_today
+					),
+					"crc32"
+				);
+
+				$bridge_id = $this->generate_code(
+					array(
+						'account_number' 			=> $account_number,
+						'account_date_added'		=> $this->_today,
+						'oauth_bridge_parent_id'	=> $admin_oauth_bridge_id
+					)
+				);
+
+				// do insert bridge id
+				$this->bridges->insert(
+					array(
+						'oauth_bridge_id' 			=> $bridge_id,
+						'oauth_bridge_parent_id'	=> $admin_oauth_bridge_id,
+						'oauth_bridge_date_added'	=> $this->_today
+					)
+				);
+
+				$insert_data = array(
+					'merchant_number'		=> $merchant_number,
+					'account_number'		=> $account_number,
+					'account_fname'			=> $fname,
+					'account_mname'			=> $mname,
+					'account_lname'			=> $lname,
+					'account_username'		=> $email_address,
+					'account_password'		=> $password,
+					'account_date_added'	=> $this->_today,
+					'oauth_bridge_id'		=> $bridge_id,
+				);
+
+				$this->merchant_accounts->insert(
+					$insert_data
+				);
 
 				$this->session->set_flashdata('notification', $this->generate_notification('success', 'Successfully Added!'));
 				redirect($this->_data['form_url']);
@@ -251,8 +315,8 @@ class Merchants extends Admin_Controller {
 			"Please Select Province"
 		);
 
-		$this->_data['title']  = "New Merchant";
-		$this->set_template("merchants/form", $this->_data);
+		$this->_data['title']  = "New Agent";
+		$this->set_template("agents/form", $this->_data);
 	}
 
 	public function update($merchant_number) {
@@ -260,7 +324,7 @@ class Merchants extends Admin_Controller {
 		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$this->_data['is_update']		= true;
-		$this->_data['form_url']		= base_url() . "merchants/update/{$merchant_number}";
+		$this->_data['form_url']		= base_url() . "agents/update/{$merchant_number}";
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 
 		$country_id = 169; // PH
@@ -269,7 +333,8 @@ class Merchants extends Admin_Controller {
 			'',
 			array(
 				'oauth_bridge_parent_id'	=> $admin_oauth_bridge_id,
-				'merchant_number'			=> $merchant_number
+				'merchant_number'			=> $merchant_number,
+				'merchant_role'				=> 2
 			),
 			array(),
 			array(
@@ -285,7 +350,7 @@ class Merchants extends Admin_Controller {
 		)->row();
 
 		if ($row == "") {
-			redirect(base_url() . "merchants");
+			redirect(base_url() . "agents");
 		}
 
 
@@ -354,12 +419,41 @@ class Merchants extends Admin_Controller {
 				$street			= $this->input->post("street");
 				$brgy			= $this->input->post("brgy");
 				$city			= $this->input->post("city");
-				$country_id		= $this->input->post("country");
+				$country_id		= 169;
 				$province_id	= $this->input->post("province");
 				$mobile_no		= $this->input->post("mobile-no");
 				$contact_no		= $this->input->post("contact-no");
 				$email_address	= $this->input->post("email-address");
 				$status			= $this->input->post("status");
+
+				$repeat_password	= $this->input->post("repeat-password");
+				$password			= $this->input->post("password");
+
+				$row_account = $this->merchant_accounts->get_datum(
+					'', 
+					array(
+						'merchant_number'	=> $merchant_number
+					)
+				)->row();
+
+				if ($row_account != "") {
+					if ($this->validate_username("merchant", $username, $row_account->account_number)) {
+						$this->session->set_flashdata('notification', $this->generate_notification('warning', 'Username Already Exist!'));
+						redirect($this->_data['form_url']);
+					}	
+				} else {
+					if ($this->validate_username("merchant", $username)) {
+						$this->session->set_flashdata('notification', $this->generate_notification('warning', 'Username Already Exist!'));
+						redirect($this->_data['form_url']);
+					}
+				}
+
+				if ($password != "" || $repeat_password != "") {
+					if ($password != $repeat_password) {
+						$this->session->set_flashdata('notification', $this->generate_notification('warning', 'Password not the same!'));
+						redirect($this->_data['form_url']);
+					}
+				}
 
 				$update_data = array(
 					'merchant_code'				=> $merchant_code,
@@ -384,6 +478,39 @@ class Merchants extends Admin_Controller {
 					$merchant_number,
 					$update_data
 				);
+
+				// update agent account
+				$update_data = array(
+					'account_fname'		=> $fname,
+					'account_mname'		=> $mname,
+					'account_lname'		=> $lname,
+					'account_status'	=> $status == 1 ? 1 : 0
+				);
+
+				if ($password != "") {
+					$password = hash("sha256", $password);
+
+					$update_data = array_merge(
+						$update_data,
+						array(
+							'account_password' => $password
+						)
+					);
+				}
+
+				$row_account = $this->merchant_accounts->get_datum(
+					'', 
+					array(
+						'merchant_number'	=> $merchant_number
+					)
+				)->row();
+
+				if ($row_account != "") {
+					$this->merchant_accounts->update(
+						$row_account->account_number,
+						$update_data
+					);
+				}
 
 				$this->session->set_flashdata('notification', $this->generate_notification('success', 'Successfully Updated!'));
 				redirect($this->_data['form_url']);
@@ -418,7 +545,7 @@ class Merchants extends Admin_Controller {
 			true
 		);
 
-		$this->_data['title']  = "Update Merchant";
-		$this->set_template("merchants/form", $this->_data);
+		$this->_data['title']  = "Update Agent";
+		$this->set_template("agents/form", $this->_data);
 	}
 }

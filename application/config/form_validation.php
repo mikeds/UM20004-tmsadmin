@@ -197,6 +197,103 @@ switch( strtolower(get_controller()) ) {
 		);
 	break;
 
+	case 'agents' : 
+		$config = array(
+			'validate' => array(
+				array( 	
+					'field' => 'merchant-code',
+					'label' => 'Merchant Code',
+					'rules'	=> "trim|xss_clean|alpha_numeric"
+				),
+				array( 	
+					'field' => 'first-name',
+					'label' => 'First Name',
+					'rules'	=> $required_rules
+				),
+				array( 	
+					'field' => 'middle-name',
+					'label' => 'Middle Name',
+					'rules'	=> $default_rules
+				),
+				array( 	
+					'field' => 'last-name',
+					'label' => 'Last Name',
+					'rules'	=> $required_rules
+				),
+				array( 	
+					'field' => 'dob',
+					'label' => 'Date of Birth',
+					'rules'	=> "trim|xss_clean|required"
+				),
+				array( 	
+					'field' => 'address',
+					'label' => 'House No./ Unit No. / Building',
+					'rules'	=> "trim|xss_clean|required"
+				),
+				array( 	
+					'field' => 'street',
+					'label' => 'Street',
+					'rules'	=> "trim|xss_clean|required"
+				),
+				array( 	
+					'field' => 'barangay',
+					'label' => 'Barangay',
+					'rules'	=> "trim|xss_clean"
+				),
+				array( 	
+					'field' => 'city',
+					'label' => 'City',
+					'rules'	=> "trim|xss_clean|required"
+				),
+				// array( 	
+				// 	'field' => 'country',
+				// 	'label' => 'Country',
+				// 	'rules'	=> "trim|xss_clean|required"
+				// ),
+				array( 	
+					'field' => 'province',
+					'label' => 'Province',
+					'rules'	=> "trim|xss_clean|required|numeric"
+				),
+				array( 	
+					'field' => 'gender',
+					'label' => 'Gender',
+					'rules'	=> "trim|xss_clean|required|numeric"
+				),
+				array( 	
+					'field' => 'mobile-no',
+					'label' => 'Mobile Number',
+					'rules'	=> "trim|xss_clean|alpha_numeric"
+				),
+				array(
+					'field' => 'contact-no',
+					'label' => 'Contact Number',
+					'rules'	=> "trim|xss_clean|alpha_numeric"
+				),
+				array( 	
+					'field' => 'email-address',
+					'label' => 'Email Address',
+					'rules'	=> "trim|xss_clean|required"
+				),
+				array( 	
+					'field' => 'passsword',
+					'label' => 'Password',
+					'rules'	=> "trim|xss_clean"
+				),
+				array( 	
+					'field' => 'repeat-passsword',
+					'label' => 'Repeat Password',
+					'rules'	=> "trim|xss_clean"
+				),
+				array( 	
+					'field' => 'status',
+					'label' => 'Status',
+					'rules'	=> $default_numeric_rules
+				),
+			),
+		);
+	break;
+
 	case 'merchants' : 
 		$config = array(
 			'validate' => array(

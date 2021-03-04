@@ -884,6 +884,34 @@ HTML;
 			)
 		);
 
+		$menu_items[] = array(
+			'menu_id'			=> 'agent-shares',
+			'menu_title'		=> 'Agent Shares',
+			'menu_url'			=> 	'#',
+			'menu_controller'	=> 'agent_shares',
+			'menu_icon'			=> 'view-dashboard',
+			'menu_sub_items'	=> array(
+				array(
+					'menu_title'		=> 'Cash In - OTC',
+					'menu_url'			=> 	base_url() . "agent-shares-cash-in-otc",
+					'menu_controller'	=> 'agent_shares_cash_in_otc',
+				),
+				array(
+					'menu_title'		=> 'Cash Out - OTC',
+					'menu_url'			=> 	base_url() . "agent-shares-cash-out-otc",
+					'menu_controller'	=> 'agent_shares_cash_out_otc',
+				)
+			)
+		);
+
+		$menu_items[] = array(
+			'menu_id'			=> 'agents',
+			'menu_title'		=> 'Agents',
+			'menu_url'			=> 	base_url() . "agents",
+			'menu_controller'	=> 'agents',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
 		// $menu_items[] = array(
 		// 	'menu_id'			=> 'income-groups',
 		// 	'menu_title'		=> 'Income Groups',

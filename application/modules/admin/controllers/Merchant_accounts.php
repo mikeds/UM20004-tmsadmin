@@ -38,7 +38,8 @@ class Merchant_accounts extends Admin_Controller {
 		);
 
 		$where = array(
-			'oauth_bridge_parent_id' => $admin_oauth_bridge_id
+			'oauth_bridge_parent_id'	=> $admin_oauth_bridge_id,
+			'merchant_role'				=> 1
 		);
 
 		$inner_joints = array(
@@ -73,7 +74,7 @@ class Merchant_accounts extends Admin_Controller {
 		$this->_data['form_url']		= base_url() . "merchant-accounts/new";
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 
-		$merchants = $this->get_merchants();
+		$merchants = $this->get_merchants(1);
 
 		$this->_data['merchants'] = $this->generate_selection(
 			"merchant", 
@@ -95,8 +96,27 @@ class Merchant_accounts extends Admin_Controller {
 				$mname				= $this->input->post("middle-name");
 				$lname				= $this->input->post("last-name");
 
-				if ($this->validate_username("merchant", $username)) {
-					$this->session->set_flashdata('notification', $this->generate_notification('warning', 'Username Already Exist!'));
+				$row_m_email_address = $this->merchants->get_datum(
+					'',
+					array(
+						'merchant_email_address'	=> $username
+					)
+				)->row();
+
+				if ($row_m_email_address != "") {
+					$this->session->set_flashdata('notification', $this->generate_notification('warning', 'Email address is already used!'));
+					redirect($this->_data['form_url']);
+				}
+
+				$row_ma_email_address = $this->merchant_accounts->get_datum(
+					'',
+					array(
+						'account_username'	=> $username
+					)
+				)->row();
+
+				if ($row_ma_email_address != "") {
+					$this->session->set_flashdata('notification', $this->generate_notification('warning', 'Email address is already used!'));
 					redirect($this->_data['form_url']);
 				}
 
@@ -201,7 +221,7 @@ class Merchant_accounts extends Admin_Controller {
 			'status'		=> $account_row->account_status == 1 ? "checked" : ""
 		);
 
-		$merchants = $this->get_merchants();
+		$merchants = $this->get_merchants(1);
 
 		$this->_data['merchants'] = $this->generate_selection(
 			"merchant",
@@ -213,20 +233,14 @@ class Merchant_accounts extends Admin_Controller {
 		);
 
 		if ($_POST) {
-			if ($this->form_validation->run('validate')) {
+			if ($this->form_validation->run('validate_update')) {
 				$merchant_number	= $this->input->post("merchant");
-				$username 			= $this->input->post("username");
 				$password 			= $this->input->post("password");
 				$repeat_password 	= $this->input->post("repeat-password");
 				$fname				= $this->input->post("first-name");
 				$mname				= $this->input->post("middle-name");
 				$lname				= $this->input->post("last-name");
 				$status				= $this->input->post("status");
-
-				if ($this->validate_username("merchant", $username, $account_number)) {
-					$this->session->set_flashdata('notification', $this->generate_notification('warning', 'Username Already Exist!'));
-					redirect($this->_data['form_url']);
-				}
 
 				if ($password != "" || $repeat_password != "") {
 					if ($password != $repeat_password) {
@@ -240,7 +254,6 @@ class Merchant_accounts extends Admin_Controller {
 					'account_fname'		=> $fname,
 					'account_mname'		=> $mname,
 					'account_lname'		=> $lname,
-					'account_username'	=> $username,
 					'account_status'	=> $status == 1 ? 1 : 0
 				);
 
@@ -266,6 +279,6 @@ class Merchant_accounts extends Admin_Controller {
 		}
 
 		$this->_data['title']  = "Update Merchant Account";
-		$this->set_template("merchant_accounts/form", $this->_data);
+		$this->set_template("merchant_accounts/form_update", $this->_data);
 	}
 }

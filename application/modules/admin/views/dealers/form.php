@@ -16,7 +16,32 @@
 							<div class="row">
 								<div class="col-xl-4">
 									<div class="form-group">
-										<label>Merchant Code </label>
+										<label>Email Address <span class="text-danger">*</span></label>
+										<input name="email-address" class="form-control" placeholder="Email Address" value="<?=isset($post['email-address']) ? $post['email-address'] : ""?>">
+										<span class="text-danger"><?=form_error('email-address')?></span>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xl-4">
+									<div class="form-group">
+										<label>Password <span class="text-danger">*</span></label>
+										<input type="password" name="password" class="form-control" placeholder="Password" value="<?=isset($post['password']) ? $post['password'] : ""?>">
+										<span class="text-danger"><?=form_error('password')?></span>
+									</div>
+								</div>
+								<div class="col-xl-4">
+									<div class="form-group">
+										<label>Repeat Password <span class="text-danger">*</span></label>
+										<input type="password" name="repeat-password" class="form-control" placeholder="Repeat Password" value="<?=isset($post['repeat-password']) ? $post['repeat-password'] : ""?>">
+										<span class="text-danger"><?=form_error('repeat-password')?></span>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xl-4">
+									<div class="form-group">
+										<label>Dealer Code </label>
 										<input name="merchant-code" class="form-control" placeholder="Merchant Code" value="<?=isset($post['merchant-code']) ? $post['merchant-code'] : ""?>">
 										<span class="text-danger"><?=form_error('merchant-code')?></span>
 									</div>
@@ -62,13 +87,6 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-xl-4">
-									<div class="form-group">
-										<label>Email Address <span class="text-danger">*</span></label>
-										<input name="email-address" class="form-control" placeholder="Email Address" value="<?=isset($post['email-address']) ? $post['email-address'] : ""?>">
-										<span class="text-danger"><?=form_error('email-address')?></span>
-									</div>
-								</div>
 								<div class="col-xl-4">
 									<div class="form-group">
 										<label>Mobile No. </label>
@@ -117,29 +135,12 @@
 								</div>
 								<div class="col-xl-4">
 									<div class="form-group">
-										<label>Country <span class="text-danger">*</span></label>
-										<?=isset($country) ? $country : ""?>
-										<span class="text-danger"><?=form_error('country')?></span>
-									</div>
-								</div>
-								<div class="col-xl-4">
-									<div class="form-group">
 										<label>Provice/Region <span class="text-danger">*</span></label>
 										<?=isset($province) ? $province : ""?>
 										<span class="text-danger"><?=form_error('province')?></span>
 									</div>
 								</div>
 							</div>
-							<?php if (isset($is_update)) { ?>
-							<div class="row">
-								<div class="col-xl-12">
-									<div class="form-control">
-										<input type="checkbox" id="status" name="status" value="1" <?=isset($post["status"]) ? $post["status"] : ""?>>
-										<label for="status">&nbsp; Check to activate.</label>
-									</div>
-								</div>
-							</div><br>
-							<?php } ?>
 							<div class="row">
 								<div class="col-xl-4">
 									<div class="form-group">

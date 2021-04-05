@@ -64,7 +64,7 @@ class Admin_Controller extends Global_Controller {
 		);
 	}
 
-	public function get_merchants() {
+	public function get_merchants($role = 1) {
 		$this->load->model("admin/merchants_model", "merchants");
 
 		$account 					= $this->get_account_data();
@@ -72,7 +72,8 @@ class Admin_Controller extends Global_Controller {
 		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$where = array(
-			'oauth_bridge_parent_id' => $admin_oauth_bridge_id
+			'oauth_bridge_parent_id' 	=> $admin_oauth_bridge_id,
+			'merchant_role'				=> $role
 		);
 
 		$inner_joints = array(
@@ -909,6 +910,14 @@ HTML;
 			'menu_title'		=> 'Agents',
 			'menu_url'			=> 	base_url() . "agents",
 			'menu_controller'	=> 'agents',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
+			'menu_id'			=> 'dealers',
+			'menu_title'		=> 'Dealers',
+			'menu_url'			=> 	base_url() . "dealers",
+			'menu_controller'	=> 'dealers',
 			'menu_icon'			=> 'view-dashboard',
 		);
 

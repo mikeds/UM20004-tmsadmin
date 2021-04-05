@@ -16,7 +16,7 @@
 							<div class="row">
 								<div class="col-xl-4">
 									<div class="form-group">
-										<label>Email Address/Username <span class="text-danger">*</span></label>
+										<label>Email Address <span class="text-danger">*</span></label>
 										<input name="email-address" class="form-control" placeholder="Email Address" value="<?=isset($post['email-address']) ? $post['email-address'] : ""?>">
 										<span class="text-danger"><?=form_error('email-address')?></span>
 									</div>
@@ -41,7 +41,7 @@
 							<div class="row">
 								<div class="col-xl-4">
 									<div class="form-group">
-										<label>Merchant Code </label>
+										<label>Agent Code </label>
 										<input name="merchant-code" class="form-control" placeholder="Merchant Code" value="<?=isset($post['merchant-code']) ? $post['merchant-code'] : ""?>">
 										<span class="text-danger"><?=form_error('merchant-code')?></span>
 									</div>

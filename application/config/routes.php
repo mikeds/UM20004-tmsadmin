@@ -147,6 +147,7 @@ $route['merchants/(:num)']          = "admin/Merchants/index/$1";
 $route['merchants/new']             = "admin/Merchants/new";
 $route['merchants/update/(:any)']   = "admin/Merchants/update/$1";
 
+// AGENTS
 $route['agents']                 = "admin/Agents";
 $route['agents/(:num)']          = "admin/Agents/index/$1";
 $route['agents/new']             = "admin/Agents/new";
@@ -154,6 +155,12 @@ $route['agents/update/(:any)']   = "admin/Agents/update/$1";
 
 $route['agent-shares-cash-in-otc']  = "admin/Agent_shares_cash_in_otc";
 $route['agent-shares-cash-out-otc'] = "admin/Agent_shares_cash_out_otc";
+
+// DEALERS
+$route['dealers']                 = "admin/Dealers";
+$route['dealers/(:num)']          = "admin/Dealers/index/$1";
+$route['dealers/new']             = "admin/Dealers/new";
+$route['dealers/update/(:any)']   = "admin/Dealers/update/$1";
 
 $route['top-up']                    = "admin/Top_up";
 $route['top-up/(:num)']             = "admin/Top_up/index/$1";

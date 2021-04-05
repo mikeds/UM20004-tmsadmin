@@ -42,7 +42,6 @@ class Merchants extends Admin_Controller {
 		$select = array(
 			'merchant_number as id',
 			'merchant_status as "Status"',
-			'IF(merchant_email_status = 1, "Verified", "Unverified") as "Email Status"',
 			'merchant_number as "Merchant Number"',
 			'merchant_code as Code',
 			'merchant_fname as "First Name"',

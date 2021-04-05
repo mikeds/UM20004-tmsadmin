@@ -80,10 +80,6 @@ class Admin_Controller extends Global_Controller {
 			array(
 				'table_name' 	=> 'oauth_bridges',
 				'condition'		=> 'oauth_bridges.oauth_bridge_id = merchants.oauth_bridge_id'
-			),
-			array(
-				'table_name' 	=> 'oauth_clients',
-				'condition'		=> 'oauth_clients.client_id = oauth_bridges.oauth_bridge_id'
 			)
 		);
 

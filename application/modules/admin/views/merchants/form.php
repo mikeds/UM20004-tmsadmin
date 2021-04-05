@@ -65,7 +65,7 @@
 								<div class="col-xl-4">
 									<div class="form-group">
 										<label>Email Address <span class="text-danger">*</span></label>
-										<input name="email-address" class="form-control" placeholder="Email Address" value="<?=isset($post['email-address']) ? $post['email-address'] : ""?>">
+										<input type="email" name="email-address" class="form-control" placeholder="Email Address" value="<?=isset($post['email-address']) ? $post['email-address'] : ""?>">
 										<span class="text-danger"><?=form_error('email-address')?></span>
 									</div>
 								</div>

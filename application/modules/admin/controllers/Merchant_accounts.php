@@ -173,6 +173,9 @@ class Merchant_accounts extends Admin_Controller {
 					$insert_data
 				);
 
+				// create token auth for api
+				$this->create_token_auth($account_number, $bridge_id);
+
 				$this->session->set_flashdata('notification', $this->generate_notification('success', 'Successfully Added!'));
 				redirect($this->_data['form_url']);
 			}

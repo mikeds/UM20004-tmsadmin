@@ -802,6 +802,14 @@ HTML;
 		// );
 
 		$menu_items[] = array(
+			'menu_id'			=> 'client-request',
+			'menu_title'		=> 'Client Request',
+			'menu_url'			=> 	base_url() . "client-request",
+			'menu_controller'	=> 'client_request',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
 			'menu_id'			=> 'transactions',
 			'menu_title'		=> 'Transactions',
 			'menu_url'			=> 	base_url() . "transactions",

@@ -65,7 +65,7 @@
 								<div class="col-xl-4">
 									<div class="form-group">
 										<label>Email Address <span class="text-danger">*</span></label>
-										<input name="email-address" class="form-control" placeholder="Email Address" value="<?=isset($post['email-address']) ? $post['email-address'] : ""?>">
+										<input type="email" name="email-address" class="form-control" placeholder="Email Address" value="<?=isset($post['email-address']) ? $post['email-address'] : ""?>">
 										<span class="text-danger"><?=form_error('email-address')?></span>
 									</div>
 								</div>
@@ -135,7 +135,7 @@
 								<div class="col-xl-12">
 									<div class="form-control">
 										<input type="checkbox" id="status" name="status" value="1" <?=isset($post["status"]) ? $post["status"] : ""?>>
-										<label for="status">&nbsp; Check to verified account.</label>
+										<label for="status">&nbsp; Check to activate.</label>
 									</div>
 								</div>
 							</div><br>

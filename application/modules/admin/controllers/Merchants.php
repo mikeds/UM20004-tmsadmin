@@ -42,7 +42,6 @@ class Merchants extends Admin_Controller {
 		$select = array(
 			'merchant_number as id',
 			'merchant_status as "Status"',
-			'IF(merchant_email_status = 1, "Verified", "Unverified") as "Email Status"',
 			'merchant_number as "Merchant Number"',
 			'merchant_code as Code',
 			'merchant_fname as "First Name"',
@@ -214,9 +213,6 @@ class Merchants extends Admin_Controller {
 
 				// create wallet address
 				$this->create_wallet_address($merchant_number, $bridge_id, $admin_oauth_bridge_id);
-
-				// create token auth for api
-				$this->create_token_auth($merchant_number, $bridge_id);
 
 				$this->session->set_flashdata('notification', $this->generate_notification('success', 'Successfully Added!'));
 				redirect($this->_data['form_url']);

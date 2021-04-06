@@ -41,7 +41,7 @@
 							<div class="row">
 								<div class="col-xl-4">
 									<div class="form-group">
-										<label>Agent Code </label>
+										<label>Dealer Code </label>
 										<input name="merchant-code" class="form-control" placeholder="Merchant Code" value="<?=isset($post['merchant-code']) ? $post['merchant-code'] : ""?>">
 										<span class="text-danger"><?=form_error('merchant-code')?></span>
 									</div>

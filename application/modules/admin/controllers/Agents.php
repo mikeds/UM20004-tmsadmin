@@ -42,11 +42,11 @@ class Agents extends Admin_Controller {
 
 		$select = array(
 			'merchant_number as id',
-			// 'merchant_ref_code as "Ref Code"',
 			'merchant_status as "Status"',
 			// 'IF(merchant_email_status = 1, "Verified", "Unverified") as "Email Status"',
 			'merchant_number as "Agent Number"',
-			'merchant_code as Code',
+			'merchant_ref_code as "Code"',
+			// 'merchant_code as Code',
 			'merchant_fname as "First Name"',
 			'merchant_mname as "Middle Name"',
 			'merchant_lname as "Last Name"',
@@ -98,7 +98,7 @@ class Agents extends Admin_Controller {
 	    $results = $this->merchants->get_data($select, $where, array(), $inner_joints, array('filter'=>'merchant_date_created', 'sort'=>'DESC'), $offset, $this->_limit);
 
 		$this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 2);
-		$this->_data['title']  = "New Agent";
+		$this->_data['title']  = "Agent List";
 		$this->set_template("agents/list", $this->_data);
 	}
 
@@ -231,7 +231,7 @@ class Agents extends Admin_Controller {
 				$insert_data = array(
 					'merchant_ref_code'			=> strtolower($ref_code),
 					'merchant_number'			=> $merchant_number,
-					'merchant_code'				=> $merchant_code,
+					// 'merchant_code'				=> $merchant_code,
 					'merchant_fname'			=> $fname,
 					'merchant_mname'			=> $mname,
 					'merchant_lname'			=> $lname,
@@ -480,7 +480,7 @@ class Agents extends Admin_Controller {
 				}
 
 				$update_data = array(
-					'merchant_code'				=> $merchant_code,
+					// 'merchant_code'				=> $merchant_code,
 					'merchant_fname'			=> $fname,
 					'merchant_mname'			=> $mname,
 					'merchant_lname'			=> $lname,

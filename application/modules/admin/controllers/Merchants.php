@@ -95,7 +95,7 @@ class Merchants extends Admin_Controller {
 	    $results = $this->merchants->get_data($select, $where, array(), $inner_joints, array('filter'=>'merchant_date_created', 'sort'=>'DESC'), $offset, $this->_limit);
 
 		$this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 2);
-		$this->_data['title']  = "Merchants";
+		$this->_data['title']  = "Merchant List";
 		$this->set_template("merchants/list", $this->_data);
 	}
 
@@ -187,7 +187,7 @@ class Merchants extends Admin_Controller {
 
 				$insert_data = array(
 					'merchant_number'			=> $merchant_number,
-					'merchant_code'				=> $merchant_code,
+					// 'merchant_code'				=> $merchant_code,
 					'merchant_fname'			=> $fname,
 					'merchant_mname'			=> $mname,
 					'merchant_lname'			=> $lname,
@@ -358,7 +358,7 @@ class Merchants extends Admin_Controller {
 				$status			= $this->input->post("status");
 
 				$update_data = array(
-					'merchant_code'				=> $merchant_code,
+					// 'merchant_code'				=> $merchant_code,
 					'merchant_fname'			=> $fname,
 					'merchant_mname'			=> $mname,
 					'merchant_lname'			=> $lname,

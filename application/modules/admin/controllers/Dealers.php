@@ -43,10 +43,10 @@ class Dealers extends Admin_Controller {
 		$select = array(
 			'merchant_number as id',
 			'merchant_status as "Status"',
-			// 'merchant_ref_code as "Ref Code"',
 			// 'IF(merchant_email_status = 1, "Verified", "Unverified") as "Email Status"',
 			'merchant_number as "Dealer Number"',
-			'merchant_code as Code',
+			'merchant_ref_code as "Code"',
+			// 'merchant_code as Code',
 			'merchant_fname as "First Name"',
 			'merchant_mname as "Middle Name"',
 			'merchant_lname as "Last Name"',
@@ -98,7 +98,7 @@ class Dealers extends Admin_Controller {
 	    $results = $this->merchants->get_data($select, $where, array(), $inner_joints, array('filter'=>'merchant_date_created', 'sort'=>'DESC'), $offset, $this->_limit);
 
 		$this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 2);
-		$this->_data['title']  = "New Dealer";
+		$this->_data['title']  = "Dealer List";
 		$this->set_template("dealers/list", $this->_data);
 	}
 
@@ -231,7 +231,7 @@ class Dealers extends Admin_Controller {
 				$insert_data = array(
 					'merchant_ref_code'			=> strtolower($ref_code),
 					'merchant_number'			=> $merchant_number,
-					'merchant_code'				=> $merchant_code,
+					// 'merchant_code'				=> $merchant_code,
 					'merchant_fname'			=> $fname,
 					'merchant_mname'			=> $mname,
 					'merchant_lname'			=> $lname,
@@ -479,7 +479,7 @@ class Dealers extends Admin_Controller {
 				}
 
 				$update_data = array(
-					'merchant_code'				=> $merchant_code,
+					// 'merchant_code'				=> $merchant_code,
 					'merchant_fname'			=> $fname,
 					'merchant_mname'			=> $mname,
 					'merchant_lname'			=> $lname,

@@ -38,7 +38,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<!-- <div class="row">
 								<div class="col-xl-4">
 									<div class="form-group">
 										<label>Dealer Code </label>
@@ -46,7 +46,7 @@
 										<span class="text-danger"><?=form_error('merchant-code')?></span>
 									</div>
 								</div>
-							</div>
+							</div> -->
 							<div class="row">
 								<div class="col-xl-4">
 									<div class="form-group">
@@ -141,6 +141,16 @@
 									</div>
 								</div>
 							</div>
+							<?php if (isset($is_update)) { ?>
+							<div class="row">
+								<div class="col-xl-12">
+									<div class="form-control">
+										<input type="checkbox" id="status" name="status" value="1" <?=isset($post["status"]) ? $post["status"] : ""?>>
+										<label for="status">&nbsp; Check to activate.</label>
+									</div>
+								</div>
+							</div><br>
+							<?php } ?>
 							<div class="row">
 								<div class="col-xl-4">
 									<div class="form-group">

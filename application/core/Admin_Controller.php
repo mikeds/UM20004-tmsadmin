@@ -72,9 +72,17 @@ class Admin_Controller extends Global_Controller {
 		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$where = array(
-			'oauth_bridge_parent_id' 	=> $admin_oauth_bridge_id,
-			'merchant_role'				=> $role
+			'oauth_bridge_parent_id' => $admin_oauth_bridge_id
 		);
+
+		if ($role == "") {
+			$where = array_merge(
+				$where,
+				array(
+					'merchant_role' => $role
+				)
+			);
+		}
 
 		$inner_joints = array(
 			array(

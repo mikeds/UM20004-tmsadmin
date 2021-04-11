@@ -873,6 +873,11 @@ HTML;
 					'menu_title'		=> 'Cash Out - OTC',
 					'menu_url'			=> 	base_url() . "income-groups-cash-out-otc",
 					'menu_controller'	=> 'income_groups_cash_out_otc',
+				),
+				array(
+					'menu_title'		=> 'Cash Out - UBP',
+					'menu_url'			=> 	base_url() . "income-groups-cash-out-ubp",
+					'menu_controller'	=> 'income_groups_cash_out_ubp',
 				)
 			)
 		);
@@ -893,6 +898,11 @@ HTML;
 					'menu_title'		=> 'Cash Out - OTC',
 					'menu_url'			=> 	base_url() . "income-shares-cash-out-otc",
 					'menu_controller'	=> 'income_shares_cash_out_otc',
+				),
+				array(
+					'menu_title'		=> 'Cash Out - UBP',
+					'menu_url'			=> 	base_url() . "income-shares-cash-out-ubp",
+					'menu_controller'	=> 'income_shares_cash_out_ubp',
 				)
 			)
 		);

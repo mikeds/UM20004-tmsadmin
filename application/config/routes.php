@@ -91,7 +91,6 @@ $route["income-shares-cash-in-otc"]                 = "admin/Income_shares_cash_
 $route["income-shares-cash-in-otc/(:num)"]          = "admin/Income_shares_cash_in_otc/index/$1";
 $route["income-shares-cash-in-otc/update/(:any)"]   = "admin/Income_shares_cash_in_otc/update/$1";
 
-
 # INCOME GROUPS - CASH OUT OTC
 $route["income-groups-cash-out-otc"]                 = "admin/Income_groups_cash_out_otc";
 $route["income-groups-cash-out-otc/(:num)"]          = "admin/Income_groups_cash_out_otc/index/$1";
@@ -103,6 +102,18 @@ $route["income-groups-cash-out-otc/delete/(:any)"]   = "admin/Income_groups_cash
 $route["income-shares-cash-out-otc"]                 = "admin/Income_shares_cash_out_otc";
 $route["income-shares-cash-out-otc/(:num)"]          = "admin/Income_shares_cash_out_otc/index/$1";
 $route["income-shares-cash-out-otc/update/(:any)"]   = "admin/Income_shares_cash_out_otc/update/$1";
+
+# INCOME GROUPS - CASH OUT UBP
+$route["income-groups-cash-out-ubp"]                 = "admin/Income_groups_cash_out_ubp";
+$route["income-groups-cash-out-ubp/(:num)"]          = "admin/Income_groups_cash_out_ubp/index/$1";
+$route["income-groups-cash-out-ubp/new"]             = "admin/Income_groups_cash_out_ubp/new";
+$route["income-groups-cash-out-ubp/update/(:any)"]   = "admin/Income_groups_cash_out_ubp/update/$1";
+$route["income-groups-cash-out-ubp/delete/(:any)"]   = "admin/Income_groups_cash_out_ubp/delete/$1";
+
+# INCOME SHARES - CASH OUT UBP
+$route["income-shares-cash-out-ubp"]                 = "admin/Income_shares_cash_out_ubp";
+$route["income-shares-cash-out-ubp/(:num)"]          = "admin/Income_shares_cash_out_ubp/index/$1";
+$route["income-shares-cash-out-ubp/update/(:any)"]   = "admin/Income_shares_cash_out_ubp/update/$1";
 
 $route["income-schemes/get-merchants-in-scheme/(:num)/(:num)"]   = "admin/Income_schemes/get_merchants_in_scheme/$1/$2";
 

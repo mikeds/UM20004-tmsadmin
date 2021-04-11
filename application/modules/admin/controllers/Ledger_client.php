@@ -243,6 +243,7 @@ class Ledger_client extends Admin_Controller {
 			'transaction_sender_ref_id as "Sender Ref ID"',
 			'transaction_type_name as "TX Type"',
 			'transaction_requested_by as "TX By"',
+			'ledger_datum_desc as "Description"',
 			'FORMAT(transaction_amount, 2) as "TX Amount"',
 			'FORMAT(transaction_fee, 2) as "Fee"',
 			'FORMAT(ledger_datum_old_balance, 2) as "Old Balance"',
@@ -279,7 +280,7 @@ class Ledger_client extends Admin_Controller {
 			array(),
 			$inner_joints,
 			array(
-				'filter'	=> 'ledger_datum_date_added',
+				'filter'	=> 'ledger_date_micro',
 				'sort'		=> $sort
             ),
             $offset,

@@ -282,7 +282,7 @@ class Ledger_merchant extends Admin_Controller {
 			array(),
 			$inner_joints,
 			array(
-				'filter'	=> 'ledger_date_micro',
+				'filter'	=> 'ledger_datum_date_added, ledger_date_micro',
 				'sort'		=> $sort
             ),
             $offset,

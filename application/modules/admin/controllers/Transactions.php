@@ -56,7 +56,7 @@ class Transactions extends Admin_Controller {
 			array(),
 			$inner_joints,
 			array(
-				'filter'	=> 'transaction_date_micro',
+				'filter'	=> 'transaction_date_created, transaction_date_micro',
 				'sort'		=> 'DESC'
 			)
         );

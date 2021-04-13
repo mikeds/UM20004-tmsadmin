@@ -115,6 +115,18 @@ $route["income-shares-cash-out-ubp"]                 = "admin/Income_shares_cash
 $route["income-shares-cash-out-ubp/(:num)"]          = "admin/Income_shares_cash_out_ubp/index/$1";
 $route["income-shares-cash-out-ubp/update/(:any)"]   = "admin/Income_shares_cash_out_ubp/update/$1";
 
+# INCOME GROUPS - CreateScanQR
+$route["income-groups-createscanqr"]                 = "admin/Income_groups_createscanqr";
+$route["income-groups-createscanqr/(:num)"]          = "admin/Income_groups_createscanqr/index/$1";
+$route["income-groups-createscanqr/new"]             = "admin/Income_groups_createscanqr/new";
+$route["income-groups-createscanqr/update/(:any)"]   = "admin/Income_groups_createscanqr/update/$1";
+$route["income-groups-createscanqr/delete/(:any)"]   = "admin/Income_groups_createscanqr/delete/$1";
+
+# INCOME SHARES - CreateScanQR
+$route["income-shares-createscanqr"]                 = "admin/Income_shares_createscanqr";
+$route["income-shares-createscanqr/(:num)"]          = "admin/Income_shares_createscanqr/index/$1";
+$route["income-shares-createscanqr/update/(:any)"]   = "admin/Income_shares_createscanqr/update/$1";
+
 $route["income-schemes/get-merchants-in-scheme/(:num)/(:num)"]   = "admin/Income_schemes/get_merchants_in_scheme/$1/$2";
 
 

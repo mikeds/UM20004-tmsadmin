@@ -878,6 +878,11 @@ HTML;
 					'menu_title'		=> 'Cash Out - UBP',
 					'menu_url'			=> 	base_url() . "income-groups-cash-out-ubp",
 					'menu_controller'	=> 'income_groups_cash_out_ubp',
+				),
+				array(
+					'menu_title'		=> 'CreateScanQR',
+					'menu_url'			=> 	base_url() . "income-groups-createscanqr",
+					'menu_controller'	=> 'income_groups_createscanqr',
 				)
 			)
 		);
@@ -903,6 +908,11 @@ HTML;
 					'menu_title'		=> 'Cash Out - UBP',
 					'menu_url'			=> 	base_url() . "income-shares-cash-out-ubp",
 					'menu_controller'	=> 'income_shares_cash_out_ubp',
+				),
+				array(
+					'menu_title'		=> 'CreateScanQR',
+					'menu_url'			=> 	base_url() . "income-shares-createscanqr",
+					'menu_controller'	=> 'income_shares_createscanqr',
 				)
 			)
 		);

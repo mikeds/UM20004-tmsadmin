@@ -127,6 +127,30 @@ $route["income-shares-createscanqr"]                 = "admin/Income_shares_crea
 $route["income-shares-createscanqr/(:num)"]          = "admin/Income_shares_createscanqr/index/$1";
 $route["income-shares-createscanqr/update/(:any)"]   = "admin/Income_shares_createscanqr/update/$1";
 
+# INCOME GROUPS - QuickPayQR
+$route["income-groups-quickpayqr"]                  = "admin/Income_groups_quickpayqr";
+$route["income-groups-quickpayqr/(:num)"]           = "admin/Income_groups_quickpayqr/index/$1";
+$route["income-groups-quickpayqr/new"]              = "admin/Income_groups_quickpayqr/new";
+$route["income-groups-quickpayqr/update/(:any)"]    = "admin/Income_groups_quickpayqr/update/$1";
+$route["income-groups-quickpayqr/delete/(:any)"]    = "admin/Income_groups_quickpayqr/delete/$1";
+
+# INCOME SHARES - QuickPayQR
+$route["income-shares-quickpayqr"]                  = "admin/Income_shares_quickpayqr";
+$route["income-shares-quickpayqr/(:num)"]           = "admin/Income_shares_quickpayqr/index/$1";
+$route["income-shares-quickpayqr/update/(:any)"]    = "admin/Income_shares_quickpayqr/update/$1";
+
+# INCOME GROUPS - ScanPayQR
+$route["income-groups-scanpayqr"]                   = "admin/Income_groups_scanpayqr";
+$route["income-groups-scanpayqr/(:num)"]            = "admin/Income_groups_scanpayqr/index/$1";
+$route["income-groups-scanpayqr/new"]               = "admin/Income_groups_scanpayqr/new";
+$route["income-groups-scanpayqr/update/(:any)"]     = "admin/Income_groups_scanpayqr/update/$1";
+$route["income-groups-scanpayqr/delete/(:any)"]     = "admin/Income_groups_scanpayqr/delete/$1";
+
+# INCOME SHARES - ScanPayQR
+$route["income-shares-scanpayqr"]                   = "admin/Income_shares_scanpayqr";
+$route["income-shares-scanpayqr/(:num)"]            = "admin/Income_shares_scanpayqr/index/$1";
+$route["income-shares-scanpayqr/update/(:any)"]     = "admin/Income_shares_scanpayqr/update/$1";
+
 $route["income-schemes/get-merchants-in-scheme/(:num)/(:num)"]   = "admin/Income_schemes/get_merchants_in_scheme/$1/$2";
 
 

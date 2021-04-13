@@ -883,6 +883,16 @@ HTML;
 					'menu_title'		=> 'CreateScanQR',
 					'menu_url'			=> 	base_url() . "income-groups-createscanqr",
 					'menu_controller'	=> 'income_groups_createscanqr',
+				),
+				array(
+					'menu_title'		=> 'QuickPayQR',
+					'menu_url'			=> 	base_url() . "income-groups-quickpayqr",
+					'menu_controller'	=> 'income_groups_quickpayqr',
+				),
+				array(
+					'menu_title'		=> 'ScanPayQR',
+					'menu_url'			=> 	base_url() . "income-groups-scanpayqr",
+					'menu_controller'	=> 'income_groups_scanpayqr',
 				)
 			)
 		);
@@ -913,6 +923,16 @@ HTML;
 					'menu_title'		=> 'CreateScanQR',
 					'menu_url'			=> 	base_url() . "income-shares-createscanqr",
 					'menu_controller'	=> 'income_shares_createscanqr',
+				),
+				array(
+					'menu_title'		=> 'QuickPayQR',
+					'menu_url'			=> 	base_url() . "income-shares-quickpayqr",
+					'menu_controller'	=> 'income_shares_quickpayqr',
+				),
+				array(
+					'menu_title'		=> 'ScanPayQR',
+					'menu_url'			=> 	base_url() . "income-shares-scanpayqr",
+					'menu_controller'	=> 'income_shares_scanpayqr',
 				)
 			)
 		);

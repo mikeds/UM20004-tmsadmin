@@ -33,7 +33,9 @@ class Transactions extends Admin_Controller {
             'transaction_message'
         );
 
-        $where = array();
+        $where = array(
+            'transactions.transaction_type_id !=' => "txtype_income_shares"
+        );
         
 		$inner_joints = array(
 			array(
@@ -54,7 +56,7 @@ class Transactions extends Admin_Controller {
 			array(),
 			$inner_joints,
 			array(
-				'filter'	=> 'transaction_date_micro',
+				'filter'	=> 'transaction_date_created, transaction_date_micro',
 				'sort'		=> 'DESC'
 			)
         );

@@ -33,7 +33,9 @@ class Transactions extends Admin_Controller {
             'transaction_message'
         );
 
-        $where = array();
+        $where = array(
+            'transactions.transaction_type_id !=' => "txtype_income_shares"
+        );
         
 		$inner_joints = array(
 			array(

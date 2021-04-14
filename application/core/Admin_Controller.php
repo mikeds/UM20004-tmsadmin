@@ -15,7 +15,7 @@ class Admin_Controller extends Global_Controller {
 		$_base_controller = "admin",
 		$_base_session = "session",
 		$_data = array(), // shared data with child controller
-		$_limit = 50;
+		$_limit = 20;
 
 	/**
 	 * Constructor

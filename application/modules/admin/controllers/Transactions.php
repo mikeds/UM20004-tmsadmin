@@ -58,7 +58,9 @@ class Transactions extends Admin_Controller {
 			array(
 				'filter'	=> 'transaction_date_created, transaction_date_micro',
 				'sort'		=> 'DESC'
-			)
+            ),
+            $offset,
+            $this->_limit
         );
         
         $data = $this->filter_tx($results);

@@ -274,6 +274,7 @@ class Ledger_merchant extends Admin_Controller {
 			array(),
 			$inner_joints
 		);
+
 		$offset = $this->get_pagination_offset($page, $this->_limit, $total_rows);
 
 		$data = $this->ledger->get_data(

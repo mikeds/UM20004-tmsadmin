@@ -226,7 +226,7 @@ switch( strtolower(get_controller()) ) {
 					'rules'	=> "trim|xss_clean|required"
 				),
 				array( 	
-					'field' => 'address',
+					'field' => 'house-no',
 					'label' => 'House No./ Unit No. / Building',
 					'rules'	=> "trim|xss_clean|required"
 				),
@@ -323,7 +323,7 @@ switch( strtolower(get_controller()) ) {
 					'rules'	=> "trim|xss_clean|required"
 				),
 				array( 	
-					'field' => 'address',
+					'field' => 'house-no',
 					'label' => 'House No./ Unit No. / Building',
 					'rules'	=> "trim|xss_clean|required"
 				),
@@ -420,7 +420,7 @@ switch( strtolower(get_controller()) ) {
 					'rules'	=> "trim|xss_clean|required"
 				),
 				array( 	
-					'field' => 'address',
+					'field' => 'house-no',
 					'label' => 'House No./ Unit No. / Building',
 					'rules'	=> "trim|xss_clean|required"
 				),

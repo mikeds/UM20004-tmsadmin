@@ -76,20 +76,13 @@
 										<span class="text-danger"><?=form_error('mobile-no')?></span>
 									</div>
 								</div>
-								<div class="col-xl-4">
-									<div class="form-group">
-										<label>Contact No. </label>
-										<input name="contact-no" class="form-control" placeholder="Contact No." value="<?=isset($post['contact-no']) ? $post['contact-no'] : ""?>">
-										<span class="text-danger"><?=form_error('contact-no')?></span>
-									</div>
-								</div>
 							</div>
 							<div class="row">
 								<div class="col-xl-4">
 									<div class="form-group">
 										<label>House No./ Unit No. / Building <span class="text-danger">*</span></label>
-										<input name="address" class="form-control" placeholder="House No./ Unit No. / Building" value="<?=isset($post['address']) ? $post['address'] : ""?>">
-										<span class="text-danger"><?=form_error('address')?></span>
+										<input name="house-no" class="form-control" placeholder="House No./ Unit No. / Building" value="<?=isset($post['house-no']) ? $post['house-no'] : ""?>">
+										<span class="text-danger"><?=form_error('house-no')?></span>
 									</div>
 								</div>
 								<div class="col-xl-4">

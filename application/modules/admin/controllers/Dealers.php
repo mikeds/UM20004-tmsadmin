@@ -51,11 +51,10 @@ class Dealers extends Admin_Controller {
 			'merchant_mname as "Middle Name"',
 			'merchant_lname as "Last Name"',
 			'merchant_mobile_no as "Mobile No."',
-			'merchant_contact_no as "Contact No."',
 			'merchant_email_address as "Email Address"',
 			'IF(merchant_gender = 2, "Female", "Male") as "Gender"',
 			'merchant_dob as "Date of Birth"',
-			'merchant_address as "House No./ Unit No. / Building"',
+			'merchant_house_no as "House No./ Unit No. / Building"',
 			'merchant_street as "Street"',
 			'merchant_brgy as "Barangay"',
 			'merchant_city as "City"',
@@ -152,7 +151,7 @@ class Dealers extends Admin_Controller {
 				$lname			= $this->input->post("last-name");
 				$gender			= $this->input->post("gender");
 				$dob			= $this->input->post("dob");
-				$address		= $this->input->post("address");
+				$house_no		= $this->input->post("house-no");
 				$street			= $this->input->post("street");
 				$brgy			= $this->input->post("brgy");
 				$city			= $this->input->post("city");
@@ -237,14 +236,13 @@ class Dealers extends Admin_Controller {
 					'merchant_lname'			=> $lname,
 					'merchant_gender'			=> $gender,
 					'merchant_dob'				=> $dob,
-					'merchant_address'			=> $address,
+					'merchant_house_no'			=> $house_no,
 					'merchant_street'			=> $street,
 					'merchant_brgy'				=> $brgy,
 					'merchant_city'				=> $city,
 					'country_id'				=> $country_id,
 					'province_id'				=> $province_id,
 					'merchant_mobile_no'		=> $mobile_no,
-					'merchant_contact_no'		=> $contact_no,
 					'merchant_email_address'	=> $email_address,
 					'merchant_date_created'		=> $this->_today,
 					'merchant_status'			=> 1, // activated
@@ -420,12 +418,11 @@ class Dealers extends Admin_Controller {
 			'middle-name'	=> $row->merchant_mname,
 			'last-name'		=> $row->merchant_lname,
 			'dob'			=> $row->merchant_dob,
-			'address'		=> $row->merchant_address,
+			'house-no'		=> $row->merchant_house_no,
 			'street'		=> $row->merchant_street,
 			'brgy'			=> $row->merchant_brgy,
 			'city'			=> $row->merchant_city,
 			'mobile-no'		=> $row->merchant_mobile_no,
-			'contact-no'	=> $row->merchant_contact_no,
 			'email-address'	=> $row->merchant_email_address,
 			'status'		=> $row->merchant_status == 1 ? "checked" : ""
 		);
@@ -438,14 +435,13 @@ class Dealers extends Admin_Controller {
 				$lname			= $this->input->post("last-name");
 				$gender			= $this->input->post("gender");
 				$dob			= $this->input->post("dob");
-				$address		= $this->input->post("address");
+				$house_no		= $this->input->post("house-no");
 				$street			= $this->input->post("street");
 				$brgy			= $this->input->post("brgy");
 				$city			= $this->input->post("city");
 				$country_id		= 169;
 				$province_id	= $this->input->post("province");
 				$mobile_no		= $this->input->post("mobile-no");
-				$contact_no		= $this->input->post("contact-no");
 				$email_address	= $this->input->post("email-address");
 				$status			= $this->input->post("status");
 
@@ -485,14 +481,13 @@ class Dealers extends Admin_Controller {
 					'merchant_lname'			=> $lname,
 					'merchant_gender'			=> $gender,
 					'merchant_dob'				=> $dob,
-					'merchant_address'			=> $address,
+					'merchant_house_no'			=> $house_no,
 					'merchant_street'			=> $street,
 					'merchant_brgy'				=> $brgy,
 					'merchant_city'				=> $city,
 					'country_id'				=> $country_id,
 					'province_id'				=> $province_id,
 					'merchant_mobile_no'		=> $mobile_no,
-					'merchant_contact_no'		=> $contact_no,
 					'merchant_email_address'	=> $email_address,
 					'merchant_status'			=> $status == 1 ? 1 : 0,
 				);

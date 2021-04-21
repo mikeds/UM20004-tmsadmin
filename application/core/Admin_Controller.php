@@ -818,6 +818,14 @@ HTML;
 		);
 
 		$menu_items[] = array(
+			'menu_id'			=> 'merchant-request',
+			'menu_title'		=> 'Merchant Request',
+			'menu_url'			=> 	base_url() . "merchant-request",
+			'menu_controller'	=> 'merchant_request',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
 			'menu_id'			=> 'transactions',
 			'menu_title'		=> 'Transactions',
 			'menu_url'			=> 	base_url() . "transactions",

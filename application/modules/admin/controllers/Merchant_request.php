@@ -166,9 +166,6 @@ class Merchant_request extends Admin_Controller {
 					)
 				);
 
-				// hash password
-				$password = hash("sha256", $row->account_password);
-
 				// do insert merchant account
 				$this->merchant_accounts->insert(
 					array(
@@ -177,7 +174,7 @@ class Merchant_request extends Admin_Controller {
 						'oauth_bridge_id'		=> $ma_bridge_id,
 						'account_avatar_base64'	=> $row->account_avatar_base64,
 						'account_username'		=> $row->account_email_address,
-						'account_password'		=> $password,
+						'account_password'		=> $row->account_password,
 						'account_fname'			=> $row->account_fname,
 						'account_mname'			=> $row->account_mname,
 						'account_lname'			=> $row->account_lname,

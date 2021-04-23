@@ -225,7 +225,7 @@
 								<div class="col-xl-4">
 									<div class="form-group">
 										<label>Business Types <span class="text-danger">*</span></label>
-										<input name="biz-type" class="form-control" placeholder="City" value="<?=isset($post['biz-type']) ? $post['biz-type'] : ""?>" disabled>
+										<input name="biz-type" class="form-control" placeholder="Business Type" value="<?=isset($post['biz-type']) ? $post['biz-type'] : ""?>" disabled>
 										<span class="text-danger"><?=form_error('biz-type')?></span>
 									</div>
 								</div>

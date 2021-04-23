@@ -13,10 +13,14 @@ class Client_pre_registration_model extends CI_Model {
 		$inner_joints = array(), 
 		$where = array(), 
 		$where_in = array(), 
+		$where_not_in = array(),
 		$or_where = array(), 
+		$or_where_in = array(),
+		$or_where_not_in = array(),
 		$order_by = array(), 
 		$limit = 0, 
-		$offset = 0
+		$offset = 0,
+		$is_regroup = false
 		) {
 
 		$this->db->select(ARRtoSTR($select), false);
@@ -39,10 +43,10 @@ class Client_pre_registration_model extends CI_Model {
 				}
 			}
 		}
-
-		if(!empty($where)){
-			$this->db->where($where);
-		}
+		
+		if ($is_regroup) {
+			$this->db->group_start();
+		} 
 
 		if(!empty($where_in)){
 			foreach ($where_in as $i) {
@@ -54,6 +58,22 @@ class Client_pre_registration_model extends CI_Model {
 				$data 	= $i['data'];
 				
 				$this->db->where_in(
+					$field,
+					$data
+				);
+			}
+		}
+
+		if(!empty($where_not_in)){
+			foreach ($where_not_in as $i) {
+				if (!isset($i['field']) && !isset($i['data'])) {
+					continue;
+				}
+				
+				$field 	= $i['field'];
+				$data 	= $i['data'];
+				
+				$this->db->where_not_in(
 					$field,
 					$data
 				);
@@ -72,6 +92,63 @@ class Client_pre_registration_model extends CI_Model {
 					$field,
 					$data
 				);
+			}
+		}
+
+		if(!empty($or_where_in)){
+			foreach ($or_where_in as $i) {
+				if (!isset($i['field']) && !isset($i['data'])) {
+					continue;
+				}
+				
+				$field 	= $i['field'];
+				$data 	= $i['data'];
+				$this->db->or_where_in(
+					$field,
+					$data
+				);
+			}
+		}
+
+		if(!empty($or_where_not_in)){
+			foreach ($or_where_not_in as $i) {
+				if (!isset($i['field']) && !isset($i['data'])) {
+					continue;
+				}
+				
+				$field 	= $i['field'];
+				$data 	= $i['data'];
+				$this->db->or_where_not_in(
+					$field,
+					$data
+				);
+			}
+		}
+
+		if ($is_regroup) {
+			$this->db->group_end();
+		} 
+
+		if(!empty($where)){
+			$is_multi_where = false;
+			foreach ($where as $i) {
+				if (!isset($i['field']) && !isset($i['data'])) {
+					continue;
+				}
+				
+				$field 	= $i['field'];
+				$data 	= $i['data'];
+				
+				$this->db->where(
+					$field,
+					$data
+				);
+
+				$is_multi_where = true;
+			}
+
+			if (!$is_multi_where) {
+				$this->db->where($where);
 			}
 		}
 
@@ -97,6 +174,324 @@ class Client_pre_registration_model extends CI_Model {
 		$results = $query->result_array();
 
 		return $results;
+	}
+
+	function _datum(
+		$select = array('*'), 
+		$inner_joints = array(), 
+		$where = array(), 
+		$where_in = array(), 
+		$where_not_in = array(),
+		$or_where = array(), 
+		$or_where_in = array(),
+		$or_where_not_in = array(),
+		$order_by = array(), 
+		$limit = 0, 
+		$offset = 0,
+		$is_regroup = false
+		) {
+
+		$this->db->select(ARRtoSTR($select), false);
+
+		$this->db->from( $this->_table );
+
+		if (!empty($inner_joints)) {
+			foreach($inner_joints as $join) {
+				if (isset($join['type'])) {
+					$this->db->join(
+						$join['table_name'],
+						$join['condition'],
+						$join['type']
+					);
+				} else {
+					$this->db->join(
+						$join['table_name'],
+						$join['condition']
+					);
+				}
+			}
+		}
+
+		if ($is_regroup) {
+			$this->db->group_start();
+		} 
+
+		if(!empty($where_in)){
+			foreach ($where_in as $i) {
+				if (!isset($i['field']) && !isset($i['data'])) {
+					continue;
+				}
+				
+				$field 	= $i['field'];
+				$data 	= $i['data'];
+				
+				$this->db->where_in(
+					$field,
+					$data
+				);
+			}
+		}
+
+		if(!empty($where_not_in)){
+			foreach ($where_not_in as $i) {
+				if (!isset($i['field']) && !isset($i['data'])) {
+					continue;
+				}
+				
+				$field 	= $i['field'];
+				$data 	= $i['data'];
+				
+				$this->db->where_not_in(
+					$field,
+					$data
+				);
+			}
+		}
+
+		if(!empty($or_where)){
+			foreach ($or_where as $i) {
+				if (!isset($i['field']) && !isset($i['data'])) {
+					continue;
+				}
+				
+				$field 	= $i['field'];
+				$data 	= $i['data'];
+				$this->db->or_where(
+					$field,
+					$data
+				);
+			}
+		}
+
+		if(!empty($or_where_in)){
+			foreach ($or_where_in as $i) {
+				if (!isset($i['field']) && !isset($i['data'])) {
+					continue;
+				}
+				
+				$field 	= $i['field'];
+				$data 	= $i['data'];
+				$this->db->or_where_in(
+					$field,
+					$data
+				);
+			}
+		}
+
+		if(!empty($or_where_not_in)){
+			foreach ($or_where_not_in as $i) {
+				if (!isset($i['field']) && !isset($i['data'])) {
+					continue;
+				}
+				
+				$field 	= $i['field'];
+				$data 	= $i['data'];
+				$this->db->or_where_not_in(
+					$field,
+					$data
+				);
+			}
+		}
+
+		if ($is_regroup) {
+			$this->db->group_end();
+		} 
+
+		if(!empty($where)){
+			$is_multi_where = false;
+			foreach ($where as $i) {
+				if (!isset($i['field']) && !isset($i['data'])) {
+					continue;
+				}
+				
+				$field 	= $i['field'];
+				$data 	= $i['data'];
+				
+				$this->db->where(
+					$field,
+					$data
+				);
+
+				$is_multi_where = true;
+			}
+
+			if (!$is_multi_where) {
+				$this->db->where($where);
+			}
+		}
+
+		if(!empty($limit)){
+			$this->db->limit(
+				$limit, 
+				$offset
+			);
+		}
+		
+		if(!empty($order_by)) {
+			$filter_by 	= $order_by['filter_by'];
+			$sort_by	= $order_by['sort_by'];
+
+			$this->db->order_by(
+				$filter_by,
+				$sort_by
+			);
+		}
+
+		$query = $this->db->get();
+
+		return $query;
+	}
+
+	function _count(
+		$inner_joints = array(), 
+		$where = array(), 
+		$where_in = array(), 
+		$where_not_in = array(),
+		$or_where = array(), 
+		$or_where_in = array(),
+		$or_where_not_in = array(),
+		$limit = 0, 
+		$offset = 0,
+		$is_regroup = false
+		) {
+
+		$this->db->from( $this->_table );
+
+		if (!empty($inner_joints)) {
+			foreach($inner_joints as $join) {
+				if (isset($join['type'])) {
+					$this->db->join(
+						$join['table_name'],
+						$join['condition'],
+						$join['type']
+					);
+				} else {
+					$this->db->join(
+						$join['table_name'],
+						$join['condition']
+					);
+				}
+			}
+		}
+
+		if ($is_regroup) {
+			$this->db->group_start();
+		} 
+
+		if(!empty($where_in)){
+			foreach ($where_in as $i) {
+				if (!isset($i['field']) && !isset($i['data'])) {
+					continue;
+				}
+				
+				$field 	= $i['field'];
+				$data 	= $i['data'];
+				
+				$this->db->where_in(
+					$field,
+					$data
+				);
+			}
+		}
+
+		if(!empty($where_not_in)){
+			foreach ($where_not_in as $i) {
+				if (!isset($i['field']) && !isset($i['data'])) {
+					continue;
+				}
+				
+				$field 	= $i['field'];
+				$data 	= $i['data'];
+				
+				$this->db->where_not_in(
+					$field,
+					$data
+				);
+			}
+		}
+
+		if(!empty($or_where)){
+			foreach ($or_where as $i) {
+				if (!isset($i['field']) && !isset($i['data'])) {
+					continue;
+				}
+				
+				$field 	= $i['field'];
+				$data 	= $i['data'];
+				$this->db->or_where(
+					$field,
+					$data
+				);
+			}
+		}
+
+		if(!empty($or_where_in)){
+			foreach ($or_where_in as $i) {
+				if (!isset($i['field']) && !isset($i['data'])) {
+					continue;
+				}
+				
+				$field 	= $i['field'];
+				$data 	= $i['data'];
+				$this->db->or_where_in(
+					$field,
+					$data
+				);
+			}
+		}
+
+		if(!empty($or_where_not_in)){
+			foreach ($or_where_not_in as $i) {
+				if (!isset($i['field']) && !isset($i['data'])) {
+					continue;
+				}
+				
+				$field 	= $i['field'];
+				$data 	= $i['data'];
+				$this->db->or_where_not_in(
+					$field,
+					$data
+				);
+			}
+		}
+
+		if ($is_regroup) {
+			$this->db->group_end();
+		} 
+
+		if(!empty($where)){
+			$is_multi_where = false;
+			foreach ($where as $i) {
+				if (!isset($i['field']) && !isset($i['data'])) {
+					continue;
+				}
+				
+				$field 	= $i['field'];
+				$data 	= $i['data'];
+				
+				$this->db->where(
+					$field,
+					$data
+				);
+
+				$is_multi_where = true;
+			}
+
+			if (!$is_multi_where) {
+				$this->db->where($where);
+			}
+		}
+
+		if(!empty($limit)){
+			$this->db->limit(
+				$limit, 
+				$offset
+			);
+		}
+
+		$query = $this->db->get();
+
+		return $this->db->count_all_results();
 	}
 
 	function get_datum($id = '', $data = array(), $where_or = array(), $inner_joints = array(), $select = array()) {
@@ -306,9 +701,11 @@ class Client_pre_registration_model extends CI_Model {
 		}
 	} 
 
+	/*
 	public function delete($id){
 		$this->db->where($this->_id, $id); 
 		$this->db->delete($this->_table_x);
 	}
+	*/
 }
 

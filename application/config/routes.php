@@ -156,6 +156,11 @@ $route["income-shares-scanpayqr"]                   = "admin/Income_shares_scanp
 $route["income-shares-scanpayqr/(:num)"]            = "admin/Income_shares_scanpayqr/index/$1";
 $route["income-shares-scanpayqr/update/(:any)"]     = "admin/Income_shares_scanpayqr/update/$1";
 
+# BASE64 Image Viewer
+$route["image-viewer/profile-picture/(:any)"]       = "admin/Base64_image_viewer/profile_picture/$1";
+$route["image-viewer/id-front/(:any)"]              = "admin/Base64_image_viewer/id_front/$1";
+$route["image-viewer/id-back/(:any)"]               = "admin/Base64_image_viewer/id_back/$1";
+
 $route["income-schemes/get-merchants-in-scheme/(:num)/(:num)"]   = "admin/Income_schemes/get_merchants_in_scheme/$1/$2";
 
 

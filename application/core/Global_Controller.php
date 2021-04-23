@@ -223,6 +223,10 @@ class Global_Controller extends MX_Controller {
 		return $menu;
 	}
 
+	public function generate_base64_image($base64_image) {
+		return "data:image/png;base64, {$base64_image}";
+	}
+
 	public function get_pagination_offset($page = 1, $limit = 10, $num_rows = 10) {
 		$page 	= ($page < 1 ? 1 : $page);
 		$offset = ($page - 1) * $limit;

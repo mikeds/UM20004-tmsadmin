@@ -218,6 +218,26 @@
 				<div class="col-xl-12">
 					<div class="card">
 						<div class="card-header">
+							Business Information
+						</div>
+						<div class="card-body">
+							<div class="row">
+								<div class="col-xl-4">
+									<div class="form-group">
+										<label>Business Types <span class="text-danger">*</span></label>
+										<input name="biz-type" class="form-control" placeholder="City" value="<?=isset($post['biz-type']) ? $post['biz-type'] : ""?>" disabled>
+										<span class="text-danger"><?=form_error('biz-type')?></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><br>
+			<div class="row">
+				<div class="col-xl-12">
+					<div class="card">
+						<div class="card-header">
 							Identification
 						</div>
 						<div class="card-body">

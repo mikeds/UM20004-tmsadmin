@@ -60,8 +60,30 @@ class Client_request extends Admin_Controller {
 		$this->_data['form_url']		= base_url() . "client-request/update/{$id}";
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 
-		$row = $this->pre_registration->get_datum(
-			'',
+		$row = $this->pre_registration->_datum(
+			array('*'),
+			array(
+				array(
+					'table_name'	=> 'provinces',
+					'condition'		=> 'provinces.province_id = client_pre_registration.province_id',
+					'type'			=> 'left'
+				),
+				array(
+					'table_name'	=> 'source_of_funds',
+					'condition'		=> 'source_of_funds.sof_id = client_pre_registration.sof_id',
+					'type'			=> 'left'
+				),
+				array(
+					'table_name'	=> 'nature_of_work',
+					'condition'		=> 'nature_of_work.now_id = client_pre_registration.now_id',
+					'type'			=> 'left'
+				),
+				array(
+					'table_name'	=> 'id_types',
+					'condition'		=> 'id_types.id_type_id = client_pre_registration.account_id_type',
+					'type'			=> 'left'
+				)
+			),
 			array(
 				'account_number' => $id
 			)
@@ -78,7 +100,48 @@ class Client_request extends Admin_Controller {
 			'last-name' 	=> $row->account_lname,
 			'email-address' => $row->account_email_address,
 			'mobile-no' 	=> $row->account_mobile_no,
+			'dob'			=> $row->account_dob,
+			'pob'			=> $row->account_pob,
+			'gender'		=> ($row->account_gender == 1 ? "Male" : "Female"),
+			'house-no'		=> $row->account_house_no,
+			'street'		=> $row->account_street,
+			'barangay'		=> $row->account_brgy,
+			'city'			=> $row->account_city,
+			'province'		=> $row->province_name,
+			'postal-code'	=> $row->account_postal_code,
+			'sof'			=> $row->sof_name,
+			'now'			=> $row->now_name,
+			'id-type'		=> $row->id_type_name,
+			'id-no'			=> $row->account_id_no,
+			'exp-date'		=> $row->account_id_exp_date
 		);
+
+		if (!empty($row->account_avatar_base64)) {
+			$this->_data['post'] = array_merge(
+				$this->_data['post'],
+				array(
+					'profile-picture'=> base_url() . "image-viewer/profile-picture/" . $row->account_number 
+				)
+			);
+		}
+
+		if (!empty($row->account_id_front_base64)) {
+			$this->_data['post'] = array_merge(
+				$this->_data['post'],
+				array(
+					'id-front'=> base_url() . "image-viewer/id-front/" . $row->account_number 
+				)
+			);
+		}
+
+		if (!empty($row->account_id_back_base64)) {
+			$this->_data['post'] = array_merge(
+				$this->_data['post'],
+				array(
+					'id-back'=> base_url() . "image-viewer/id-back/" . $row->account_number 
+				)
+			);
+		}
 
 		if ($_POST) {
 			$status	= $this->input->post("status");

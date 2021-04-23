@@ -61,7 +61,14 @@ class Merchant_request extends Admin_Controller {
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 
 		$row = $this->pre_registration->_datum(
-			array('*'),
+			array(
+				'*',
+				'merchant_pre_registration.province_id as province_id',
+				'merchant_pre_registration.sof_id as sof_id',
+				'merchant_pre_registration.now_id as now_id',
+				'merchant_pre_registration.account_id_type as account_id_type',
+				'merchant_pre_registration.biz_type_id as biz_type_id'
+			),
 			array(
 				array(
 					'table_name'	=> 'provinces',
@@ -194,6 +201,7 @@ class Merchant_request extends Admin_Controller {
 					'merchant_postal_code'	=> $row->account_postal_code,
 					'sof_id'				=> $row->sof_id,
 					'now_id'				=> $row->now_id,
+					'biz_type_id'			=> $row->biz_type_id,
 					'merchant_id_type'		=> $row->account_id_type,
 					'merchant_id_no'		=> $row->account_id_no,
 					'merchant_id_exp_date'	=> $row->account_id_exp_date,

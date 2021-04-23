@@ -61,7 +61,13 @@ class Client_request extends Admin_Controller {
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 
 		$row = $this->pre_registration->_datum(
-			array('*'),
+			array(
+				'*',
+				'client_pre_registration.province_id as province_id',
+				'client_pre_registration.sof_id as sof_id',
+				'client_pre_registration.now_id as now_id',
+				'client_pre_registration.account_id_type as account_id_type'
+			),
 			array(
 				array(
 					'table_name'	=> 'provinces',

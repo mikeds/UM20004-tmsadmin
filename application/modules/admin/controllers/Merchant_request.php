@@ -129,6 +129,27 @@ class Merchant_request extends Admin_Controller {
 			'exp-date'		=> $row->account_id_exp_date
 		);
 
+		$path = "{$this->_upload_path}/" . ENVIRONMENT . "/uploads/merchants/{$row->account_number}";
+		if (file_exists($path)) {
+			$files = scandir($path);
+			
+			if (count($files) != 0) {
+				$items = "";
+				$files = array_diff(scandir($path), array('.', '..'));
+
+				foreach($files as $file) {
+					$items .= '<span><a href="'. base_url() . "download/merchants?link=" . $file .'" target="_blank">'. $file .'</a></span><br>';
+				}
+
+				$this->_data['post'] = array_merge(
+					$this->_data['post'],
+					array(
+						'files' => $items
+					)
+				);
+			}
+		}
+		
 		if (!empty($row->account_avatar_base64)) {
 			$this->_data['post'] = array_merge(
 				$this->_data['post'],

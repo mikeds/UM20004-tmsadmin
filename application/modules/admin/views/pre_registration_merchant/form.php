@@ -230,6 +230,12 @@
 									</div>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-xl-12">
+									<label>Files:</span></label><br>
+									<?=isset($post['files']) ? $post['files'] : ""?>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

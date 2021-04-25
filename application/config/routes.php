@@ -161,6 +161,9 @@ $route["image-viewer/profile-picture/(:any)"]       = "admin/Base64_image_viewer
 $route["image-viewer/id-front/(:any)"]              = "admin/Base64_image_viewer/id_front/$1";
 $route["image-viewer/id-back/(:any)"]               = "admin/Base64_image_viewer/id_back/$1";
 
+# DOWNLOAD
+$route["downloads/merchants/(:any)"]                = "admin/Downloads/merchants/$1";
+
 $route["income-schemes/get-merchants-in-scheme/(:num)/(:num)"]   = "admin/Income_schemes/get_merchants_in_scheme/$1/$2";
 
 

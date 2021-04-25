@@ -671,7 +671,7 @@ HTML;
 	}
 
 	public function upload_files($files, $title, $file_size_limit = 20, $allowed_types = "jpg|jpeg|JPG|JPEG|PNG|png") {
-		$upload_path = "{$this->_upload_path}/images";
+		$upload_path = "{$this->_upload_path}/" . ENVIRONMENT . "/uploads/{$folder_name}";
         $config = array(
             'upload_path'   => $upload_path,
             'allowed_types' => $allowed_types,

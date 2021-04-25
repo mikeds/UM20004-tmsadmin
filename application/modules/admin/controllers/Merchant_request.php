@@ -138,7 +138,7 @@ class Merchant_request extends Admin_Controller {
 				$files = array_diff(scandir($path), array('.', '..'));
 
 				foreach($files as $file) {
-					$items .= '<span><a href="'. base_url() . "download/merchants?link=" . $file .'" target="_blank">'. $file .'</a></span><br>';
+					$items .= '<span><a href="'. base_url() . "downloads/merchants/". $id ."?link=" . $file .'" target="_blank">'. $file .'</a></span><br>';
 				}
 
 				$this->_data['post'] = array_merge(

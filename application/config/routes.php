@@ -74,6 +74,15 @@ $route["merchant-accounts/(:num)"]         = "admin/Merchant_accounts/index/$1";
 $route["merchant-accounts/new"]            = "admin/Merchant_accounts/new";
 $route["merchant-accounts/update/(:any)"]  = "admin/Merchant_accounts/update/$1";
 
+# CLIENT REQUEST
+$route["client-request"]                = "admin/Client_request";
+$route["client-request/(:num)"]         = "admin/Client_request/index/$1";
+$route["client-request/update/(:any)"]  = "admin/Client_request/update/$1";
+
+# Merchant REQUEST
+$route["merchant-request"]                = "admin/Merchant_request";
+$route["merchant-request/(:num)"]         = "admin/Merchant_request/index/$1";
+$route["merchant-request/update/(:any)"]  = "admin/Merchant_request/update/$1";
 
 # INCOME GROUPS - CASH IN OTC
 $route["income-groups-cash-in-otc"]                 = "admin/Income_groups_cash_in_otc";
@@ -87,7 +96,6 @@ $route["income-shares-cash-in-otc"]                 = "admin/Income_shares_cash_
 $route["income-shares-cash-in-otc/(:num)"]          = "admin/Income_shares_cash_in_otc/index/$1";
 $route["income-shares-cash-in-otc/update/(:any)"]   = "admin/Income_shares_cash_in_otc/update/$1";
 
-
 # INCOME GROUPS - CASH OUT OTC
 $route["income-groups-cash-out-otc"]                 = "admin/Income_groups_cash_out_otc";
 $route["income-groups-cash-out-otc/(:num)"]          = "admin/Income_groups_cash_out_otc/index/$1";
@@ -100,44 +108,72 @@ $route["income-shares-cash-out-otc"]                 = "admin/Income_shares_cash
 $route["income-shares-cash-out-otc/(:num)"]          = "admin/Income_shares_cash_out_otc/index/$1";
 $route["income-shares-cash-out-otc/update/(:any)"]   = "admin/Income_shares_cash_out_otc/update/$1";
 
-// $route["income-groups/(:num)"]          = "admin/Income_groups/index/$1";
-// $route["income-groups/new"]             = "admin/Income_groups/new";
-// $route["income-groups/update/(:any)"]   = "admin/Income_groups/update/$1";
+# INCOME GROUPS - CASH OUT UBP
+$route["income-groups-cash-out-ubp"]                 = "admin/Income_groups_cash_out_ubp";
+$route["income-groups-cash-out-ubp/(:num)"]          = "admin/Income_groups_cash_out_ubp/index/$1";
+$route["income-groups-cash-out-ubp/new"]             = "admin/Income_groups_cash_out_ubp/new";
+$route["income-groups-cash-out-ubp/update/(:any)"]   = "admin/Income_groups_cash_out_ubp/update/$1";
+$route["income-groups-cash-out-ubp/delete/(:any)"]   = "admin/Income_groups_cash_out_ubp/delete/$1";
 
-// $route["income-groups/merchant-list"]           = "admin/Income_groups/merchant_list";
-// $route["income-groups/merchant-list/(:any)"]    = "admin/Income_groups/merchant_list/$1";
+# INCOME SHARES - CASH OUT UBP
+$route["income-shares-cash-out-ubp"]                 = "admin/Income_shares_cash_out_ubp";
+$route["income-shares-cash-out-ubp/(:num)"]          = "admin/Income_shares_cash_out_ubp/index/$1";
+$route["income-shares-cash-out-ubp/update/(:any)"]   = "admin/Income_shares_cash_out_ubp/update/$1";
 
-// $route["income-shares"]                 = "admin/Income_shares";
-// $route["income-shares/(:num)"]          = "admin/Income_shares/index/$1";
-// $route["income-shares/update/(:any)"]   = "admin/Income_shares/update/$1";
+# INCOME GROUPS - CreateScanQR
+$route["income-groups-createscanqr"]                 = "admin/Income_groups_createscanqr";
+$route["income-groups-createscanqr/(:num)"]          = "admin/Income_groups_createscanqr/index/$1";
+$route["income-groups-createscanqr/new"]             = "admin/Income_groups_createscanqr/new";
+$route["income-groups-createscanqr/update/(:any)"]   = "admin/Income_groups_createscanqr/update/$1";
+$route["income-groups-createscanqr/delete/(:any)"]   = "admin/Income_groups_createscanqr/delete/$1";
 
-// $route["income-scheme-types"]               = "admin/Income_scheme_types";
-// $route["income-scheme-types/(:num)"]        = "admin/Income_scheme_types/index/$1";
-// $route["income-scheme-types/new"]           = "admin/Income_scheme_types/new";
-// $route["income-scheme-types/update/(:num)"] = "admin/Income_scheme_types/update/$1";
+# INCOME SHARES - CreateScanQR
+$route["income-shares-createscanqr"]                 = "admin/Income_shares_createscanqr";
+$route["income-shares-createscanqr/(:num)"]          = "admin/Income_shares_createscanqr/index/$1";
+$route["income-shares-createscanqr/update/(:any)"]   = "admin/Income_shares_createscanqr/update/$1";
 
-// $route["income-schemes"]               = "admin/Income_schemes";
-// $route["income-schemes/(:num)"]        = "admin/Income_schemes/index/$1";
-// $route["income-schemes/update/(:num)"] = "admin/Income_schemes/update/$1";
-// $route["income-schemes/edit/(:num)"]   = "admin/Income_schemes/edit/$1";
-// $route["income-schemes/delete/(:num)"] = "admin/Income_schemes/delete/$1";
+# INCOME GROUPS - QuickPayQR
+$route["income-groups-quickpayqr"]                  = "admin/Income_groups_quickpayqr";
+$route["income-groups-quickpayqr/(:num)"]           = "admin/Income_groups_quickpayqr/index/$1";
+$route["income-groups-quickpayqr/new"]              = "admin/Income_groups_quickpayqr/new";
+$route["income-groups-quickpayqr/update/(:any)"]    = "admin/Income_groups_quickpayqr/update/$1";
+$route["income-groups-quickpayqr/delete/(:any)"]    = "admin/Income_groups_quickpayqr/delete/$1";
+
+# INCOME SHARES - QuickPayQR
+$route["income-shares-quickpayqr"]                  = "admin/Income_shares_quickpayqr";
+$route["income-shares-quickpayqr/(:num)"]           = "admin/Income_shares_quickpayqr/index/$1";
+$route["income-shares-quickpayqr/update/(:any)"]    = "admin/Income_shares_quickpayqr/update/$1";
+
+# INCOME GROUPS - ScanPayQR
+$route["income-groups-scanpayqr"]                   = "admin/Income_groups_scanpayqr";
+$route["income-groups-scanpayqr/(:num)"]            = "admin/Income_groups_scanpayqr/index/$1";
+$route["income-groups-scanpayqr/new"]               = "admin/Income_groups_scanpayqr/new";
+$route["income-groups-scanpayqr/update/(:any)"]     = "admin/Income_groups_scanpayqr/update/$1";
+$route["income-groups-scanpayqr/delete/(:any)"]     = "admin/Income_groups_scanpayqr/delete/$1";
+
+# INCOME SHARES - ScanPayQR
+$route["income-shares-scanpayqr"]                   = "admin/Income_shares_scanpayqr";
+$route["income-shares-scanpayqr/(:num)"]            = "admin/Income_shares_scanpayqr/index/$1";
+$route["income-shares-scanpayqr/update/(:any)"]     = "admin/Income_shares_scanpayqr/update/$1";
+
+# BASE64 Image Viewer
+$route["image-viewer/profile-picture/(:any)"]       = "admin/Base64_image_viewer/profile_picture/$1";
+$route["image-viewer/id-front/(:any)"]              = "admin/Base64_image_viewer/id_front/$1";
+$route["image-viewer/id-back/(:any)"]               = "admin/Base64_image_viewer/id_back/$1";
+
+# DOWNLOAD
+$route["downloads/merchants/(:any)"]                = "admin/Downloads/merchants/$1";
 
 $route["income-schemes/get-merchants-in-scheme/(:num)/(:num)"]   = "admin/Income_schemes/get_merchants_in_scheme/$1/$2";
 
-// $route['ledger']                                = "admin/Ledger";
-// $route['ledger/(:num)']                         = "admin/Ledger/index/$1";
 
 $route['ledger-merchant']                       = "admin/Ledger_merchant";
 $route['ledger-merchant/(:num)']                = "admin/Ledger_merchant/index/$1";
 
-// $route['ledger-merchant/search/(:any)']         = "admin/Ledger_merchant/search/$1";
-// $route['ledger-merchant/search/(:any)/(:num)']  = "admin/Ledger_merchant/search/$1/$2";
 
 $route['ledger-client']                         = "admin/Ledger_client";
 $route['ledger-client/(:num)']                  = "admin/Ledger_client/index/$1";
 
-// $route['ledger-client/search/(:any)']           = "admin/Ledger_client/search/$1";
-// $route['ledger-client/search/(:any)/(:num)']    = "admin/Ledger_client/search/$1/$2";
 
 $route['income-sharing']      = "admin/Incoming";
 // $route['outgoing']      = "admin/Outgoing";
@@ -147,6 +183,7 @@ $route['merchants/(:num)']          = "admin/Merchants/index/$1";
 $route['merchants/new']             = "admin/Merchants/new";
 $route['merchants/update/(:any)']   = "admin/Merchants/update/$1";
 
+// AGENTS
 $route['agents']                 = "admin/Agents";
 $route['agents/(:num)']          = "admin/Agents/index/$1";
 $route['agents/new']             = "admin/Agents/new";
@@ -154,6 +191,12 @@ $route['agents/update/(:any)']   = "admin/Agents/update/$1";
 
 $route['agent-shares-cash-in-otc']  = "admin/Agent_shares_cash_in_otc";
 $route['agent-shares-cash-out-otc'] = "admin/Agent_shares_cash_out_otc";
+
+// DEALERS
+$route['dealers']                 = "admin/Dealers";
+$route['dealers/(:num)']          = "admin/Dealers/index/$1";
+$route['dealers/new']             = "admin/Dealers/new";
+$route['dealers/update/(:any)']   = "admin/Dealers/update/$1";
 
 $route['top-up']                    = "admin/Top_up";
 $route['top-up/(:num)']             = "admin/Top_up/index/$1";

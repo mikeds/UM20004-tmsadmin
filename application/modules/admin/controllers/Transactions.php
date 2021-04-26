@@ -16,7 +16,7 @@ class Transactions extends Admin_Controller {
         $admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
         
         $select = array(
-            'transaction_id',
+            'IF(transaction_parent_id = "", transaction_id, CONCAT("(", transaction_id, ")<br/>",transaction_parent_id)) as transaction_id',
             'CONCAT("'. base_url() . "qr-code/transactions/" .'", transaction_sender_ref_id) as qr_code',
             'transaction_sender_ref_id',
             'transaction_amount',
@@ -33,7 +33,9 @@ class Transactions extends Admin_Controller {
             'transaction_message'
         );
 
-        $where = array();
+        $where = array(
+            'transactions.transaction_type_id !=' => "txtype_income_shares"
+        );
         
 		$inner_joints = array(
 			array(
@@ -54,9 +56,11 @@ class Transactions extends Admin_Controller {
 			array(),
 			$inner_joints,
 			array(
-				'filter'	=> 'transaction_date_created',
+				'filter'	=> 'transaction_date_created, transaction_date_micro',
 				'sort'		=> 'DESC'
-			)
+            ),
+            $offset,
+            $this->_limit
         );
         
         $data = $this->filter_tx($results);

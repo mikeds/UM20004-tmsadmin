@@ -1,10 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Income_groups_cash_out_otc extends Admin_Controller {
+class Income_groups_createscanqr extends Admin_Controller {
 	private
 		$_admin_account_data = NULL,
-		$_transaction_type_id = "txtype_cashout1";
+		$_transaction_type_id = "txtype_createpayqr1";
 		
 	public function after_init() {
 		$this->set_scripts_and_styles();
@@ -22,7 +22,7 @@ class Income_groups_cash_out_otc extends Admin_Controller {
 		
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 		$this->_data['add_label']		= "New Group";
-		$this->_data['add_url']	 		= base_url() . "income-groups-cash-out-otc/new";
+		$this->_data['add_url']	 		= base_url() . "income-groups-createscanqr/new";
 
 		$actions = array(
 			'update',
@@ -61,7 +61,7 @@ class Income_groups_cash_out_otc extends Admin_Controller {
 
 		$this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 2);
 
-		$this->_data['title']  = "Cash Out (OTC)";
+		$this->_data['title']  = "CreateScanQR";
 		$this->set_template("income_groups/list", $this->_data);
 	}
 
@@ -77,7 +77,7 @@ class Income_groups_cash_out_otc extends Admin_Controller {
 			$group_id = $_GET['group_id'];
 		}
 
-		$base_form_url				= base_url() . "income-groups-cash-out-otc/new";
+		$base_form_url				= base_url() . "income-groups-createscanqr/new";
 		$this->_data['form_url']	= $base_form_url . (($group_id != "") ? "?group_id={$group_id}" : "");
 
 		// check group exist
@@ -213,7 +213,7 @@ class Income_groups_cash_out_otc extends Admin_Controller {
 		}
 
 		$this->_data['listing'] = $this->table_listing('', $results, count($results));
-		$this->_data['title']  	= "Cash Out (OTC) - New Group Member";
+		$this->_data['title']  	= "CreateScanQR - New Group Member";
 		$this->set_template("income_groups/form", $this->_data);
 	}
 
@@ -222,7 +222,7 @@ class Income_groups_cash_out_otc extends Admin_Controller {
 		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
-		$this->_data['form_url']		= base_url() . "income-groups-cash-out-otc/update/{$group_id}";
+		$this->_data['form_url']		= base_url() . "income-groups-createscanqr/update/{$group_id}";
 
 		$row_group = $this->income_groups->get_datum(
 			'',
@@ -320,13 +320,13 @@ class Income_groups_cash_out_otc extends Admin_Controller {
 		}
 
 		$this->_data['listing'] = $this->table_listing('', $results, count($results));
-		$this->_data['title']  	= "Cash Out (OTC) - Update Group";
+		$this->_data['title']  	= "CreateScanQR - Update Group";
 		$this->set_template("income_groups/form", $this->_data);
 	}
 
 	public function delete($group_id) {
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
-		$this->_data['form_url']		= base_url() . "income-groups-cash-out-otc/delete/{$group_id}";
+		$this->_data['form_url']		= base_url() . "income-groups-createscanqr/delete/{$group_id}";
 
 		$row_group = $this->income_groups->get_datum(
 			'',
@@ -353,11 +353,11 @@ class Income_groups_cash_out_otc extends Admin_Controller {
 
 			if ($confirmation == "DELETE") {
 				$this->session->set_flashdata('notification', $this->generate_notification('success', 'Successully group deleted!'));
-				redirect(base_url() . "income-groups-cash-out-otc");
+				redirect(base_url() . "income-groups-createscanqr");
 			}
 		}
 
-		$this->_data['title']  	= "Cash Out (OTC) - DELETE GROUP - ID: {$group_id}";
+		$this->_data['title']  	= "CreateScanQR - DELETE GROUP - ID: {$group_id}";
 		$this->set_template("income_groups/form_delete", $this->_data);
 	}
 }

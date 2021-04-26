@@ -15,7 +15,7 @@ class Admin_Controller extends Global_Controller {
 		$_base_controller = "admin",
 		$_base_session = "session",
 		$_data = array(), // shared data with child controller
-		$_limit = 50;
+		$_limit = 20;
 
 	/**
 	 * Constructor
@@ -64,7 +64,7 @@ class Admin_Controller extends Global_Controller {
 		);
 	}
 
-	public function get_merchants() {
+	public function get_merchants($role = 1) {
 		$this->load->model("admin/merchants_model", "merchants");
 
 		$account 					= $this->get_account_data();
@@ -75,14 +75,19 @@ class Admin_Controller extends Global_Controller {
 			'oauth_bridge_parent_id' => $admin_oauth_bridge_id
 		);
 
+		if ($role == "") {
+			$where = array_merge(
+				$where,
+				array(
+					'merchant_role' => $role
+				)
+			);
+		}
+
 		$inner_joints = array(
 			array(
 				'table_name' 	=> 'oauth_bridges',
 				'condition'		=> 'oauth_bridges.oauth_bridge_id = merchants.oauth_bridge_id'
-			),
-			array(
-				'table_name' 	=> 'oauth_clients',
-				'condition'		=> 'oauth_clients.client_id = oauth_bridges.oauth_bridge_id'
 			)
 		);
 
@@ -666,7 +671,7 @@ HTML;
 	}
 
 	public function upload_files($files, $title, $file_size_limit = 20, $allowed_types = "jpg|jpeg|JPG|JPEG|PNG|png") {
-		$upload_path = "{$this->_upload_path}/images";
+		$upload_path = "{$this->_upload_path}/" . ENVIRONMENT . "/uploads/{$folder_name}";
         $config = array(
             'upload_path'   => $upload_path,
             'allowed_types' => $allowed_types,
@@ -805,6 +810,22 @@ HTML;
 		// );
 
 		$menu_items[] = array(
+			'menu_id'			=> 'client-request',
+			'menu_title'		=> 'Client Request',
+			'menu_url'			=> 	base_url() . "client-request",
+			'menu_controller'	=> 'client_request',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
+			'menu_id'			=> 'merchant-request',
+			'menu_title'		=> 'Merchant Request',
+			'menu_url'			=> 	base_url() . "merchant-request",
+			'menu_controller'	=> 'merchant_request',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
 			'menu_id'			=> 'transactions',
 			'menu_title'		=> 'Transactions',
 			'menu_url'			=> 	base_url() . "transactions",
@@ -860,6 +881,26 @@ HTML;
 					'menu_title'		=> 'Cash Out - OTC',
 					'menu_url'			=> 	base_url() . "income-groups-cash-out-otc",
 					'menu_controller'	=> 'income_groups_cash_out_otc',
+				),
+				array(
+					'menu_title'		=> 'Cash Out - UBP',
+					'menu_url'			=> 	base_url() . "income-groups-cash-out-ubp",
+					'menu_controller'	=> 'income_groups_cash_out_ubp',
+				),
+				array(
+					'menu_title'		=> 'CreateScanQR',
+					'menu_url'			=> 	base_url() . "income-groups-createscanqr",
+					'menu_controller'	=> 'income_groups_createscanqr',
+				),
+				array(
+					'menu_title'		=> 'QuickPayQR',
+					'menu_url'			=> 	base_url() . "income-groups-quickpayqr",
+					'menu_controller'	=> 'income_groups_quickpayqr',
+				),
+				array(
+					'menu_title'		=> 'ScanPayQR',
+					'menu_url'			=> 	base_url() . "income-groups-scanpayqr",
+					'menu_controller'	=> 'income_groups_scanpayqr',
 				)
 			)
 		);
@@ -880,6 +921,26 @@ HTML;
 					'menu_title'		=> 'Cash Out - OTC',
 					'menu_url'			=> 	base_url() . "income-shares-cash-out-otc",
 					'menu_controller'	=> 'income_shares_cash_out_otc',
+				),
+				array(
+					'menu_title'		=> 'Cash Out - UBP',
+					'menu_url'			=> 	base_url() . "income-shares-cash-out-ubp",
+					'menu_controller'	=> 'income_shares_cash_out_ubp',
+				),
+				array(
+					'menu_title'		=> 'CreateScanQR',
+					'menu_url'			=> 	base_url() . "income-shares-createscanqr",
+					'menu_controller'	=> 'income_shares_createscanqr',
+				),
+				array(
+					'menu_title'		=> 'QuickPayQR',
+					'menu_url'			=> 	base_url() . "income-shares-quickpayqr",
+					'menu_controller'	=> 'income_shares_quickpayqr',
+				),
+				array(
+					'menu_title'		=> 'ScanPayQR',
+					'menu_url'			=> 	base_url() . "income-shares-scanpayqr",
+					'menu_controller'	=> 'income_shares_scanpayqr',
 				)
 			)
 		);
@@ -909,6 +970,14 @@ HTML;
 			'menu_title'		=> 'Agents',
 			'menu_url'			=> 	base_url() . "agents",
 			'menu_controller'	=> 'agents',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
+			'menu_id'			=> 'dealers',
+			'menu_title'		=> 'Dealers',
+			'menu_url'			=> 	base_url() . "dealers",
+			'menu_controller'	=> 'dealers',
 			'menu_icon'			=> 'view-dashboard',
 		);
 

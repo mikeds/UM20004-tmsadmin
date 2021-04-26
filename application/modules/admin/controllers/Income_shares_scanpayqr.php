@@ -1,10 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Income_shares_cash_in_otc extends Admin_Controller {
+class Income_shares_scanpayqr extends Admin_Controller {
 	private
 		$_admin_account_data = NULL,
-		$_transaction_type_id = "txtype_cashin1";
+		$_transaction_type_id = "txtype_scanpayqr1";
 		
 	public function after_init() {
 		$this->set_scripts_and_styles();
@@ -23,7 +23,7 @@ class Income_shares_cash_in_otc extends Admin_Controller {
 		
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 		$this->_data['add_label']		= "New Group";
-		$this->_data['add_url']	 		= base_url() . "income-groups-cash-in-otc/new";
+		$this->_data['add_url']	 		= base_url() . "income-groups-scanpayqr/new";
 
 		$actions = array(
 			'update'
@@ -61,13 +61,13 @@ class Income_shares_cash_in_otc extends Admin_Controller {
 
 		$this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 2);
 
-		$this->_data['title']  = "Cash In (OTC) - Income Shares";
+		$this->_data['title']  = "ScanPayQR - Income Shares";
 		$this->set_template("income_shares/list", $this->_data);
 	}
 
 	public function update($group_id) {
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
-		$this->_data['form_url']		= base_url() . "income-shares-cash-in-otc/update/{$group_id}";
+		$this->_data['form_url']		= base_url() . "income-shares-scanpayqr/update/{$group_id}";
 
 		$row_group = $this->income_groups->get_datum(
 			'',
@@ -118,7 +118,7 @@ class Income_shares_cash_in_otc extends Admin_Controller {
 		
 		$this->_data['ig_mode']	= $ig_mode;
 		$this->_data['list']	= $this->generate_member_list($data);
-		$this->_data['title']  	= "Cash In (OTC) - Income Shares - Update";
+		$this->_data['title']  	= "ScanPayQR - Income Shares - Update";
 		$this->set_template("income_shares/form", $this->_data);
 	}
 

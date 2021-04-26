@@ -96,47 +96,42 @@ class Ledger_data_model extends CI_Model {
 	}
 
 	function get_count( $data = array(), $like = array(), $inner_joints = array(), $order_by = array(), $offset = 0, $count = 0 ) {
-		if( !empty($data) ){
-			
-			$this->db->from($this->_table);
+		$this->db->from($this->_table);
 
-			if (!empty($inner_joints)) {
-				foreach($inner_joints as $join) {
-					if (isset($join['type'])) {
-						$this->db->join(
-							$join['table_name'],
-							$join['condition'],
-							$join['type']
-						);
-					} else {
-						$this->db->join(
-							$join['table_name'],
-							$join['condition']
-						);
-					}
+		if (!empty($inner_joints)) {
+			foreach($inner_joints as $join) {
+				if (isset($join['type'])) {
+					$this->db->join(
+						$join['table_name'],
+						$join['condition'],
+						$join['type']
+					);
+				} else {
+					$this->db->join(
+						$join['table_name'],
+						$join['condition']
+					);
 				}
 			}
-
-			if( !empty( $data ) ) {
-				$this->db->where( $data );
-			}
-
-			if(!empty( $like )){
-			$this->db->like( $like['field'], $like['value'] );
-			}   
-
-			if( !empty( $count ) ) {
-				$this->db->limit( $count, $offset );
-			}
-			
-			if( !empty( $order_by ) ) {
-				$this->db->order_by( $order_by['filter'],$order_by['sort'] );
-			}
-								
-			return $this->db->count_all_results();
-		}else{
-			return $this->db->count_all($this->_table_x);
 		}
+
+		if( !empty( $data ) ) {
+			$this->db->where( $data );
+		}
+
+		if(!empty( $like )){
+			$this->db->like( $like['field'], $like['value'] );
+		}   
+
+		if( !empty( $count ) ) {
+			$this->db->limit( $count, $offset );
+		}
+		
+		if( !empty( $order_by ) ) {
+			$this->db->order_by( $order_by['filter'],$order_by['sort'] );
+		}
+							
+		return $this->db->count_all_results();
 	}
 
 	function insert( $data ) {

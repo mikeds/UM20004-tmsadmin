@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Agents extends Admin_Controller {
+class Dealers extends Admin_Controller {
 	private
 		$_admin_account_data = NULL;
 
@@ -33,8 +33,8 @@ class Agents extends Admin_Controller {
 		$admin_account_data_results = $this->_admin_account_data['results'];
 		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 		
-		$this->_data['add_label']= "New Agent";
-		$this->_data['add_url']	 = base_url() . "agents/new";
+		$this->_data['add_label']= "New Dealer";
+		$this->_data['add_url']	 = base_url() . "dealers/new";
 
 		$actions = array(
 			'update'
@@ -44,7 +44,7 @@ class Agents extends Admin_Controller {
 			'merchant_number as id',
 			'merchant_status as "Status"',
 			// 'IF(merchant_email_status = 1, "Verified", "Unverified") as "Email Status"',
-			'merchant_number as "Agent Number"',
+			'merchant_number as "Dealer Number"',
 			'merchant_ref_code as "Code"',
 			// 'merchant_code as Code',
 			'merchant_fname as "First Name"',
@@ -64,7 +64,7 @@ class Agents extends Admin_Controller {
 
 		$where = array(
 			'oauth_bridge_parent_id' 	=> $admin_oauth_bridge_id,
-			'merchant_role'				=> 2 // agents
+			'merchant_role'				=> 3 // dealer
 		);
 
 		$inner_joints = array(
@@ -97,12 +97,12 @@ class Agents extends Admin_Controller {
 	    $results = $this->merchants->get_data($select, $where, array(), $inner_joints, array('filter'=>'merchant_date_created', 'sort'=>'DESC'), $offset, $this->_limit);
 
 		$this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 2);
-		$this->_data['title']  = "Agent List";
-		$this->set_template("agents/list", $this->_data);
+		$this->_data['title']  = "Dealer List";
+		$this->set_template("dealers/list", $this->_data);
 	}
 
 	public function new() {
-		$this->_data['form_url']		= base_url() . "agents/new";
+		$this->_data['form_url']		= base_url() . "dealers/new";
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 
 		$admin_account_data_results = $this->_admin_account_data['results'];
@@ -247,7 +247,7 @@ class Agents extends Admin_Controller {
 					'merchant_date_created'		=> $this->_today,
 					'merchant_status'			=> 1, // activated
 					'oauth_bridge_id'			=> $bridge_id,
-					'merchant_role'				=> 2 // agents
+					'merchant_role'				=> 3 // dealer
 				);
 
 				$this->merchants->insert(
@@ -337,8 +337,8 @@ class Agents extends Admin_Controller {
 			"Please Select Province"
 		);
 
-		$this->_data['title']  = "New Agent";
-		$this->set_template("agents/form", $this->_data);
+		$this->_data['title']  = "New Dealer";
+		$this->set_template("dealers/form", $this->_data);
 	}
 
 	public function update($merchant_number) {
@@ -346,7 +346,7 @@ class Agents extends Admin_Controller {
 		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
 		$this->_data['is_update']		= true;
-		$this->_data['form_url']		= base_url() . "agents/update/{$merchant_number}";
+		$this->_data['form_url']		= base_url() . "dealers/update/{$merchant_number}";
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 
 		$country_id = 169; // PH
@@ -356,7 +356,7 @@ class Agents extends Admin_Controller {
 			array(
 				'oauth_bridge_parent_id'	=> $admin_oauth_bridge_id,
 				'merchant_number'			=> $merchant_number,
-				'merchant_role'				=> 2
+				'merchant_role'				=> 3
 			),
 			array(),
 			array(
@@ -372,9 +372,8 @@ class Agents extends Admin_Controller {
 		)->row();
 
 		if ($row == "") {
-			redirect(base_url() . "agents");
+			redirect(base_url() . "dealers");
 		}
-
 
 		$country_id 	= $row->country_id;
 		$province_id	= $row->province_id;
@@ -443,7 +442,6 @@ class Agents extends Admin_Controller {
 				$country_id		= 169;
 				$province_id	= $this->input->post("province");
 				$mobile_no		= $this->input->post("mobile-no");
-				$contact_no		= $this->input->post("contact-no");
 				$email_address	= $this->input->post("email-address");
 				$status			= $this->input->post("status");
 
@@ -577,7 +575,7 @@ class Agents extends Admin_Controller {
 			true
 		);
 
-		$this->_data['title']  = "Update Agent";
-		$this->set_template("agents/form", $this->_data);
+		$this->_data['title']  = "Update Dealer";
+		$this->set_template("dealers/form", $this->_data);
 	}
 }

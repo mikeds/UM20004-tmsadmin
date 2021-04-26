@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Income_shares_cash_out_otc extends Admin_Controller {
 	private
 		$_admin_account_data = NULL,
-		$_transaction_type_id = "cash_out_otc";
+		$_transaction_type_id = "txtype_cashout1";
 		
 	public function after_init() {
 		$this->set_scripts_and_styles();

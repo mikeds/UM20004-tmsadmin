@@ -84,6 +84,11 @@ $route["merchant-request"]                = "admin/Merchant_request";
 $route["merchant-request/(:num)"]         = "admin/Merchant_request/index/$1";
 $route["merchant-request/update/(:any)"]  = "admin/Merchant_request/update/$1";
 
+# Agent REQUEST
+$route["agent-request"]                   = "admin/Agent_request";
+$route["agent-request/(:num)"]            = "admin/Agent_request/index/$1";
+$route["agent-request/update/(:any)"]     = "admin/Agent_request/update/$1";
+
 # INCOME GROUPS - CASH IN OTC
 $route["income-groups-cash-in-otc"]                 = "admin/Income_groups_cash_in_otc";
 $route["income-groups-cash-in-otc/(:num)"]          = "admin/Income_groups_cash_in_otc/index/$1";

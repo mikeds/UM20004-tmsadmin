@@ -826,6 +826,14 @@ HTML;
 		);
 
 		$menu_items[] = array(
+			'menu_id'			=> 'agent-request',
+			'menu_title'		=> 'Agent Request',
+			'menu_url'			=> 	base_url() . "agent-request",
+			'menu_controller'	=> 'agent_request',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
 			'menu_id'			=> 'transactions',
 			'menu_title'		=> 'Transactions',
 			'menu_url'			=> 	base_url() . "transactions",

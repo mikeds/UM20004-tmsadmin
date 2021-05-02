@@ -7,6 +7,7 @@ class Base64_image_viewer extends Admin_Controller {
 	public function profile_picture($account_number) {
 		$this->load->model("admin/Merchant_pre_registration_model", "m_pre_registration");
 		$this->load->model("admin/Client_pre_registration_model", "c_pre_registration");
+		$this->load->model("admin/Agent_pre_registration_model", "a_pre_registration");
 
 		$row_merchant = $this->m_pre_registration->get_datum(
 			'',
@@ -22,7 +23,14 @@ class Base64_image_viewer extends Admin_Controller {
 			)
 		)->row();
 
-		$row = ($row_merchant != "" ? $row_merchant : $row_client);
+		$row_agent = $this->a_pre_registration->get_datum(
+			'',
+			array(
+				'account_number'	=> $account_number
+			)
+		)->row();
+
+		$row = ($row_merchant != "" ? $row_merchant : ($row_agent !="" ? $row_agent : $row_client) );
 
 		if ($row == "") {
 			echo "Image not found!";
@@ -36,6 +44,7 @@ class Base64_image_viewer extends Admin_Controller {
 	public function id_front($account_number) {
 		$this->load->model("admin/Merchant_pre_registration_model", "m_pre_registration");
 		$this->load->model("admin/Client_pre_registration_model", "c_pre_registration");
+		$this->load->model("admin/Agent_pre_registration_model", "a_pre_registration");
 
 		$row_merchant = $this->m_pre_registration->get_datum(
 			'',
@@ -51,7 +60,14 @@ class Base64_image_viewer extends Admin_Controller {
 			)
 		)->row();
 
-		$row = ($row_merchant != "" ? $row_merchant : $row_client);
+		$row_agent = $this->a_pre_registration->get_datum(
+			'',
+			array(
+				'account_number'	=> $account_number
+			)
+		)->row();
+
+		$row = ($row_merchant != "" ? $row_merchant : ($row_agent !="" ? $row_agent : $row_client) );
 
 		if ($row == "") {
 			echo "Image not found!";
@@ -65,6 +81,7 @@ class Base64_image_viewer extends Admin_Controller {
 	public function id_back($account_number) {
 		$this->load->model("admin/Merchant_pre_registration_model", "m_pre_registration");
 		$this->load->model("admin/Client_pre_registration_model", "c_pre_registration");
+		$this->load->model("admin/Agent_pre_registration_model", "a_pre_registration");
 
 		$row_merchant = $this->m_pre_registration->get_datum(
 			'',
@@ -80,7 +97,14 @@ class Base64_image_viewer extends Admin_Controller {
 			)
 		)->row();
 
-		$row = ($row_merchant != "" ? $row_merchant : $row_client);
+		$row_agent = $this->a_pre_registration->get_datum(
+			'',
+			array(
+				'account_number'	=> $account_number
+			)
+		)->row();
+
+		$row = ($row_merchant != "" ? $row_merchant : ($row_agent !="" ? $row_agent : $row_client) );
 
 		if ($row == "") {
 			echo "Image not found!";

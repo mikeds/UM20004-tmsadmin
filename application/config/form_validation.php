@@ -474,7 +474,24 @@ switch( strtolower(get_controller()) ) {
 					'label' => 'Status',
 					'rules'	=> $default_numeric_rules
 				),
-			),
+			)
+		);
+	break;
+
+	case 'merchant_request' : 
+		$config = array(
+			'validate' => array(
+				array(
+					'field'	=> 'confirm-text',
+					'label'	=> 'Confirm Text',
+					'rules'	=> "required"
+				),
+				array(
+					'field'	=> 'reason-for-disapproval',
+					'label'	=> 'Reason for Disapproval',
+					'rules'	=> "required"
+				)
+			)			
 		);
 	break;
 
@@ -557,11 +574,27 @@ switch( strtolower(get_controller()) ) {
 					'field' => 'status',
 					'label' => 'Status',
 					'rules'	=> $default_numeric_rules
-				),
-			)
+				),				
+			),
+
 		);
 	break;
-
+	case 'client_request' : 
+		$config = array(
+			'validate' => array(
+				array(
+					'field'	=> 'confirm-text',
+					'label'	=> 'Confirm Text',
+					'rules'	=> "required"
+				),
+				array(
+					'field'	=> 'reason-for-disapproval',
+					'label'	=> 'Reason for Disapproval',
+					'rules'	=> "required"
+				)				
+			)			
+		);
+	break;
 	default : $config = array();
 }
 

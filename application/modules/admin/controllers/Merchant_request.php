@@ -12,6 +12,8 @@ class Merchant_request extends Admin_Controller {
 		$this->load->model('admin/merchants_model', 'merchants');
 		$this->load->model('admin/oauth_bridges_model', 'bridges');
 		$this->load->model('admin/wallet_addresses_model', 'wallet_addresses');
+		$this->load->model('admin/Merchants_disapproval_model', 'disapproval');
+		$this->load->model('admin/disapproval_reason_types_model', 'disapproval_types');
 
 		$this->_admin_account_data = $this->get_account_data();
 	}
@@ -36,7 +38,7 @@ class Merchant_request extends Admin_Controller {
 			'account_date_added as "Date Registered"'
 		);
 
-		$where = array();
+		$where = array('account_status' => 0);
 
 		$inner_joints = array();
 
@@ -57,8 +59,9 @@ class Merchant_request extends Admin_Controller {
 		$admin_account_data_results = $this->_admin_account_data['results'];
 		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
-		$this->_data['form_url']		= base_url() . "merchant-request/update/{$id}";
-		$this->_data['notification'] 	= $this->session->flashdata('notification');
+		$this->_data['form_url']				= base_url() . "merchant-request/update/{$id}";
+		$this->_data['reject_request_url']		= base_url() . "merchant-request/reject/{$id}";
+		$this->_data['notification'] 			= $this->session->flashdata('notification');
 
 		$row = $this->pre_registration->_datum(
 			array(
@@ -300,5 +303,73 @@ class Merchant_request extends Admin_Controller {
 
 		$this->_data['title']  = "Merchant Request - Approval";
 		$this->set_template("pre_registration_merchant/form", $this->_data);
+	}
+	public function reject_request($id){
+		$admin_account_data_results = $this->_admin_account_data['results'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
+		
+
+		$row = $this->pre_registration->_datum(
+			array('*'),
+			array(),
+			array(
+				'account_number'	=> $id
+			)
+		)->row();
+
+		$type_of_dissapproval = $this->disapproval_types->get_data(
+			array(
+				'disapproval_reason_type_id as id',
+				'disapproval_reason_type_description as name'
+			),
+			array(
+				'disapproval_reason_type_status' => 1
+			),
+			array(),
+			array(),
+			array()
+		);
+		$this->_data['reason_for_disapproval']	= $this->generate_selection(
+			"reason-for-disapproval", 
+			$type_of_dissapproval, 
+			"", 
+			"id", 
+			"name", 
+			false,
+			"Please Select Reason for Disapproval"
+		);
+		
+		if($_POST){
+			if ($this->form_validation->run('validate')) {
+
+				$disapproval_desc				= $this->input->post('disapproval-desc');	
+				$reason_for_disapproval			= $this->input->post('reason-for-disapproval');		
+				// update status from pre-registration
+				$this->pre_registration->update(
+					$id,
+					array(
+						'account_status'				=> 1,
+						'disaproval_reason_type_id'		=> $reason_for_disapproval,
+						'account_disaproval_message'	=> $disapproval_desc
+					)
+				);
+
+
+
+				$this->session->set_flashdata('notification', $this->generate_notification('success', 'Merchant account successfully rejected!'));
+				redirect(base_url() . "merchant-request");	
+			}
+		}
+
+		$this->_data['post'] = array(
+			'first-name' 	=> $row->account_fname,
+			'last-name' 	=> $row->account_lname,
+			'email-address' => $row->account_email_address,
+			'mobile-no' 	=> $row->account_mobile_no
+		);
+		$this->_data['form_url']		= base_url() . "merchant-request/reject/{$id}";
+		$this->_data['notification'] 	= $this->session->flashdata('notification');
+		$this->_data['title']  = "Merchant Request - Disapproval";
+		$this->set_template("pre_registration_merchant/form_disapproval", $this->_data);
 	}
 }

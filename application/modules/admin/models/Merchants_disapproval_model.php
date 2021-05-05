@@ -2,11 +2,11 @@
 
 class Merchants_disapproval_model extends CI_Model {
 	private 
-		$_table	= 'merchant_disapproval_reason  merchant_disapproval_reason',
-		$_table_x	= 'merchant_disapproval_reason';
+		$_table	= 'merchant_rejected  merchant_rejected',
+		$_table_x	= 'merchant_rejected';
 
 	private
-		$_id = "reason_id";
+		$_id = "rejected_id";
 
 	function _data(
 		$select = array('*'), 

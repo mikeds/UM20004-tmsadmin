@@ -1095,4 +1095,32 @@ HTML;
 
 		$this->add_scripts(base_url() . "assets/{$this->_base_controller}/js/scripts.js", true);
 	}
+	public function _send_sms($mobile_no, $message) {
+		$this->load->model("globe_access_tokens", "globe_access_token");
+
+		$access_token = "";
+
+		$row = $this->globe_access_token->get_datum(
+			'',
+			array(
+				'token_mobile_no' => $mobile_no
+			)
+		)->row();
+
+		if ($row != "") {
+			$access_token = $row->token_code;
+		}
+
+		$this->send_sms($mobile_no, $message, $access_token, true);
+	}
+
+	public function _send_email($send_to, $title, $message) {
+		send_email(
+			SMTP_USER,
+			$send_to,
+			$title,
+			$message
+		);
+	}
+	
 }

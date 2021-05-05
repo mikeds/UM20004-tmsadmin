@@ -2,11 +2,11 @@
 
 class Client_disapproval_model extends CI_Model {
 	private 
-		$_table	= 'client_disapproval_reason  client_disapproval_reason',
-		$_table_x	= 'client_disapproval_reason';
+		$_table	= 'client_rejected  client_rejected',
+		$_table_x	= 'client_rejected';
 
 	private
-		$_id = "reason_id";
+		$_id = "rejected_id";
 
 	function _data(
 		$select = array('*'), 

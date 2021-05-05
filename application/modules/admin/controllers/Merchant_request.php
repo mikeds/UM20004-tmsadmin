@@ -14,6 +14,7 @@ class Merchant_request extends Admin_Controller {
 		$this->load->model('admin/wallet_addresses_model', 'wallet_addresses');
 		$this->load->model('admin/Merchants_disapproval_model', 'disapproval');
 		$this->load->model('admin/disapproval_reason_types_model', 'disapproval_types');
+		$this->load->model('admin/globe_access_tokens_model', 'disapproval_types');
 
 		$this->_admin_account_data = $this->get_account_data();
 	}
@@ -307,7 +308,6 @@ class Merchant_request extends Admin_Controller {
 	public function reject_request($id){
 		$admin_account_data_results = $this->_admin_account_data['results'];
 		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
-		
 
 		$row = $this->pre_registration->_datum(
 			array('*'),
@@ -329,10 +329,11 @@ class Merchant_request extends Admin_Controller {
 			array(),
 			array()
 		);
+		$type_of_disapproval_selected = ($_POST ? $_POST['reason-for-disapproval'] : '');
 		$this->_data['reason_for_disapproval']	= $this->generate_selection(
 			"reason-for-disapproval", 
 			$type_of_dissapproval, 
-			"", 
+			$type_of_disapproval_selected, 
 			"id", 
 			"name", 
 			false,
@@ -341,32 +342,81 @@ class Merchant_request extends Admin_Controller {
 		
 		if($_POST){
 			if ($this->form_validation->run('validate')) {
-
+				
 				$disapproval_desc				= $this->input->post('disapproval-desc');	
-				$reason_for_disapproval			= $this->input->post('reason-for-disapproval');		
-				// update status from pre-registration
-				$this->pre_registration->update(
-					$id,
-					array(
-						'account_status'				=> 1,
-						'disaproval_reason_type_id'		=> $reason_for_disapproval,
-						'account_disaproval_message'	=> $disapproval_desc
-					)
-				);
+				$reason_for_disapproval			= $this->input->post('reason-for-disapproval');	
+				$confirm_text					= strtoupper($this->input->post('confirm-text'));	
+				if($confirm_text == 'CONFIRM'){
+					// update status from pre-registration
+					$this->pre_registration->update(
+						$id,
+						array(
+							'account_status'				=> 1,
+							'disaproval_reason_type_id'		=> $reason_for_disapproval,
+							'account_disaproval_message'	=> $disapproval_desc
+						)
+					);
+					// Insert data to client_rejected table
+					$this->disapproval->insert(
+						array(
+							'account_number'        			=> $row->account_number,
+							'account_fname'        			 	=> $row->account_fname,
+							'account_mname'         			=> $row->account_mname,
+							'account_lname'         			=> $row->account_lname,
+							'account_mobile_no'     			=> $row->account_mobile_no,
+							'account_email_address' 			=> $row->account_email_address,
+							'account_disaproval_message'        => $disapproval_desc,
+							'rejected_by_oauth_bridge_id'		=> $admin_oauth_bridge_id,
+							'disaproval_reason_type_id'			=> $reason_for_disapproval,
+							'rejected_date_added'     			=> $this->_today
+						)
+					);
+					// Send rejection email
+					$email_from = getenv("SMTPUSER", true);
+					$send_to	= $row->account_email_address;
+					$title	= "Application Declined";
+					if($reason_for_disapproval == "1"){
+						$message = "Your application has been rejected. You did not submit a valid government ID. Please resubmit your application with a clear and full photo of your valid government ID. Thank you! <br/> - BambuPay Team";
+						
+					}else if($reason_for_disapproval == "2"){
+						$message = "Your application has been rejected. You did not submit a clear and full Selfie. Kindly re-submit your application with a clear and full Selfie. Thank you! <br/> - BambuPay Team";
+						//$message .= "BambuPay Team"; 
+					}else if($reason_for_disapproval == "3"){
+						$message = "Your application has been rejected. You did not submit a clear attachment. Kindly re-submit your application with a clear attachment. Thank you! <br/> - BambuPay Team";
+						//$message .= "BambuPay Team";  
+					}else{
+						$message = "Your application has been rejected. You did not submit a valid attachment. Kindly re-submit your application with a valid attachment. Thank you! <br/> - BambuPay Team";
+						//$message .= "BambuPay Team";  
+					}
 
+					send_email(
+						$email_from,
+						$send_to,
+						$title,
+						$message
+					);
 
+					$this->session->set_flashdata('notification', $this->generate_notification('success', 'Merchant account successfully rejected!'));
+					redirect(base_url() . "merchant-request");	
+				}else{
 
-				$this->session->set_flashdata('notification', $this->generate_notification('success', 'Merchant account successfully rejected!'));
-				redirect(base_url() . "merchant-request");	
+					$this->session->set_flashdata('notification', $this->generate_notification('warning', 'Please type CONFIRM to procceed!'));
+
+				}	
+
 			}
 		}
-
 		$this->_data['post'] = array(
-			'first-name' 	=> $row->account_fname,
-			'last-name' 	=> $row->account_lname,
-			'email-address' => $row->account_email_address,
-			'mobile-no' 	=> $row->account_mobile_no
+			'first-name' 		=> $row->account_fname,
+			'last-name' 		=> $row->account_lname,
+			'email-address' 	=> $row->account_email_address,
+			'mobile-no' 		=> $row->account_mobile_no,
+			'disapproval-desc'	=> ($_POST ? $_POST['disapproval-desc'] : ''),
+			'confirm-text'		=> ($_POST ? $_POST['confirm-text'] : ''),
 		);
+		
+
+
 		$this->_data['form_url']		= base_url() . "merchant-request/reject/{$id}";
 		$this->_data['notification'] 	= $this->session->flashdata('notification');
 		$this->_data['title']  = "Merchant Request - Disapproval";

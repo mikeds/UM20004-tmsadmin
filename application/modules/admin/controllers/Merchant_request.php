@@ -14,7 +14,6 @@ class Merchant_request extends Admin_Controller {
 		$this->load->model('admin/wallet_addresses_model', 'wallet_addresses');
 		$this->load->model('admin/Merchants_disapproval_model', 'disapproval');
 		$this->load->model('admin/disapproval_reason_types_model', 'disapproval_types');
-		$this->load->model('admin/globe_access_tokens_model', 'disapproval_types');
 
 		$this->_admin_account_data = $this->get_account_data();
 	}

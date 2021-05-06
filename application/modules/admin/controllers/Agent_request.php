@@ -57,8 +57,8 @@ class Agent_request extends Admin_Controller {
 		$admin_account_data_results = $this->_admin_account_data['results'];
 		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
-		$this->_data['form_url']		= base_url() . "agent-request/update/{$id}";
-		$this->_data['notification'] 	= $this->session->flashdata('notification');
+		$this->_data['form_url']				= base_url() . "agent-request/update/{$id}";
+		$this->_data['notification'] 			= $this->session->flashdata('notification');
 
 		$row = $this->pre_registration->_datum(
 			array(
@@ -294,4 +294,5 @@ class Agent_request extends Admin_Controller {
 		$this->_data['title']  = "Agent Request - Approval";
 		$this->set_template("pre_registration_agent/form", $this->_data);
 	}
+
 }

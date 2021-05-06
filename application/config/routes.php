@@ -75,19 +75,22 @@ $route["merchant-accounts/new"]            = "admin/Merchant_accounts/new";
 $route["merchant-accounts/update/(:any)"]  = "admin/Merchant_accounts/update/$1";
 
 # CLIENT REQUEST
-$route["client-request"]                = "admin/Client_request";
-$route["client-request/(:num)"]         = "admin/Client_request/index/$1";
-$route["client-request/update/(:any)"]  = "admin/Client_request/update/$1";
+$route["client-request"]                    = "admin/Client_request";
+$route["client-request/(:num)"]             = "admin/Client_request/index/$1";
+$route["client-request/update/(:any)"]      = "admin/Client_request/update/$1";
+$route["client-request/reject/(:any)"]      = "admin/Client_request/reject_request/$1";
 
 # Merchant REQUEST
-$route["merchant-request"]                = "admin/Merchant_request";
-$route["merchant-request/(:num)"]         = "admin/Merchant_request/index/$1";
-$route["merchant-request/update/(:any)"]  = "admin/Merchant_request/update/$1";
+$route["merchant-request"]                      = "admin/Merchant_request";
+$route["merchant-request/(:num)"]               = "admin/Merchant_request/index/$1";
+$route["merchant-request/update/(:any)"]        = "admin/Merchant_request/update/$1";
+$route["merchant-request/reject/(:any)"]        = "admin/Merchant_request/reject_request/$1";
 
 # Agent REQUEST
 $route["agent-request"]                   = "admin/Agent_request";
 $route["agent-request/(:num)"]            = "admin/Agent_request/index/$1";
 $route["agent-request/update/(:any)"]     = "admin/Agent_request/update/$1";
+
 
 # INCOME GROUPS - CASH IN OTC
 $route["income-groups-cash-in-otc"]                 = "admin/Income_groups_cash_in_otc";

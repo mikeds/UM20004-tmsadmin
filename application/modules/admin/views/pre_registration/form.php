@@ -288,6 +288,11 @@
 						<button type="submit" class="btn btn-block btn-warning"><b>APPROVE</b></button>
 					</div>
 				</div>
+				<div class="col-xl-4">
+					<div class="form-group">
+						<a href="<?=$reject_request_url?>"  class="btn btn-block btn-danger"><b>DISAPPROVE</b></a>
+					</div>
+				</div>
 			</div>
 		</form>
   	</div>

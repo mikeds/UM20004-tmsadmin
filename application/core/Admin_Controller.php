@@ -1095,4 +1095,14 @@ HTML;
 
 		$this->add_scripts(base_url() . "assets/{$this->_base_controller}/js/scripts.js", true);
 	}
+
+	public function _send_email($send_to, $title, $message) {
+		send_email(
+			SMTP_USER,
+			$send_to,
+			$title,
+			$message
+		);
+	}
+	
 }

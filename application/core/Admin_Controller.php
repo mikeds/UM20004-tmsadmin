@@ -1054,6 +1054,14 @@ HTML;
 		);
 
 		$menu_items[] = array(
+			'menu_id'			=> 'client-accounts',
+			'menu_title'		=> 'Client Accounts',
+			'menu_url'			=> 	base_url() . "client-accounts",
+			'menu_controller'	=> 'client_accounts',
+			'menu_icon'			=> 'view-dashboard',
+		);
+
+		$menu_items[] = array(
 			'menu_id'			=> 'admin-accounts',
 			'menu_title'		=> 'Admin Accounts',
 			'menu_url'			=> 	base_url() . "admin-accounts",

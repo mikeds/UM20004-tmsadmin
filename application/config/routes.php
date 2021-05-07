@@ -64,11 +64,19 @@ $route['transaction-fees/(:num)']           = "admin/Transaction_fees/index/$1";
 $route['transaction-fees/update/(:any)']    = "admin/Transaction_fees/update/$1";
 $route['transaction-fees/delete/(:num)']    = "admin/Transaction_fees/delete/$1";
 
+# ADMIN ACCOUNTS
 $route["admin-accounts"]                = "admin/Admin_accounts";
 $route["admin-accounts/(:num)"]         = "admin/Admin_accounts/index/$1";
 $route["admin-accounts/new"]            = "admin/Admin_accounts/new";
 $route["admin-accounts/update/(:any)"]  = "admin/Admin_accounts/update/$1";
 
+# CLIENT ACCOUNTS
+$route["client-accounts"]                = "admin/Client_accounts";
+$route["client-accounts/(:num)"]         = "admin/Client_accounts/index/$1";
+// $route["client-accounts/new"]            = "admin/Client_accounts/new";
+// $route["client-accounts/update/(:any)"]  = "admin/Client_accounts/update/$1";
+
+# MERCHANT ACCOUNTS
 $route["merchant-accounts"]                = "admin/Merchant_accounts";
 $route["merchant-accounts/(:num)"]         = "admin/Merchant_accounts/index/$1";
 $route["merchant-accounts/new"]            = "admin/Merchant_accounts/new";

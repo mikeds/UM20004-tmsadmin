@@ -28,6 +28,8 @@ class Agents extends Admin_Controller {
         $this->load->model('admin/source_of_funds_model', 'source_funds');
         $this->load->model('admin/nature_of_work_model', 'nature_of_work');
         $this->load->model('admin/id_types_model', 'id_types');
+        $this->load->model('admin/agent_accounts_model', 'agent_accounts');
+        $this->load->model('admin/client_accounts_model', 'client_accounts');
 
         $this->_admin_account_data = $this->get_account_data();
     }
@@ -44,36 +46,33 @@ class Agents extends Admin_Controller {
         );
 
         $select = array(
-            'merchant_number as id',
-            'merchant_status as "Status"',
-            // 'IF(merchant_email_status = 1, "Verified", "Unverified") as "Email Status"',
-            'merchant_number as "Agent Number"',
-            'merchant_ref_code as "Code"',
-            // 'merchant_code as Code',
-            'merchant_fname as "First Name"',
-            'merchant_mname as "Middle Name"',
-            'merchant_lname as "Last Name"',
-            'merchant_mobile_no as "Mobile No."',
-            'merchant_email_address as "Email Address"',
-            'IF(merchant_gender = 2, "Female", "Male") as "Gender"',
-            'merchant_dob as "Date of Birth"',
-            'merchant_house_no as "House No./ Unit No. / Building"',
-            'merchant_street as "Street"',
-            'merchant_brgy as "Barangay"',
-            'merchant_city as "City"',
+            'account_number as id',
+            'account_status as "Status"',
+            'account_fname as "First Name"',
+            'account_mname as "Middle Name"',
+            'account_lname as "Last Name"',
+            'account_mobile_no as "Mobile No."',
+            'account_email_address as "Email Address"',
+            'IF(account_gender = 2, "Female", "Male") as "Gender"',
+            'account_dob as "Date of Birth"',
+            'account_house_no as "House No./ Unit No. / Building"',
+            'account_street as "Street"',
+            'account_brgy as "Barangay"',
+            'account_city as "City"',
             'province_name as "Province"',
             'country_name as "Country"',
         );
 
         $where = array(
             'oauth_bridge_parent_id'    => $admin_oauth_bridge_id,
-            'merchant_role'             => 2 // agents
+            'account_status'            => 1,
+            'account_role'              => 2 // agent
         );
 
         $inner_joints = array(
             array(
                 'table_name'    => 'oauth_bridges',
-                'condition'     => 'oauth_bridges.oauth_bridge_id = merchants.oauth_bridge_id'
+                'condition'     => 'oauth_bridges.oauth_bridge_id = client_accounts.oauth_bridge_id'
             ),
             array(
                 'table_name'    => 'tms_admins',
@@ -81,23 +80,23 @@ class Agents extends Admin_Controller {
             ),
             array(
                 'table_name'    => 'countries',
-                'condition'     => 'countries.country_id = merchants.country_id',
+                'condition'     => 'countries.country_id = client_accounts.country_id',
                 'type'          => 'left'
             ),
             array(
                 'table_name'    => 'provinces',
-                'condition'     => 'provinces.province_id = merchants.province_id',
+                'condition'     => 'provinces.province_id = client_accounts.province_id',
                 'type'          => 'left'
             )
         );
 
-        $total_rows = $this->merchants->get_count(
+        $total_rows = $this->client_accounts->get_count(
             $where,
             array(),
             $inner_joints
         );
         $offset = $this->get_pagination_offset($page, $this->_limit, $total_rows);
-        $results = $this->merchants->get_data($select, $where, array(), $inner_joints, array('filter'=>'merchant_date_created', 'sort'=>'DESC'), $offset, $this->_limit);
+        $results = $this->client_accounts->get_data($select, $where, array(), $inner_joints, array('filter'=>'account_date_added', 'sort'=>'DESC'), $offset, $this->_limit);
 
         $this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 2);
         $this->_data['title']  = "Agent List";
@@ -344,28 +343,27 @@ class Agents extends Admin_Controller {
         $this->set_template("agents/form", $this->_data);
     }
 
-    public function update($merchant_number) {
+    public function update($account_number) {
         $admin_account_data_results = $this->_admin_account_data['results'];
         $admin_oauth_bridge_id      = $admin_account_data_results['admin_oauth_bridge_id'];
 
         $this->_data['is_update']       = true;
-        $this->_data['form_url']        = base_url() . "agents/update/{$merchant_number}";
+        $this->_data['form_url']        = base_url() . "agents/update/{$account_number}";
         $this->_data['notification']    = $this->session->flashdata('notification');
 
         $country_id = 169; // PH
 
-        $row = $this->merchants->get_datum(
+        $row = $this->client_accounts->get_datum(
             '',
             array(
                 'oauth_bridge_parent_id'    => $admin_oauth_bridge_id,
-                'merchant_number'           => $merchant_number,
-                'merchant_role'             => 2
+                'account_number'           => $account_number,
             ),
             array(),
             array(
                 array(
                     'table_name'    => 'oauth_bridges',
-                    'condition'     => 'oauth_bridges.oauth_bridge_id = merchants.oauth_bridge_id'
+                    'condition'     => 'oauth_bridges.oauth_bridge_id = client_accounts.oauth_bridge_id'
                 ),
                 array(
                     'table_name'    => 'tms_admins',
@@ -381,10 +379,10 @@ class Agents extends Admin_Controller {
 
         $country_id         = $row->country_id;
         $province_id        = $row->province_id;
-        $gender_id          = $row->merchant_gender;
+        $gender_id          = $row->account_gender;
         $sof_id             = $row->sof_id;
         $now_id             = $row->now_id;
-        $id_type_id         = $row->merchant_id_type;
+        $id_type_id         = $row->account_id_type;
 
         $countries = $this->countries->get_data(
             array(
@@ -468,26 +466,24 @@ class Agents extends Admin_Controller {
         );
 
         $this->_data['post'] = array(
-            'merchant-code' => $row->merchant_code,
-            'first-name'    => $row->merchant_fname,
-            'middle-name'   => $row->merchant_mname,
-            'last-name'     => $row->merchant_lname,
-            'dob'           => $row->merchant_dob,
-            'house-no'      => $row->merchant_house_no,
-            'street'        => $row->merchant_street,
-            'brgy'          => $row->merchant_brgy,
-            'city'          => $row->merchant_city,
-            'mobile-no'     => $row->merchant_mobile_no,
-            'email-address' => $row->merchant_email_address,
-            'status'        => $row->merchant_status == 1 ? "checked" : "",
-            'id-exp-date'   => $row->merchant_id_exp_date,
-            'id-no'         => $row->merchant_id_no,
-			'postal-code'	=> $row->merchant_postal_code
+            'first-name'    => $row->account_fname,
+            'middle-name'   => $row->account_mname,
+            'last-name'     => $row->account_lname,
+            'dob'           => $row->account_dob,
+            'house-no'      => $row->account_house_no,
+            'street'        => $row->account_street,
+            'brgy'          => $row->account_brgy,
+            'city'          => $row->account_city,
+            'mobile-no'     => $row->account_mobile_no,
+            'email-address' => $row->account_email_address,
+            'status'        => $row->account_status == 1 ? "checked" : "",
+            'id-exp-date'   => $row->account_id_exp_date,
+            'id-no'         => $row->account_id_no,
+			'postal-code'	=> $row->account_postal_code
         );
 
         if ($_POST) {
             if ($this->form_validation->run('validate')) {
-                $merchant_code  = $this->input->post("merchant-code");
                 $fname          = $this->input->post("first-name");
                 $mname          = $this->input->post("middle-name");
                 $lname          = $this->input->post("last-name");
@@ -514,24 +510,24 @@ class Agents extends Admin_Controller {
                 $id_no              = $this->input->post("id-no");
                 $postal_code        = $this->input->post("postal-code");
 
-                $row_account = $this->merchant_accounts->get_datum(
+                $row_account = $this->client_accounts->get_datum(
                     '', 
                     array(
-                        'merchant_number'   => $merchant_number
+                        'account_number'   => $account_number
                     )
                 )->row();
 
-                if ($row_account != "") {
-                    if ($this->validate_username("merchant", $username, $row_account->account_number)) {
-                        $this->session->set_flashdata('notification', $this->generate_notification('warning', 'Username Already Exist!'));
-                        redirect($this->_data['form_url']);
-                    }   
-                } else {
-                    if ($this->validate_username("merchant", $username)) {
-                        $this->session->set_flashdata('notification', $this->generate_notification('warning', 'Username Already Exist!'));
-                        redirect($this->_data['form_url']);
-                    }
-                }
+                // if ($row_account != "") {
+                //     if ($this->validate_username("merchant", $username, $row_account->account_number)) {
+                //         $this->session->set_flashdata('notification', $this->generate_notification('warning', 'Username Already Exist!'));
+                //         redirect($this->_data['form_url']);
+                //     }   
+                // } else {
+                //     if ($this->validate_username("merchant", $username)) {
+                //         $this->session->set_flashdata('notification', $this->generate_notification('warning', 'Username Already Exist!'));
+                //         redirect($this->_data['form_url']);
+                //     }
+                // }
 
                 if ($password != "" || $repeat_password != "") {
                     if ($password != $repeat_password) {
@@ -541,43 +537,30 @@ class Agents extends Admin_Controller {
                 }
 
                 $update_data = array(
-                    // 'merchant_code'              => $merchant_code,
-                    'merchant_fname'            => $fname,
-                    'merchant_mname'            => $mname,
-                    'merchant_lname'            => $lname,
-                    'merchant_gender'           => $gender,
-                    'merchant_dob'              => $dob,
-                    'merchant_house_no'         => $house_no,
-                    'merchant_street'           => $street,
-                    'merchant_brgy'             => $brgy,
-                    'merchant_city'             => $city,
+                    'account_fname'             => $fname,
+                    'account_mname'             => $mname,
+                    'account_lname'             => $lname,
+                    'account_gender'            => $gender,
+                    'account_dob'               => $dob,
+                    'account_house_no'          => $house_no,
+                    'account_street'            => $street,
+                    'account_brgy'              => $brgy,
+                    'account_city'              => $city,
                     'country_id'                => $country_id,
                     'province_id'               => $province_id,
-                    'merchant_mobile_no'        => $mobile_no,
-                    'merchant_email_address'    => $email_address,
-                    'merchant_postal_code'      => $postal_code,
+                    'account_mobile_no'         => $mobile_no,
+                    'account_email_address'     => $email_address,
+                    'account_postal_code'       => $postal_code,
                     'sof_id'                    => $sof,
                     'now_id'                    => $now,
-                    'merchant_id_type'          => $id_type,
-                    'merchant_id_no'            => $id_no,
-                    'merchant_id_exp_date'      => $id_exp_date,
-                    'merchant_status'           => $status == 1 ? 1 : 0,
+                    'account_id_type'           => $id_type,
+                    'account_id_no'             => $id_no,
+                    'account_id_exp_date'       => $id_exp_date,
+                    'account_status'            => $status == 1 ? 1 : 0,
                 );
 
-                if ($fname != $row->merchant_fname || $lname != $row->merchant_lname) {
-                    $ref_code = substr(number_format(strtotime($this->_today) * rand(),0,'',''),0,6);
-                    $ref_code = substr($fname, 0, 1) . substr($lname, 0, 1) . $ref_code;
-
-                    $update_data = array_merge(
-                        $update_data,
-                        array(
-                            'merchant_ref_code' => strtolower($ref_code)
-                        )
-                    );
-                }
-
-                $this->merchants->update(
-                    $merchant_number,
+                $this->client_accounts->update(
+                    $account_number,
                     $update_data
                 );
 
@@ -600,15 +583,15 @@ class Agents extends Admin_Controller {
                     );
                 }
 
-                $row_account = $this->merchant_accounts->get_datum(
+                $row_account = $this->agent_accounts->get_datum(
                     '', 
                     array(
-                        'merchant_number'   => $merchant_number
+                        'account_number'   => $account_number
                     )
                 )->row();
 
                 if ($row_account != "") {
-                    $this->merchant_accounts->update(
+                    $this->agent_accounts->update(
                         $row_account->account_number,
                         $update_data
                     );

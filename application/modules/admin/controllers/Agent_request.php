@@ -10,6 +10,8 @@ class Agent_request extends Admin_Controller {
         $this->load->model('admin/agent_pre_registration_model', 'pre_registration');
         $this->load->model('admin/merchant_accounts_model', 'merchant_accounts');
         $this->load->model('admin/merchants_model', 'merchants');
+        $this->load->model('admin/agent_accounts_model', 'agent_accounts');
+        $this->load->model('admin/client_accounts_model', 'client_accounts');
         $this->load->model('admin/oauth_bridges_model', 'bridges');
         $this->load->model('admin/wallet_addresses_model', 'wallet_addresses');
 
@@ -51,8 +53,8 @@ class Agent_request extends Admin_Controller {
     }
 
     public function update($id) {
-        $admin_account_data_results = $this->_admin_account_data['results'];
-        $admin_oauth_bridge_id      = $admin_account_data_results['admin_oauth_bridge_id'];
+        $admin_account_data_results             = $this->_admin_account_data['results'];
+        $admin_oauth_bridge_id                  = $admin_account_data_results['admin_oauth_bridge_id'];
 
         $this->_data['form_url']                = base_url() . "agent-request/update/{$id}";
         $this->_data['notification']            = $this->session->flashdata('notification');
@@ -171,11 +173,11 @@ class Agent_request extends Admin_Controller {
             $status = $this->input->post("status");
 
             if ($status == 1) {
-                $merchant_number = $row->account_number;
+                $account_number = $row->account_number;
 
                 $bridge_id = $this->generate_code(
                     array(
-                        'merchant_number'           => $merchant_number,
+                        'merchant_number'           => $account_number,
                         'merchant_date_created'     => $this->_today,
                         'merchant_oauth_bridge_id'  => $admin_oauth_bridge_id
                     )
@@ -191,38 +193,39 @@ class Agent_request extends Admin_Controller {
                 );
 
                 $insert_data = array(
-                    'merchant_number'           => $row->account_number,
-                    'merchant_role'             => 2,
+                    'account_number'            => $row->account_number,
                     'oauth_bridge_id'           => $bridge_id,
-                    'merchant_otp_number'       => $row->account_otp_number,
-                    'merchant_sms_status'       => $row->account_sms_status,
-                    'merchant_fname'            => $row->account_fname,
-                    'merchant_mname'            => $row->account_mname,
-                    'merchant_lname'            => $row->account_lname,
-                    'merchant_email_address'    => $row->account_email_address,
-                    'merchant_mobile_no'        => $row->account_mobile_no,
-                    'merchant_dob'              => $row->account_dob,
-                    'merchant_pob'              => $row->account_pob,
-                    'merchant_gender'           => $row->account_gender,
-                    'merchant_house_no'         => $row->account_house_no,
-                    'merchant_street'           => $row->account_street,
-                    'merchant_brgy'             => $row->account_brgy,
-                    'merchant_city'             => $row->account_city,
+                    'account_otp_number'        => $row->account_otp_number,
+                    'account_sms_status'        => $row->account_sms_status,
+                    'account_avatar_base64'	    => $row->account_avatar_base64,
+                    'account_fname'             => $row->account_fname,
+                    'account_mname'             => $row->account_mname,
+                    'account_lname'             => $row->account_lname,
+                    'account_email_address'     => $row->account_email_address,
+                    'account_password'		    => $row->account_password,
+                    'account_mobile_no'         => $row->account_mobile_no,
+                    'account_dob'               => $row->account_dob,
+                    'account_pob'               => $row->account_pob,
+                    'account_gender'            => $row->account_gender,
+                    'account_house_no'          => $row->account_house_no,
+                    'account_street'            => $row->account_street,
+                    'account_brgy'              => $row->account_brgy,
+                    'account_city'              => $row->account_city,
                     'province_id'               => $row->province_id,
                     'country_id'                => $row->country_id,
-                    'merchant_postal_code'      => $row->account_postal_code,
+                    'account_postal_code'       => $row->account_postal_code,
                     'sof_id'                    => $row->sof_id,
                     'now_id'                    => $row->now_id,
-                    'merchant_id_type'          => $row->account_id_type,
-                    'merchant_id_no'            => $row->account_id_no,
-                    'merchant_id_exp_date'      => $row->account_id_exp_date,
-                    'merchant_date_created'     => $this->_today,
-                    'merchant_date_registered'  => $row->account_date_added,
-                    'merchant_status'           => 1 // activated
+                    'account_id_type'           => $row->account_id_type,
+                    'account_id_no'             => $row->account_id_no,
+                    'account_id_exp_date'       => $row->account_id_exp_date,
+                    'account_date_added'        => $this->_today,
+                    'account_date_registered'   => $row->account_date_added,
+                    'account_role'              => 2
                 );
 
                 // do insert
-                $this->merchants->insert(
+                $this->client_accounts->insert(
                     $insert_data
                 );
 
@@ -254,31 +257,16 @@ class Agent_request extends Admin_Controller {
                     )
                 );
 
-                // do insert agent account
-                $this->merchant_accounts->insert(
-                    array(
-                        'account_number'        => $ma_account_number,
-                        'merchant_number'       => $merchant_number,
-                        'oauth_bridge_id'       => $ma_bridge_id,
-                        'account_avatar_base64' => $row->account_avatar_base64,
-                        'account_username'      => $row->account_email_address,
-                        'account_password'      => $row->account_password,
-                        'account_fname'         => $row->account_fname,
-                        'account_mname'         => $row->account_mname,
-                        'account_lname'         => $row->account_lname,
-                        'account_date_added'    => $this->_today
-                    )
-                );
 
                 // create wallet address
-                $this->create_wallet_address($merchant_number, $bridge_id, $admin_oauth_bridge_id);
+                $this->create_wallet_address($account_number, $bridge_id, $admin_oauth_bridge_id);
 
                 // create token auth for api
-                $this->create_token_auth($ma_account_number, $ma_bridge_id);
+                $this->create_token_auth($account_number, $bridge_id);
 
                 // delete account from pre-registration
                 $this->pre_registration->delete(
-                    $merchant_number
+                    $account_number
                 );
 
                 $this->session->set_flashdata('notification', $this->generate_notification('success', 'Agent account successfully approved!'));

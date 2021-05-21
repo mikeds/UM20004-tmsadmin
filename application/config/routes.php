@@ -99,6 +99,11 @@ $route["agent-request"]                   = "admin/Agent_request";
 $route["agent-request/(:num)"]            = "admin/Agent_request/index/$1";
 $route["agent-request/update/(:any)"]     = "admin/Agent_request/update/$1";
 
+# Rejected Merchant
+$route["rejected-merchant"]               = "admin/Rejected_merchant";
+
+# Rejected Client
+$route["rejected-client"]                 = "admin/Rejected_client";
 
 # INCOME GROUPS - CASH IN OTC
 $route["income-groups-cash-in-otc"]                 = "admin/Income_groups_cash_in_otc";

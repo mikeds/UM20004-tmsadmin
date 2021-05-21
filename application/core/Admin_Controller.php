@@ -832,7 +832,25 @@ HTML;
 			'menu_controller'	=> 'agent_request',
 			'menu_icon'			=> 'view-dashboard',
 		);
-
+		$menu_items[] = array(
+			'menu_id'			=> 'rejected-request',
+			'menu_title'		=> 'Rejected Request',
+			'menu_url'			=> 	'#',
+			'menu_controller'	=> 'rejected_request',
+			'menu_icon'			=> 'view-dashboard',
+			'menu_sub_items'	=> array(
+				array(
+					'menu_title'		=> 'Rejected Merchant',
+					'menu_url'			=> 	base_url() . "rejected-merchant",
+					'menu_controller'	=> 'rejected_merchant',
+				),
+				array(
+					'menu_title'		=> 'Rejected Client',
+					'menu_url'			=> 	base_url() . "rejected-client",
+					'menu_controller'	=> 'rejected_client',
+				)
+			)
+		);
 		$menu_items[] = array(
 			'menu_id'			=> 'transactions',
 			'menu_title'		=> 'Transactions',

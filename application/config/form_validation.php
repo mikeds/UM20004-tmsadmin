@@ -387,6 +387,36 @@ switch( strtolower(get_controller()) ) {
 					'label' => 'Status',
 					'rules'	=> $default_numeric_rules
 				),
+                array(  
+                    'field' => 'postal-code',
+                    'label' => 'Postal Code',
+                    'rules' => "trim|xss_clean|required"
+                ),  
+                array(  
+                    'field' => 'sof',
+                    'label' => 'Source of fund',
+                    'rules' => "trim|xss_clean|required"
+                ),  
+                array(  
+                    'field' => 'now',
+                    'label' => 'Nature of Work',
+                    'rules' => "trim|xss_clean|required"
+                ),  
+                array(  
+                    'field' => 'id_type',
+                    'label' => 'ID Type',
+                    'rules' => "trim|xss_clean|required"
+                ),  
+                array(  
+                    'field' => 'id-no',
+                    'label' => 'ID Number',
+                    'rules' => "trim|xss_clean|required"
+                ),
+                array(  
+                    'field' => 'id-exp-date',
+                    'label' => 'Date of Expiration',
+                    'rules' => "trim|xss_clean|required|required"
+                )   		
 			),
 		);
 	break;
@@ -474,6 +504,36 @@ switch( strtolower(get_controller()) ) {
 					'label' => 'Status',
 					'rules'	=> $default_numeric_rules
 				),
+				array(  
+                    'field' => 'postal-code',
+                    'label' => 'Postal Code',
+                    'rules' => "trim|xss_clean|required"
+                ),  
+                array(  
+                    'field' => 'sof',
+                    'label' => 'Source of fund',
+                    'rules' => "trim|xss_clean|required"
+                ),  
+                array(  
+                    'field' => 'now',
+                    'label' => 'Nature of Work',
+                    'rules' => "trim|xss_clean|required"
+                ),  
+                array(  
+                    'field' => 'id_type',
+                    'label' => 'ID Type',
+                    'rules' => "trim|xss_clean|required"
+                ),  
+                array(  
+                    'field' => 'id-no',
+                    'label' => 'ID Number',
+                    'rules' => "trim|xss_clean|required"
+                ),
+                array(  
+                    'field' => 'id-exp-date',
+                    'label' => 'Date of Expiration',
+                    'rules' => "trim|xss_clean|required|required"
+                )   
 			)
 		);
 	break;

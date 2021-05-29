@@ -90,6 +90,7 @@ $route["merchant-request/reject/(:any)"]        = "admin/Merchant_request/reject
 $route["agent-request"]                   = "admin/Agent_request";
 $route["agent-request/(:num)"]            = "admin/Agent_request/index/$1";
 $route["agent-request/update/(:any)"]     = "admin/Agent_request/update/$1";
+$route["agent-request/reject/(:any)"]      = "admin/Agent_request/reject_request/$1";
 
 # Rejected Merchant
 $route["rejected-merchant"]               = "admin/Rejected_merchant";

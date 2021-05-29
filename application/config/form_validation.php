@@ -655,6 +655,22 @@ switch( strtolower(get_controller()) ) {
 			)			
 		);
 	break;
+	case 'agent_request' : 
+		$config = array(
+			'validate' => array(
+				array(
+					'field'	=> 'confirm-text',
+					'label'	=> 'Confirm Text',
+					'rules'	=> "required"
+				),
+				array(
+					'field'	=> 'reason-for-disapproval',
+					'label'	=> 'Reason for Disapproval',
+					'rules'	=> "required"
+				)				
+			)			
+		);
+	break;
 	default : $config = array();
 }
 

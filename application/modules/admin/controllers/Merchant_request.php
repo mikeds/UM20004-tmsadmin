@@ -37,12 +37,12 @@ class Merchant_request extends Admin_Controller {
         );
 
 
-        $total_rows = $this->db->query("SELECT count(account_number) as count FROM merchant_pre_registration merchant_pre_registration where concat(account_fname,' ', account_mname,'',account_lname,account_email_address,account_mobile_no) like '%$search_term%' ORDER BY account_date_added DESC");
+        $total_rows = $this->db->query("SELECT count(account_number) as count FROM merchant_pre_registration merchant_pre_registration where account_status = 0 AND concat(account_fname,' ', account_mname,'',account_lname,account_email_address,account_mobile_no) like '%$search_term%' ORDER BY account_date_added DESC");
 		$total_rows = $total_rows->num_rows();
 		
 
 		$offset 	= $this->get_pagination_offset($page, $this->_limit, $total_rows);
-		$query 		= $this->db->query("SELECT account_number as id, account_fname as 'First Name', account_lname as 'Last Name', account_email_address as 'Email Address', account_mobile_no as 'Mobile No.', account_date_added as 'Date Registered' FROM merchant_pre_registration merchant_pre_registration where concat(account_fname,' ',account_lname,account_email_address,account_mobile_no) like '%$search_term%' ORDER BY account_date_added DESC LIMIT $offset, $this->_limit");
+		$query 		= $this->db->query("SELECT account_number as id, account_fname as 'First Name', account_lname as 'Last Name', account_email_address as 'Email Address', account_mobile_no as 'Mobile No.', account_date_added as 'Date Registered' FROM merchant_pre_registration merchant_pre_registration where account_status = 0 AND concat(account_fname,' ',account_lname,account_email_address,account_mobile_no) like '%$search_term%' ORDER BY account_date_added DESC LIMIT $offset, $this->_limit");
 		$results 	= $query->result_array();
 
 		$this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 2);
@@ -383,12 +383,7 @@ class Merchant_request extends Admin_Controller {
 						//$message .= "BambuPay Team";  
 					}
 
-					send_email(
-						$email_from,
-						$send_to,
-						$title,
-						$message
-					);
+					$this->_send_email($send_to, $title, $message);
 
 					$this->session->set_flashdata('notification', $this->generate_notification('success', 'Merchant account successfully rejected!'));
 					redirect(base_url() . "merchant-request");	

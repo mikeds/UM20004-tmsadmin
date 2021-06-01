@@ -14,6 +14,8 @@ class Agent_request extends Admin_Controller {
         $this->load->model('admin/client_accounts_model', 'client_accounts');
         $this->load->model('admin/oauth_bridges_model', 'bridges');
         $this->load->model('admin/wallet_addresses_model', 'wallet_addresses');
+        $this->load->model('admin/agent_disapproval_model', 'disapproval');
+		$this->load->model('admin/disapproval_reason_types_model', 'disapproval_types');
 
         $this->_admin_account_data = $this->get_account_data();
     }
@@ -38,12 +40,12 @@ class Agent_request extends Admin_Controller {
         );
 
 
-        $total_rows = $this->db->query("SELECT count(account_number) as count FROM agent_pre_registration agent_pre_registration where concat(account_fname,' ', account_mname,'',account_lname,account_email_address,account_mobile_no) like '%$search_term%' ORDER BY account_date_added DESC");
+        $total_rows = $this->db->query("SELECT count(account_number) as count FROM agent_pre_registration agent_pre_registration where account_status = 0 AND  concat(account_fname,' ', account_mname,'',account_lname,account_email_address,account_mobile_no) like '%$search_term%' ORDER BY account_date_added DESC");
 		$total_rows = $total_rows->num_rows();
 		
 
 		$offset 	= $this->get_pagination_offset($page, $this->_limit, $total_rows);
-		$query 		= $this->db->query("SELECT account_number as id, account_fname as 'First Name', account_lname as 'Last Name', account_email_address as 'Email Address', account_mobile_no as 'Mobile No.', account_date_added as 'Date Registered' FROM agent_pre_registration agent_pre_registration where concat(account_fname,' ',account_lname,account_email_address,account_mobile_no) like '%$search_term%' ORDER BY account_date_added DESC LIMIT $offset, $this->_limit");
+		$query 		= $this->db->query("SELECT account_number as id, account_fname as 'First Name', account_lname as 'Last Name', account_email_address as 'Email Address', account_mobile_no as 'Mobile No.', account_date_added as 'Date Registered' FROM agent_pre_registration agent_pre_registration where account_status = 0 AND concat(account_fname,' ',account_lname,account_email_address,account_mobile_no) like '%$search_term%' ORDER BY account_date_added DESC LIMIT $offset, $this->_limit");
 		$results 	= $query->result_array();
 
 		
@@ -57,6 +59,7 @@ class Agent_request extends Admin_Controller {
         $admin_oauth_bridge_id                  = $admin_account_data_results['admin_oauth_bridge_id'];
 
         $this->_data['form_url']                = base_url() . "agent-request/update/{$id}";
+        $this->_data['reject_request_url']		= base_url() . "agent-request/reject/{$id}";
         $this->_data['notification']            = $this->session->flashdata('notification');
 
         $row = $this->pre_registration->_datum(
@@ -280,5 +283,110 @@ class Agent_request extends Admin_Controller {
         $this->set_template("pre_registration_agent/form", $this->_data);
     }
 
+    public function reject_request($id){
+		$admin_account_data_results = $this->_admin_account_data['results'];
+		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
+		
+		$row = $this->pre_registration->_datum(
+			array('*'),
+			array(),
+			array(
+				'account_number'	=> $id
+			)
+		)->row();
+
+		$type_of_dissapproval = $this->disapproval_types->get_data(
+			array(
+				'disapproval_reason_type_id as id',
+				'disapproval_reason_type_description as name'
+			),
+			array(
+				'disapproval_reason_type_status' => 1
+			),
+			array(),
+			array(),
+			array()
+		);
+		$type_of_disapproval_selected = ($_POST ? $_POST['reason-for-disapproval'] : '');
+		$this->_data['reason_for_disapproval']	= $this->generate_selection(
+			"reason-for-disapproval", 
+			$type_of_dissapproval, 
+			$type_of_disapproval_selected,  
+			"id", 
+			"name", 
+			false,
+			"Please Select Reason for Disapproval"
+		);
+
+		if($_POST){
+			if ($this->form_validation->run('validate')) {
+				$disapproval_desc				= $this->input->post('disapproval-desc');	
+				$reason_for_disapproval			= $this->input->post('reason-for-disapproval');	
+				$confirm_text					= strtoupper($this->input->post('confirm-text'));	
+				if($confirm_text == 'CONFIRM'){	
+					// update status from pre-registration
+					$this->pre_registration->update(
+						$id,
+						array(
+							'account_status'				=> 1,
+							'disapproval_reason_type_id'	=> $reason_for_disapproval,
+							'account_disapproval_message'	=> $disapproval_desc
+						)
+					);
+					// Insert data to agent_rejected table
+					$this->disapproval->insert(
+						array(
+							'account_number'        			=> $row->account_number,
+							'account_fname'        			 	=> $row->account_fname,
+							'account_mname'         			=> $row->account_mname,
+							'account_lname'         			=> $row->account_lname,
+							'account_mobile_no'     			=> $row->account_mobile_no,
+							'account_email_address' 			=> $row->account_email_address,
+							'account_disapproval_message'       => $disapproval_desc,
+							'rejected_by_oauth_bridge_id'		=> $admin_oauth_bridge_id,
+							'disapproval_reason_type_id'		=> $reason_for_disapproval,
+							'rejected_date_added'     			=> $this->_today
+						)
+					);
+
+					// Send rejection email
+					$send_to	= $row->account_email_address;
+					$title	= "Application Declined";
+					if($reason_for_disapproval == "1"){
+						$message = "Your application has been rejected. You did not submit a valid government ID. Please resubmit your application with a clear and full photo of your valid government ID. Thank you! <br/> - BambuPay Team";
+					}else if($reason_for_disapproval == "2"){
+						$message = "Your application has been rejected. You did not submit a clear and full Selfie. Kindly re-submit your application with a clear and full Selfie. Thank you! <br/> - BambuPay Team";
+					}else if($reason_for_disapproval == "3"){
+						$message = "Your application has been rejected. You did not submit a clear attachment. Kindly re-submit your application with a clear attachment. Thank you! <br/> - BambuPay Team";
+					}else{
+						$message = "Your application has been rejected. You did not submit a valid attachment. Kindly re-submit your application with a valid attachment. Thank you! <br/> - BambuPay Team";
+					}
+                    $this->_send_email($send_to, $title, $message);
+
+
+					$this->session->set_flashdata('notification', $this->generate_notification('success', 'Agent account successfully rejected!'));
+					redirect(base_url() . "agent-request");	
+				}else{
+
+					$this->session->set_flashdata('notification', $this->generate_notification('warning', 'Please type CONFIRM to procceed!'));
+
+				}	
+
+			}
+		}
+
+		$this->_data['post'] = array(
+			'first-name' 		=> $row->account_fname,
+			'last-name' 		=> $row->account_lname,
+			'email-address' 	=> $row->account_email_address,
+			'mobile-no' 		=> $row->account_mobile_no,
+			'disapproval-desc'	=> ($_POST ? $_POST['disapproval-desc'] : ''),
+			'confirm-text'		=> ($_POST ? $_POST['confirm-text'] : ''),
+		);
+		$this->_data['form_url']		= base_url() . "agent-request/reject/{$id}";
+		$this->_data['notification'] 	= $this->session->flashdata('notification');
+		$this->_data['title']  = "Agent Request - Disapproval";
+		$this->set_template("pre_registration/form_disapproval", $this->_data);
+	}
 }
 

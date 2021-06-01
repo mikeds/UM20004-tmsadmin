@@ -41,7 +41,7 @@ class Client_request extends Admin_Controller {
 		$total_rows = $total_rows->num_rows();
 
 		$offset 	= $this->get_pagination_offset($page, $this->_limit, $total_rows);
-		$query 		= $this->db->query("SELECT account_number as id, account_fname as 'First Name', account_lname as 'Last Name', account_email_address as 'Email Address', account_mobile_no as 'Mobile No.', account_date_added as 'Date Registered' FROM client_pre_registration merchant_pre_registration where concat(account_fname,' ',account_lname,account_email_address,account_mobile_no) like '%$search_term%' ORDER BY account_date_added DESC LIMIT $offset, $this->_limit");
+		$query 		= $this->db->query("SELECT account_number as id, account_fname as 'First Name', account_lname as 'Last Name', account_email_address as 'Email Address', account_mobile_no as 'Mobile No.', account_date_added as 'Date Registered' FROM client_pre_registration merchant_pre_registration where account_status = 0 AND concat(account_fname,' ',account_lname,account_email_address,account_mobile_no) like '%$search_term%' ORDER BY account_date_added DESC LIMIT $offset, $this->_limit");
 		$results 	= $query->result_array();
 
 		$this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 2);
@@ -302,9 +302,9 @@ class Client_request extends Admin_Controller {
 							'account_lname'         			=> $row->account_lname,
 							'account_mobile_no'     			=> $row->account_mobile_no,
 							'account_email_address' 			=> $row->account_email_address,
-							'account_disapproval_message'        => $disapproval_desc,
+							'account_disapproval_message'       => $disapproval_desc,
 							'rejected_by_oauth_bridge_id'		=> $admin_oauth_bridge_id,
-							'disapproval_reason_type_id'			=> $reason_for_disapproval,
+							'disapproval_reason_type_id'		=> $reason_for_disapproval,
 							'rejected_date_added'     			=> $this->_today
 						)
 					);
@@ -327,12 +327,7 @@ class Client_request extends Admin_Controller {
 						//$message .= "BambuPay Team";  
 					}
 
-					send_email(
-						$email_from,
-						$send_to,
-						$title,
-						$message
-					);
+					$this->_send_email($send_to, $title, $message);
 
 					$this->session->set_flashdata('notification', $this->generate_notification('success', 'Client account successfully rejected!'));
 					redirect(base_url() . "client-request");	

@@ -24,6 +24,9 @@ class Merchants extends Admin_Controller {
 		$this->load->model('admin/countries_model', 'countries');
 		$this->load->model('admin/provinces_model', 'provinces');
 		$this->load->model('admin/wallet_addresses_model', 'wallet_addresses');
+		$this->load->model('admin/source_of_funds_model', 'source_funds');
+        $this->load->model('admin/nature_of_work_model', 'nature_of_work');
+        $this->load->model('admin/id_types_model', 'id_types');
 
 		$this->_admin_account_data = $this->get_account_data();
 	}
@@ -285,6 +288,10 @@ class Merchants extends Admin_Controller {
 		$country_id 	= $row->country_id;
 		$province_id	= $row->province_id;
 		$gender_id		= $row->merchant_gender;
+		$sof_id             = $row->sof_id;
+        $now_id             = $row->now_id;
+        $id_type_id         = $row->merchant_id_type;
+
 
 		$countries = $this->countries->get_data(
 			array(
@@ -319,6 +326,53 @@ class Merchants extends Admin_Controller {
 			)
 		);
 
+        $sof = $this->source_funds->get_data(
+            array(
+                'sof_id as id',
+                'sof_name as name'
+            ),
+            array(
+                'sof_status'    => 1
+            ),
+            array(),
+            array(),
+            array(
+                'filter'    => "sof_name",
+                'sort'      => "ASC"
+            )
+        );
+
+        $now = $this->nature_of_work->get_data(
+            array(
+                'now_id as id',
+                'now_name as name'
+            ),
+            array(
+                'now_status'    => 1
+            ),
+            array(),
+            array(),
+            array(
+                'filter'    => "now_name",
+                'sort'      => "ASC"
+            )
+        );
+
+        $id_type = $this->id_types->get_data(
+            array(
+                'id_type_id as id',
+                'id_type_name as name'
+            ),
+            array(
+                'id_type_status'    => 1
+            ),
+            array(),
+            array(),
+            array(
+                'filter'    => "id_type_name",
+                'sort'      => "ASC"
+            )
+        );
 		$this->_data['post'] = array(
 			'merchant-code'	=> $row->merchant_code,
 			'first-name'	=> $row->merchant_fname,
@@ -331,7 +385,10 @@ class Merchants extends Admin_Controller {
 			'city'			=> $row->merchant_city,
 			'mobile-no'		=> $row->merchant_mobile_no,
 			'email-address'	=> $row->merchant_email_address,
-			'status'		=> $row->merchant_status == 1 ? "checked" : ""
+			'status'		=> $row->merchant_status == 1 ? "checked" : "",
+			'id-exp-date'   => $row->merchant_id_exp_date,
+            'id-no'         => $row->merchant_id_no,
+			'postal-code'	=> $row->merchant_postal_code
 		);
 
 		if ($_POST) {
@@ -352,6 +409,13 @@ class Merchants extends Admin_Controller {
 				$email_address	= $this->input->post("email-address");
 				$status			= $this->input->post("status");
 
+				$sof            = $this->input->post("sof");
+                $now            = $this->input->post("now");
+                $id_type        = $this->input->post("id_type");
+                $id_exp_date    = $this->input->post("id-exp-date");
+                $id_no          = $this->input->post("id-no");
+                $postal_code    = $this->input->post("postal-code");
+
 				$update_data = array(
 					// 'merchant_code'				=> $merchant_code,
 					'merchant_fname'			=> $fname,
@@ -368,6 +432,12 @@ class Merchants extends Admin_Controller {
 					'merchant_mobile_no'		=> $mobile_no,
 					'merchant_email_address'	=> $email_address,
 					'merchant_status'			=> $status == 1 ? 1 : 0,
+					'merchant_postal_code'      => $postal_code,
+                    'sof_id'                    => $sof,
+                    'now_id'                    => $now,
+                    'merchant_id_type'          => $id_type,
+                    'merchant_id_no'            => $id_no,
+                    'merchant_id_exp_date'      => $id_exp_date
 				);
 
 				$this->merchants->update(
@@ -408,6 +478,33 @@ class Merchants extends Admin_Controller {
 			true
 		);
 
+		$this->_data['sof'] = $this->generate_selection(
+            "sof", 
+            $sof, 
+            $sof_id, 
+            "id", 
+            "name", 
+            true
+        );
+
+
+        $this->_data['now'] = $this->generate_selection(
+            "now", 
+            $now, 
+            $now_id,
+            "id", 
+            "name", 
+            true
+        );
+
+        $this->_data['id_type'] = $this->generate_selection(
+            "id_type", 
+            $id_type, 
+            $id_type_id,
+            "id", 
+            "name", 
+            true
+        );
 		$this->_data['title']  = "Update Merchant";
 		$this->set_template("merchants/form", $this->_data);
 	}

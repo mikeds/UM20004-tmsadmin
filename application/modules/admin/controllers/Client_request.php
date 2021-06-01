@@ -22,35 +22,27 @@ class Client_request extends Admin_Controller {
 		$admin_account_data_results = $this->_admin_account_data['results'];
 		$admin_oauth_bridge_id		= $admin_account_data_results['admin_oauth_bridge_id'];
 
-		$this->_data['notification']= $this->session->flashdata('notification');
+        $this->_data['notification']	= $this->session->flashdata('notification');
+		$this->_data['form_url']        = base_url() . "client-request";
 
-		$actions = array(
-			'update'
-		);
+		if($_POST){
+			$search_term = $_POST['search_term'];
+			$this->_data['post'] = $_POST;
+		}else{
+			$search_term = "";
+		}
+        
+        $actions = array(
+            'update'
+        );
 
-		$select = array(
-			'account_number as id',
-			'account_fname as "First Name"',
-			'account_mname as "Middle Name"',
-			'account_lname as "Last Name"',
-			'account_email_address as "Email Address"',
-			'account_mobile_no as "Mobile No."',
-			'account_date_added as "Date Registered"'
-		);
 
-		$where = array(
-			'account_status'	=> 0
-		);
+        $total_rows = $this->db->query("SELECT count(account_number) as count FROM client_pre_registration merchant_pre_registration where account_status = 0 AND concat(account_fname,' ', account_mname,'',account_lname,account_email_address,account_mobile_no) like '%$search_term%' ORDER BY account_date_added DESC");
+		$total_rows = $total_rows->num_rows();
 
-		$inner_joints = array();
-
-		$total_rows = $this->pre_registration->get_count(
-			$where,
-			array(),
-			$inner_joints
-		);
-		$offset = $this->get_pagination_offset($page, $this->_limit, $total_rows);
-	    $results = $this->pre_registration->get_data($select, $where, array(), $inner_joints, array('filter'=>'account_date_added', 'sort'=>'DESC'), $offset, $this->_limit);
+		$offset 	= $this->get_pagination_offset($page, $this->_limit, $total_rows);
+		$query 		= $this->db->query("SELECT account_number as id, account_fname as 'First Name', account_lname as 'Last Name', account_email_address as 'Email Address', account_mobile_no as 'Mobile No.', account_date_added as 'Date Registered' FROM client_pre_registration merchant_pre_registration where account_status = 0 AND concat(account_fname,' ',account_lname,account_email_address,account_mobile_no) like '%$search_term%' ORDER BY account_date_added DESC LIMIT $offset, $this->_limit");
+		$results 	= $query->result_array();
 
 		$this->_data['listing'] = $this->table_listing('', $results, $total_rows, $offset, $this->_limit, $actions, 2);
 		$this->_data['title']  = "Client Request";
@@ -297,8 +289,8 @@ class Client_request extends Admin_Controller {
 						$id,
 						array(
 							'account_status'				=> 1,
-							'disaproval_reason_type_id'		=> $reason_for_disapproval,
-							'account_disaproval_message'	=> $disapproval_desc
+							'disapproval_reason_type_id'		=> $reason_for_disapproval,
+							'account_disapproval_message'	=> $disapproval_desc
 						)
 					);
 					// Insert data to client_rejected table
@@ -310,9 +302,9 @@ class Client_request extends Admin_Controller {
 							'account_lname'         			=> $row->account_lname,
 							'account_mobile_no'     			=> $row->account_mobile_no,
 							'account_email_address' 			=> $row->account_email_address,
-							'account_disaproval_message'        => $disapproval_desc,
+							'account_disapproval_message'       => $disapproval_desc,
 							'rejected_by_oauth_bridge_id'		=> $admin_oauth_bridge_id,
-							'disaproval_reason_type_id'			=> $reason_for_disapproval,
+							'disapproval_reason_type_id'		=> $reason_for_disapproval,
 							'rejected_date_added'     			=> $this->_today
 						)
 					);
@@ -335,12 +327,7 @@ class Client_request extends Admin_Controller {
 						//$message .= "BambuPay Team";  
 					}
 
-					send_email(
-						$email_from,
-						$send_to,
-						$title,
-						$message
-					);
+					$this->_send_email($send_to, $title, $message);
 
 					$this->session->set_flashdata('notification', $this->generate_notification('success', 'Client account successfully rejected!'));
 					redirect(base_url() . "client-request");	

@@ -232,6 +232,10 @@ class Agent_request extends Admin_Controller {
                     $insert_data
                 );
 
+				// Send SMS
+				$message = 'We are pleased to inform you that your bambupay account has been successfully approved. - Bambupay';
+				$this->_send_sms($row->account_mobile_no, $message);
+
                 // generate agent account number
                 $ma_account_number = $this->generate_code(
                     array(
@@ -361,7 +365,10 @@ class Agent_request extends Admin_Controller {
 					}else{
 						$message = "Your application has been rejected. You did not submit a valid attachment. Kindly re-submit your application with a valid attachment. Thank you! <br/> - BambuPay Team";
 					}
+                    // Send Email
                     $this->_send_email($send_to, $title, $message);
+                    //Send SMS
+					$this->_send_sms($row->account_mobile_no, $message);
 
 
 					$this->session->set_flashdata('notification', $this->generate_notification('success', 'Agent account successfully rejected!'));

@@ -1122,5 +1122,113 @@ HTML;
 			$message
 		);
 	}
+
+	private function token_request() {
+		$curl = curl_init();
+
+		curl_setopt_array($curl, array(
+		CURLOPT_URL => BASE_URL_API . 'token',
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_ENCODING => '',
+		CURLOPT_MAXREDIRS => 10,
+		CURLOPT_TIMEOUT => 0,
+		CURLOPT_FOLLOWLOCATION => true,
+		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		CURLOPT_CUSTOMREQUEST => 'POST',
+		CURLOPT_POSTFIELDS => 'grant_type=client_credentials',
+		CURLOPT_HTTPHEADER => array(
+			'Authorization: Basic ' . base64_encode(SECRET_KEY . ":" . SECRET_CODE),
+			'Content-Type: application/x-www-form-urlencoded'
+		),
+		));
+
+		$response = curl_exec($curl);
+
+		curl_close($curl);
+		
+		$response = json_decode($response);
+
+		if (isset($response->access_token)) {
+			$this->_token = $response->access_token;
+
+			return $this->_token;
+		}
+	}
+
+	public function _send_sms($mobile_no, $message) {
+		$this->load->model("globe_access_tokens", "globe_access_token");
+
+		$access_token = "";
+
+		$row = $this->globe_access_token->get_datum(
+			'',
+			array(
+				'token_mobile_no' => $mobile_no
+			)
+		)->row();
+
+		if ($row != "") {
+			$access_token = $row->token_code;
+		}
+
+		$this->send_sms($mobile_no, $message, $access_token, true);
+	}
+
+	public function send_sms($mobile_no, $message, $access_token, $is_bypass = false) {
+
+		$curl = curl_init();
+
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => "https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/".GLOBESHORTCODE."/requests?access_token=".$access_token,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "POST",
+			CURLOPT_POSTFIELDS => "{\"outboundSMSMessageRequest\": { \"clientCorrelator\": \"".GLOBECLIENTCORRELATOR."\", \"senderAddress\": \"".GLOBESHORTCODE."\", \"outboundSMSTextMessage\": {\"message\": \"".$message."\"}, \"address\": \"".$mobile_no."\" } }",
+			CURLOPT_HTTPHEADER => array(
+				"Content-Type: application/json"
+			),
+		));
+
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+		curl_close($curl);
+
+		if ($err) {
+			if ($is_bypass) {
+				return;
+			}
+
+			echo json_encode(
+				array(
+					'error'             => true,
+					'error_description' => "Unable to send OTP. Curl Error #: {$err}",
+					'redirect_url'		=> GLOBEBASEURL . "dialog/oauth/" . GLOBEAPPID
+				)
+			);
+			die();
+		} else {
+			if ($is_bypass) {
+				return;
+			}
+
+			$decoded = json_decode($response);
+			
+			if (isset($decoded->error)) {
+				echo json_encode(
+					array(
+						'error'             => true,
+						'error_description' => $decoded->error,
+						'redirect_url'		=> GLOBEBASEURL . "dialog/oauth/" . GLOBEAPPID
+					)
+				);
+				die();
+			}
+		}
+
+	}
+
 	
 }

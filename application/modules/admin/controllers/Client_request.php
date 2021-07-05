@@ -221,6 +221,10 @@ class Client_request extends Admin_Controller {
 					$insert_data
 				);
 
+				// Send SMS
+				$message = 'We are pleased to inform you that your bambupay account has been successfully approved. - Bambupay';
+				$this->_send_sms($row->account_mobile_no, $message);
+
 				// create wallet address
 				$this->create_wallet_address($account_number, $bridge_id, $admin_oauth_bridge_id);
 
@@ -314,20 +318,24 @@ class Client_request extends Admin_Controller {
 					$send_to	= $row->account_email_address;
 					$title	= "Application Declined";
 					if($reason_for_disapproval == "1"){
-						$message = "Your application has been rejected. You did not submit a valid government ID. Please resubmit your application with a clear and full photo of your valid government ID. Thank you! <br/> - BambuPay Team";
+						$message = "Your application has been rejected. You did not submit a valid government ID. Please resubmit your application with a clear and full photo of your valid government ID. Thank you! - BambuPay Team";
 						
 					}else if($reason_for_disapproval == "2"){
-						$message = "Your application has been rejected. You did not submit a clear and full Selfie. Kindly re-submit your application with a clear and full Selfie. Thank you! <br/> - BambuPay Team";
+						$message = "Your application has been rejected. You did not submit a clear and full Selfie. Kindly re-submit your application with a clear and full Selfie. Thank you! - BambuPay Team";
 						//$message .= "BambuPay Team"; 
 					}else if($reason_for_disapproval == "3"){
-						$message = "Your application has been rejected. You did not submit a clear attachment. Kindly re-submit your application with a clear attachment. Thank you! <br/> - BambuPay Team";
+						$message = "Your application has been rejected. You did not submit a clear attachment. Kindly re-submit your application with a clear attachment. Thank you! - BambuPay Team";
 						//$message .= "BambuPay Team";  
 					}else{
-						$message = "Your application has been rejected. You did not submit a valid attachment. Kindly re-submit your application with a valid attachment. Thank you! <br/> - BambuPay Team";
+						$message = "Your application has been rejected. You did not submit a valid attachment. Kindly re-submit your application with a valid attachment. Thank you! - BambuPay Team";
 						//$message .= "BambuPay Team";  
 					}
 
+					//Send Email
 					$this->_send_email($send_to, $title, $message);
+					//Send SMS
+					$this->_send_sms($row->account_mobile_no, $message);
+					
 
 					$this->session->set_flashdata('notification', $this->generate_notification('success', 'Client account successfully rejected!'));
 					redirect(base_url() . "client-request");	
